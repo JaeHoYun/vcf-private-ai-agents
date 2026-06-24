@@ -39,6 +39,7 @@
 ### A1.1.4 실행·운영
 
 - **VKS(vSphere Kubernetes Service)** — Supervisor의 vSphere Namespace에 프로비저닝되는 쿠버네티스 클러스터. 모델 엔드포인트·에이전트 실행 기반.
+- **VKr(vSphere Kubernetes release)** — VKS 클러스터에 쓰는, VMware가 서명·지원하는 쿠버네티스 배포 릴리스. 버전은 쿠버네티스 마이너 버전을 따른다(예: VKr 1.33 = 쿠버네티스 1.33 기반).
 - **Supervisor / vSphere Namespace** — VKS·PAIS가 동작하는 vSphere 상의 쿠버네티스 제어·격리 단위.
 - **DLVM(Deep Learning VM)** — 프로토타이핑·노트북용 딥러닝 VM 이미지. 프로덕션은 VKS를 쓴다.
 - **GPU Operator** — VKS에서 GPU 드라이버·자원을 관리하는 쿠버네티스 오퍼레이터. PAIS 2.1 기준 25.10.1.
@@ -67,6 +68,7 @@
 | 버전 | 일자 | 내용 |
 |------|------|------|
 | v0.1 | 2026-06 | 초판 — PAIS 2.1 에이전트 서비스 가이드 신설. 개관·기초·설계 패턴·Agent Builder·MCP·모델 서빙·평가/가드레일·운영(00~07) + 부록(A1) |
+| v0.1.1 | 2026-06 | 교정 — docs/06 문자 혼입('役'→'역할'), A1 용어집에 VKr 추가 |
 
 ---
 [← 이전: 07 운영과 Day-2](../docs/07-operations.md) · [목차](../README.md)
