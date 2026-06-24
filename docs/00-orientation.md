@@ -51,6 +51,23 @@
 | GPU·노드 사이징·TCO | [⑥ 사이징·비용](https://github.com/JaeHoYun/vcf-private-ai-sizing-cost) |
 | 플랫폼 전체 설계 결정·블루프린트 | [⑦ 통합 설계](https://github.com/JaeHoYun/vcf-private-ai-design) |
 
+**앱·외부 계층이 책임지는 것 (PAIS·시리즈 밖)**
+
+PAIS가 제공하는 모듈과 시리즈가 떠받치는 인프라 위에는, 어떤 플랫폼도 대신 만들어 주지 않는 **애플리케이션·외부 계층의 책임**이 남습니다. 이 가이드는 이 세 번째 경계를 숨기지 않고 명시합니다 — 무엇이 PAIS 밖인지, 그래서 어디서 다뤄야 하는지를 함께 짚습니다.
+
+| 책임 영역 | 왜 PAIS 밖인가 | 방향 |
+|-----------|----------------|------|
+| 최종 사용자 신원·인가(사용자별 접근 권한·테넌트 격리) | 에이전트 엔드포인트는 호출하는 서비스만 알 뿐, 최종 사용자가 누구인지 모른다 | 앱이 사용자 신원을 주입·강제 · 상세 [⑤](https://github.com/JaeHoYun/vcf-private-ai-security-governance) |
+| 평가 방법 설계(골든셋·채점·회귀·A/B) | PAIS에 이름 붙은 전용 평가 프레임워크는 확인되지 않음 | 앱·CI 계층에서 설계 [06](06-evaluation-guardrails.md) |
+| 콘텐츠 가드레일(입출력 필터·PII·프롬프트 인젝션) | PAIS 내장 콘텐츠 가드레일은 확인되지 않음 | 앱 계층 필터 [06](06-evaluation-guardrails.md) · [⑤](https://github.com/JaeHoYun/vcf-private-ai-security-governance) |
+| 휴먼인더루프(되돌리기 어려운 행동 승인) | PAIS 내장 휴먼인더루프 기능은 확인되지 않음 | 앱 계층 승인 게이트 [02 §2.5](02-design-patterns.md) · [06](06-evaluation-guardrails.md) |
+| 사내 MCP 서버 구현·호스팅 | PAIS는 도구의 등록·승인·소비만 담당하며, 서버 자체는 사용자 자산이다 | 앱·플랫폼 계층에서 구현·운영 [04](04-mcp-tools.md) |
+| 모델 파인튜닝·도메인 적응 학습 | Model Gallery는 모델 보관·반입만 담당하며, 학습 파이프라인은 범위 밖이다 | 외부·DLVM에서 학습 후 Gallery로 반입 [05](05-models-serving.md) |
+| 애플리케이션 자체(런타임·UI·세션 저장·CI/CD·호출 견고성) | 에이전트를 소비·노출하는 앱은 PAIS가 아니다 | 자체 구현 · 엔드포인트 소비는 [03 §3.8](03-agent-builder.md) |
+| 외부 시크릿 관리·관측 백엔드·온콜 연동 | 기업 표준 보안·관측 시스템과의 통합 영역 | 외부 시스템 통합 [07](07-operations.md) · [⑤](https://github.com/JaeHoYun/vcf-private-ai-security-governance) |
+
+이 영역들은 PAIS가 *못* 하는 것이 아니라 *플랫폼의 일이 아닌* 것입니다. 각 항목을 본문 해당 문서에서 다시 짚습니다.
+
 벤더중립 에이전트 설계 이론(추론·계획·평가 방법론 일반)은 이 가이드의 범위 밖이며, 필요한 만큼만 [01](01-foundations.md)·[02](02-design-patterns.md)에서 짚고 PAIS 구현으로 곧장 잇습니다.
 
 ## 0.4 PAIS 6개 모듈 지도
