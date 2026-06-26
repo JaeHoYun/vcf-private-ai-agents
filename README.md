@@ -8,7 +8,7 @@
 
 ④가 한 워크로드(사내 Q&A RAG)를 **조립**하는 방법이라면, 이 가이드는 그 위 계층 — 모델 응답에 더해 **지식베이스를 검색하고 사내 시스템 도구를 호출하며 여러 단계를 스스로 잇는 에이전트 워크로드**를 PAIS 2.1의 Agent Builder·MCP·Model Runtime으로 구현·운영하는 방법을 다룹니다. ⑦이 플랫폼을 설계한다면, 이 가이드는 그 플랫폼 위에 에이전트 서비스를 올립니다.
 
-> **VCF Private AI 가이드 시리즈 — ⑧ PAIS 에이전트 서비스** · 8부작 중 한 편입니다. [전체 8개 보기 — 시리즈 허브](https://github.com/JaeHoYun/vcf-private-ai-series) · 상위 전략 [AX 방법론](https://github.com/JaeHoYun/enterprise-ax-methodology)
+> **VCF Private AI 가이드 시리즈 위에 올리는 에이전트 서비스 가이드**입니다. 시리즈 본편(인프라·데이터·서빙·RAG·보안·사이징·통합 설계 ①–⑦)은 [시리즈 허브](https://github.com/JaeHoYun/vcf-private-ai-series)에서, 상위 전략은 [AX 방법론](https://github.com/JaeHoYun/enterprise-ax-methodology)에서 다룹니다. 프로필의 **AX(전략) → Private AI(인프라) → 에이전트(실행)** 3단계 중 실행 편입니다.
 
 ---
 
