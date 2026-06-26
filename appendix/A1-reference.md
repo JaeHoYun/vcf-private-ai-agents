@@ -25,7 +25,7 @@
 - **Harbor** — OCI 호환 컨테이너 레지스트리. Model Gallery의 저장소 구현.
 - **vLLM · llama.cpp · Infinity** — Model Runtime의 추론 엔진. 작성 시점 vLLM 0.11.2(생성·임베딩), llama.cpp b7739(CPU 추론), Infinity 0.0.76(임베딩 전용).
 - **chat completion / OpenAI 호환 API** — `/chat/completions`·`/completions`·`/embeddings` 등 OpenAI 규약을 따르는 추론 API. 에이전트는 채팅 완성 엔드포인트로 노출된다.
-- **AMT(Artifact Mirroring Tool)** — 에어갭 환경에 모델·아티팩트를 미러링해 반입하는 PAIS 2.1 도구. `vcf pais` 하위 명령이 아니라 별도 스크립트로 수행한다.
+- **Artifact Mirroring Tool** — 에어갭 환경에 모델·아티팩트를 미러링해 반입하는 PAIS 2.1 도구. `vcf pais` 하위 명령이 아니라 별도 스크립트로 수행한다.
 - **NIM(NVIDIA Inference Microservices)** — NVIDIA가 제공하는 컨테이너형 추론 모델. Model Gallery로 반입해 관리할 수 있다.
 
 ### A1.1.3 데이터·검색

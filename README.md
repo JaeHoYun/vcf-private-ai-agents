@@ -40,7 +40,7 @@
 | 02 | [에이전트 설계 패턴](docs/02-design-patterns.md) | 단일·멀티 에이전트, 도구·지식 연결, 세션 관리, 언제 에이전트로 푸나 |
 | 03 | [Agent Builder로 구축](docs/03-agent-builder.md) | 에이전트 생성, 모델 엔드포인트·지시문·지식베이스·도구·세션, Playground, REST API |
 | 04 | [MCP 도구 통합](docs/04-mcp-tools.md) | MCP 3방향(호출·호스팅·등록), Tool Gallery, 전송·인증, 보안 경계 |
-| 05 | [모델과 서빙](docs/05-models-serving.md) | Model Runtime, OpenAI 호환 API, 서빙 엔진, Model Gallery, 에어갭(AMT), CLI |
+| 05 | [모델과 서빙](docs/05-models-serving.md) | Model Runtime, OpenAI 호환 API, 서빙 엔진, Model Gallery, 에어갭(Artifact Mirroring Tool), CLI |
 | 06 | [평가와 가드레일](docs/06-evaluation-guardrails.md) | Playground·CI/CD 테스트, 실패 모드, 가드레일·휴먼인더루프 경계 |
 | 07 | [운영과 Day-2](docs/07-operations.md) | 배포 토폴로지, 관측성, 업그레이드·다운타임, 알려진 이슈, 비용 |
 | 08 | [산업 유스케이스](docs/08-use-cases.md) | 결과·KPI로 보는 에이전트 — 제조 사례(기술문서 Q&A·품질 리포트·설비 보전) + 확장 템플릿 |
