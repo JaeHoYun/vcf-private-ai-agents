@@ -4,7 +4,7 @@
 
 > VMware Cloud Foundation(VCF) 9.1 Private AI Services(PAIS) 2.1 위에서 에이전트 서비스를 설계·구축·운영하는 실무 가이드 — Agent Builder · MCP 도구 · Model Runtime · Day-2 운영
 
-[① 인프라](https://github.com/JaeHoYun/vcf-private-ai-guide) · [② VectorDB](https://github.com/JaeHoYun/vcf-dsm-vectordb-guide) · [③ 서빙 API](https://github.com/JaeHoYun/vcf-paif-serving-api-guide) · [④ RAG](https://github.com/JaeHoYun/vcf-rag-reference-architecture) · [⑤ 보안·거버넌스](https://github.com/JaeHoYun/vcf-private-ai-security-governance) · [⑥ 사이징·비용](https://github.com/JaeHoYun/vcf-private-ai-sizing-cost) · [⑦ 통합 설계](https://github.com/JaeHoYun/vcf-private-ai-design)는 Private AI 플랫폼의 인프라·검색·서빙·조립·보안·사이징·설계를 다룹니다. 그 위에서 한 걸음 남습니다 — **"이 플랫폼 위에서 추론하고 도구를 호출하는 에이전트를 어떻게 만들고 운영하나?"** 이 가이드가 그 답입니다.
+[① 인프라](https://github.com/JaeHoYun/vcf-private-ai-guide) · [② VectorDB](https://github.com/JaeHoYun/vcf-dsm-vectordb-guide) · [③ 서빙 API](https://github.com/JaeHoYun/vcf-paif-serving-api-guide) · [④ RAG](https://github.com/JaeHoYun/vcf-rag-reference-architecture) · [⑤ 보안·거버넌스](https://github.com/JaeHoYun/vcf-private-ai-security-governance) · [⑥ 사이징·비용](https://github.com/JaeHoYun/vcf-private-ai-sizing-cost) · [⑦ 통합 설계](https://github.com/JaeHoYun/vcf-private-ai-design)는 Private AI 플랫폼의 인프라·검색·서빙·조립·보안·사이징·설계를 다룹니다. 그 위에서 남는 질문은 하나입니다 — **"이 플랫폼 위에서 추론하고 도구를 호출하는 에이전트를 어떻게 만들고 운영하나?"** 이 가이드가 그 답입니다.
 
 ④가 한 워크로드(사내 Q&A RAG)를 **조립**하는 방법이라면, 이 가이드는 그 위 계층 — 모델 응답에 더해 **지식베이스를 검색하고 사내 시스템 도구를 호출하며 여러 단계를 스스로 잇는 에이전트 워크로드**를 PAIS 2.1의 Agent Builder·MCP·Model Runtime으로 구현·운영하는 방법을 다룹니다. ⑦이 플랫폼을 설계한다면, 이 가이드는 그 플랫폼 위에 에이전트 서비스를 올립니다.
 
