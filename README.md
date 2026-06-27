@@ -43,7 +43,7 @@
 | 05 | [모델과 서빙](docs/05-models-serving.md) | Model Runtime, OpenAI 호환 API, 서빙 엔진, Model Gallery, 에어갭(Artifact Mirroring Tool), CLI |
 | 06 | [평가와 가드레일](docs/06-evaluation-guardrails.md) | Playground·CI/CD 테스트, 실패 모드, 가드레일·휴먼인더루프 경계 |
 | 07 | [운영과 Day-2](docs/07-operations.md) | 배포 토폴로지, 관측성, 업그레이드·다운타임, 알려진 이슈, 비용 |
-| 08 | [산업 유스케이스](docs/08-use-cases.md) | 결과·KPI로 보는 에이전트 — 제조 사례(기술문서 Q&A·품질 리포트·설비 보전) + 확장 템플릿 |
+| 08 | [어디에 쓰나](docs/08-use-cases.md) | 값이 나는 자리와 무너지는 자리 — 파일럿이 멈추는 다섯 실패 모드, 유스케이스 선별 기준, 사례 2종(사내 지식 응대·운영 알림 1차 진단) |
 | A1 | [부록](appendix/A1-reference.md) | 용어집, 참조 링크, 변경 이력 |
 
 ## 빠른 시작
@@ -53,7 +53,7 @@
 - **"사내 시스템을 도구로 붙인다"** → [04 MCP 도구 통합](docs/04-mcp-tools.md)
 - **"어떤 모델을 어떻게 서빙하나"** → [05 모델과 서빙](docs/05-models-serving.md)
 - **"운영에 올리기 전 점검한다"** → [06 평가와 가드레일](docs/06-evaluation-guardrails.md) · [07 운영과 Day-2](docs/07-operations.md)
-- **"이걸로 무슨 가치를 내나"** → [08 산업 유스케이스](docs/08-use-cases.md)
+- **"이걸로 무슨 가치를 내나, 어디서 망가지나"** → [08 어디에 쓰나](docs/08-use-cases.md)
 
 ## 라이선스
 
