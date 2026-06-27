@@ -64,7 +64,7 @@
 - [Streamline, Simplify and Protect all your AI workloads with VCF 9.1 (blogs.vmware.com)](https://blogs.vmware.com/cloud-foundation/2026/05/05/streamline-simplify-and-protect-all-your-ai-workloads-with-vcf-9-1/)
 - [Model Gallery — JupyterLab Notebooks (blogs.vmware.com)](https://blogs.vmware.com/cloud-foundation/2026/02/26/model-gallery-how-to-use-jupyterlab-notebooks-to-simplify-model-deployment-and-management/)
 
-시리즈 형제 가이드는 [시리즈 허브](https://github.com/JaeHoYun/vcf-private-ai-series)에서 모두 볼 수 있습니다.
+시리즈 형제 가이드는 [시리즈 허브](https://github.com/JaeHoYun/vcf-private-ai)에서 모두 볼 수 있습니다.
 
 ## A1.3 변경 이력
 

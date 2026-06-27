@@ -52,7 +52,7 @@ Agent Builder는 코드를 먼저 쓰지 않습니다. **UI 위저드로 구성 
 - **검색 파라미터** — Top-K(가져올 문서 수)·유사도 컷오프(0~1)·인용 표시를 조정합니다. 잡음이 많으면 컷오프를 높이고, 누락이 잦으면 Top-K를 키우거나 컷오프를 낮춥니다.
 - **인용** — 답변에 출처 표시를 켜면 환각을 줄이고 검증을 돕습니다.
 
-> 지식베이스의 벡터 저장은 pgvector 확장을 갖춘 외부 PostgreSQL을 사용합니다. 임베딩 모델은 Model Runtime이 서빙하며, 인덱싱과 질의에 **같은 임베딩 모델**이 쓰입니다(상세·구성은 [②](https://github.com/JaeHoYun/vcf-dsm-vectordb-guide)·[④](https://github.com/JaeHoYun/vcf-rag-reference-architecture)). 특정 기본 임베딩 모델명은 공식 문서로 확인하시기 바랍니다.
+> 지식베이스의 벡터 저장은 pgvector 확장을 갖춘 외부 PostgreSQL을 사용합니다. 임베딩 모델은 Model Runtime이 서빙하며, 인덱싱과 질의에 **같은 임베딩 모델**이 쓰입니다(상세·구성은 [②](https://github.com/JaeHoYun/vcf-private-ai/tree/main/02-vectordb)·[④](https://github.com/JaeHoYun/vcf-private-ai/tree/main/04-rag)). 특정 기본 임베딩 모델명은 공식 문서로 확인하시기 바랍니다.
 
 ## 3.5 도구(MCP) 연결
 
@@ -87,14 +87,14 @@ Playground는 1차 검증 수단이며, 반복 가능한 품질 측정은 CI/CD 
 
 에이전트 엔드포인트를 앱에서 소비할 때(§3.8), 신원은 두 층위로 나뉩니다. 이 둘을 섞으면 권한이 과대해집니다.
 
-- **서비스 인증(앱 → PAIS)** — 앱이 에이전트·모델 엔드포인트를 호출할 때 쓰는 서비스 신원(토큰·키)입니다. 토큰 발급·보관·로테이션은 앱과 플랫폼의 책임이며, 자격증명은 비밀로 관리합니다([⑤ ID·인증·접근통제](https://github.com/JaeHoYun/vcf-private-ai-security-governance/blob/main/docs/03-identity-access.md)).
+- **서비스 인증(앱 → PAIS)** — 앱이 에이전트·모델 엔드포인트를 호출할 때 쓰는 서비스 신원(토큰·키)입니다. 토큰 발급·보관·로테이션은 앱과 플랫폼의 책임이며, 자격증명은 비밀로 관리합니다([⑤ ID·인증·접근통제](https://github.com/JaeHoYun/vcf-private-ai/blob/main/05-security/docs/03-identity-access.md)).
 - **최종 사용자 신원(사람 사용자)** — 엔드포인트는 호출하는 서비스만 알 뿐, 그 뒤의 사람 사용자가 누구인지 모릅니다. 따라서 사용자 로그인·사용자별 접근 권한·테넌트 격리는 PAIS가 아니라 앱이 책임집니다([00 §0.3](00-orientation.md) 책임 경계).
 
 이 구분에서 따라오는 설계 원칙입니다.
 
 - **사용자 신원은 앱이 강제한다** — 앱 앞단(또는 API 게이트웨이)에서 사용자를 인증하고 권한을 검사한 뒤에만 에이전트를 호출합니다. 엔드포인트가 사용자 신원까지 처리해 줄 것으로 가정하지 마십시오.
 - **권한 전파** — 에이전트가 도구로 사내 시스템을 건드릴 때, 넓은 서비스 자격증명이 아니라 요청한 사용자의 권한 범위 안에서만 동작하도록 앱이 컨텍스트를 좁혀 전달해야 합니다. 그러지 않으면 한 사용자가 도구를 통해 다른 사용자의 데이터에 접근할 수 있습니다([02 §2.3](02-design-patterns.md)·[04 §4.7](04-mcp-tools.md) 권한 최소화).
-- **테넌트 격리** — 팀·고객별로 지식베이스·도구·세션이 섞이면 안 된다면, 테넌트별로 에이전트(또는 지식베이스·도구 집합)를 분리하거나 vSphere Namespace 단위로 격리합니다(상세 [⑤ 네트워크·테넌트·GPU 격리](https://github.com/JaeHoYun/vcf-private-ai-security-governance/blob/main/docs/02-network-tenant-isolation.md)).
+- **테넌트 격리** — 팀·고객별로 지식베이스·도구·세션이 섞이면 안 된다면, 테넌트별로 에이전트(또는 지식베이스·도구 집합)를 분리하거나 vSphere Namespace 단위로 격리합니다(상세 [⑤ 네트워크·테넌트·GPU 격리](https://github.com/JaeHoYun/vcf-private-ai/blob/main/05-security/docs/02-network-tenant-isolation.md)).
 
 > **경계** — PAIS가 호출 시 받은 사용자 컨텍스트를 도구·검색까지 전파하는지는 공식 문서로 확인하십시오. 확인 전에는 앱이 사용자 신원·권한을 직접 들고 강제한다고 가정하는 편이 안전합니다.
 

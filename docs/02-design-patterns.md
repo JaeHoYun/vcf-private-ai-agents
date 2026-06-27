@@ -31,7 +31,7 @@ PAIS의 에이전트는 각각 독립된 채팅 완성 엔드포인트로 노출
 **분할 기준(실무)**
 
 - 한 에이전트의 도구가 대략 두 자릿수에 이르고 모델이 도구를 자주 잘못 고른다.
-- 영역마다 접근 권한·데이터 경계가 달라 한 지시문에 섞으면 권한이 과대해진다([⑤ ID·인증·접근통제](https://github.com/JaeHoYun/vcf-private-ai-security-governance/blob/main/docs/03-identity-access.md) 위임).
+- 영역마다 접근 권한·데이터 경계가 달라 한 지시문에 섞으면 권한이 과대해진다([⑤ ID·인증·접근통제](https://github.com/JaeHoYun/vcf-private-ai/blob/main/05-security/docs/03-identity-access.md) 위임).
 - 영역별로 다른 모델(크기·비용)이 합리적이다.
 
 ## 2.3 도구와 지식 연결 설계
@@ -41,7 +41,7 @@ PAIS의 에이전트는 각각 독립된 채팅 완성 엔드포인트로 노출
 - **지식베이스는 검색 도구다** — PAIS에서 지식베이스 검색은 에이전트가 호출 여부와 검색어를 스스로 정하는 도구로 노출됩니다. 검색이 항상 필요한 단순 Q&A라면 에이전트보다 ④ RAG가 단순합니다.
 - **도구는 최소·명확하게** — 에이전트가 자주 쓸 도구만 노출하고, 이름·설명·파라미터를 모델이 헷갈리지 않게 작성합니다. 비슷한 도구가 여럿이면 모델이 잘못 고릅니다.
 - **도구는 승인된 것만** — 원격 MCP 서버의 도구는 관리자가 능력·파라미터를 검토해 명시적으로 승인한 것만 에이전트에 노출됩니다([04](04-mcp-tools.md)). 승인은 보안 경계인 동시에 도구 표면을 좁히는 설계 수단입니다.
-- **권한 최소화** — 도구가 닿는 시스템의 자격증명·범위는 필요한 최소로 둡니다. 도구 자체가 외부 시스템에 대한 공격 표면이 됩니다([⑤ ID·인증·접근통제](https://github.com/JaeHoYun/vcf-private-ai-security-governance/blob/main/docs/03-identity-access.md) 위임).
+- **권한 최소화** — 도구가 닿는 시스템의 자격증명·범위는 필요한 최소로 둡니다. 도구 자체가 외부 시스템에 대한 공격 표면이 됩니다([⑤ ID·인증·접근통제](https://github.com/JaeHoYun/vcf-private-ai/blob/main/05-security/docs/03-identity-access.md) 위임).
 
 ## 2.4 세션과 컨텍스트 설계
 
