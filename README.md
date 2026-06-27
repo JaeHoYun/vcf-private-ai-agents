@@ -44,7 +44,7 @@
 | 06 | [평가와 가드레일](docs/06-evaluation-guardrails.md) | Playground·CI/CD 테스트, 실패 모드, 가드레일·휴먼인더루프 경계 |
 | 07 | [운영과 Day-2](docs/07-operations.md) | 배포 토폴로지, 관측성, 업그레이드·다운타임, 알려진 이슈, 비용 |
 | 08 | [어디에 쓰나](docs/08-use-cases.md) | 성과가 나는 일과 실패하는 일 — 파일럿이 멈추는 다섯 실패 모드, 유스케이스 선별 기준, 사례 2종(사내 지식 응대·운영 알림 1차 진단) |
-| A1 | [부록](appendix/A1-reference.md) | 용어집, 참조 링크, 변경 이력 |
+| A1 | [부록](appendix/A1-reference.md) | 용어집, 참조 링크 |
 
 ## 빠른 시작
 
