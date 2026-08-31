@@ -78,4 +78,4 @@
 시리즈 형제 가이드는 [시리즈 허브](https://github.com/JaeHoYun/vcf-private-ai)에서 모두 볼 수 있습니다.
 
 ---
-[← 이전: 08 어디에 쓰나](../docs/08-use-cases.md) · [목차](../README.md)
+[← 이전: 08 어디에 쓰나](../docs/08-use-cases.md) · [목차](../README.md) · [다음: A2 워크시트 →](A2-worksheets.md)
