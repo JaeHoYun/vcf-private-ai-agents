@@ -4,7 +4,7 @@
 
 에이전트를 만들었다면 이제 운영입니다. 이 문서는 에이전트·모델 워크로드를 어디에 배포하고, 무엇을 관측하며, 업그레이드 때 무엇을 조심하고, 어떤 알려진 이슈와 비용이 있는지를 다룹니다. 용량·TCO의 정밀 계산은 ⑥에, 플랫폼 Day-2 운영 전반은 ①에 위임하고, 여기서는 **에이전트 워크로드와 직결된 운영**에 집중합니다.
 
-> 본 문서의 수치·동작은 작성 시점(2026-06) VCF 9.1 / PAIF 9.1 / PAIS 2.1 기준이며, 적용 전 공식 문서로 재확인하시기 바랍니다.
+> 본 문서의 수치·동작은 VCF 9.1 / PAIF 9.1 / PAIS 2.1 기준입니다(작성 2026-06, 공식 문서 대조 확인 2026-09). 적용 전 최신 공식 문서로 재확인하시기 바랍니다.
 
 ---
 
@@ -37,7 +37,7 @@ PAIS 2.1은 추론·GPU·에이전트를 아우르는 관측을 VCF Operations�
 
 ## 7.3 업그레이드 — 다운타임 주의
 
-> **반드시 알아둘 운영 리스크** — PAIS 2.0.x → 2.1 업그레이드는 **모델 엔드포인트를 호스팅하는 VKS 클러스터를 삭제·재생성**합니다. 그 과정에서 노드가 재생성되고 모델을 다시 내려받는 동안 **다운타임**이 발생합니다.
+> **반드시 알아둘 운영 리스크** — PAIS 2.0.x → 2.1 업그레이드는 **모델 엔드포인트를 호스팅하는 VKS 클러스터를 삭제·재생성**합니다. 그 과정에서 노드가 재생성되고 모델을 다시 내려받는 동안 **다운타임**이 발생합니다. ([근거: PAIS 릴리스 노트](https://techdocs.broadcom.com/us/en/vmware-cis/private-ai/foundation-with-nvidia/9-0/private-ai-release-notes/vmware-private-ai-services-release-notes.html))
 
 대비:
 
@@ -48,7 +48,7 @@ PAIS 2.1은 추론·GPU·에이전트를 아우르는 관측을 VCF Operations�
 
 ## 7.4 알려진 이슈
 
-작성 시점 PAIS 2.1에서 보고된 대표 이슈입니다(릴리스 노트 기준, 변동 가능).
+PAIS 2.1에서 보고된 대표 이슈입니다([근거: PAIS 릴리스 노트](https://techdocs.broadcom.com/us/en/vmware-cis/private-ai/foundation-with-nvidia/9-0/private-ai-release-notes/vmware-private-ai-services-release-notes.html) — 2026-09 재확인 시점에도 4건 모두 존치, 변동 가능).
 
 | 증상 | 방향 |
 |------|------|
