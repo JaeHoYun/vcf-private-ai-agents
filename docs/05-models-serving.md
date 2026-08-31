@@ -10,7 +10,7 @@
 
 ## 5.1 Model Runtime — 서빙 계층
 
-Model Runtime은 completion(생성)·embedding(임베딩) 모델을 추론 엔진으로 실행해 **OpenAI 호환 API**(`/chat/completions`·`/completions`·`/embeddings`)로 노출합니다. 엔드포인트는 ML API Gateway 뒤에 위치합니다.
+Model Runtime은 completion(생성)·embedding(임베딩) 모델을 추론 엔진으로 실행해 **OpenAI 호환 API**(`/chat/completions`·`/completions`·`/embeddings`)로 노출합니다. 엔드포인트는 ML API Gateway 뒤에 위치하며, 기본 경로는 `https://<PAIS FQDN>/api/v1/compatibility/openai/v1/...`입니다([근거: Private AI Services API](https://developer.broadcom.com/xapis/vmware-private-ai-service-api/latest/) · 호출 예시는 [03 §3.8·§3.10](03-agent-builder.md)).
 
 - **에이전트와의 관계** — 에이전트는 이 completion 엔드포인트를 가져다 세션·검색·도구 호출을 얹어 씁니다([03 §3.2](03-agent-builder.md)). 모델 엔드포인트는 stateless이고, 에이전트가 그 위 stateful 계층입니다([01 §1.4](01-foundations.md)).
 - **임베딩** — 지식베이스 인덱싱·질의에 쓰는 임베딩도 Model Runtime이 서빙합니다(상세는 [④](https://github.com/JaeHoYun/vcf-private-ai/tree/main/04-rag)).

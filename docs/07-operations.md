@@ -14,6 +14,7 @@
 - **두 경로** — 프로토타이핑·노트북 작업은 **DLVM(Deep Learning VM)**, 프로덕션 모델 엔드포인트·에이전트는 **VKS 클러스터**에 둡니다.
 - **고가용성** — 모델 엔드포인트는 서로 다른 워커 노드에 복제본 2 이상을 두기를 권장합니다. 단일 zone 배포에서는 VKS 컨트롤 플레인 등 핵심 구성요소가 단일 인스턴스로 배치돼 가용성 제약이 따릅니다.
 - **사이징 위임** — 프로덕션 모델 서빙에 필요한 최소 GPU 호스트 수·GPU 메모리·시스템 RAM 비율 등 용량 산정은 [⑥ VKS 클러스터 사이징](https://github.com/JaeHoYun/vcf-private-ai/blob/main/06-sizing-cost/docs/04-vks-cluster-sizing.md)에 위임합니다. 공식 디자인 문서도 구체 수치를 별도 사이징 자료로 위임합니다.
+- **배포 실무 참조(공개)** — PAIS 활성화 절차와 Supervisor 네트워킹 구성은 공식 블로그가 실무 관점으로 다룹니다: [Activate VCF Private AI Services (2026-01)](https://blogs.vmware.com/cloud-foundation/2026/01/15/activate-vcf-private-ai-services/) · [Navigating Supervisor Networking Stack (2026-06)](https://blogs.vmware.com/cloud-foundation/2026/06/11/deploying-vmware-cloud-foundation-private-ai-services-navigating-supervisor-networking-stack/).
 
 ## 7.2 관측성
 
