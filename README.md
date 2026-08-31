@@ -2,7 +2,7 @@
 
 > **이 가이드를 읽기 전에** — 임베딩·벡터·토큰·RAG·쿠버네티스(VKS) 같은 용어가 낯설다면, 먼저 [VCF Private AI 입문 (Primer)](https://github.com/JaeHoYun/vcf-private-ai/tree/main/00-foundations)에서 기초 어휘를 잡으시길 권합니다. 이 가이드는 그 개념들을 이미 아는 것으로 전제합니다.
 
-> VMware Cloud Foundation(VCF) 9.1 Private AI Services(PAIS) 2.1 위에서 에이전트 서비스를 설계·구축·운영하는 실무 가이드 — Agent Builder · MCP 도구 · Model Runtime · Day-2 운영
+> VMware Cloud Foundation(VCF) 9.1 Private AI Services(PAIS) 2.1 위에서 에이전트 서비스를 설계·구축·운영하는 실무 가이드 — Agent Builder · MCP 도구 · Model Runtime · Day-2 운영 · 유스케이스 판단
 
 [① 인프라](https://github.com/JaeHoYun/vcf-private-ai/tree/main/01-infra) · [② VectorDB](https://github.com/JaeHoYun/vcf-private-ai/tree/main/02-vectordb) · [③ 서빙 API](https://github.com/JaeHoYun/vcf-private-ai/tree/main/03-serving-api) · [④ RAG](https://github.com/JaeHoYun/vcf-private-ai/tree/main/04-rag) · [⑤ 보안·거버넌스](https://github.com/JaeHoYun/vcf-private-ai/tree/main/05-security) · [⑥ 사이징·비용](https://github.com/JaeHoYun/vcf-private-ai/tree/main/06-sizing-cost) · [⑦ 통합 설계](https://github.com/JaeHoYun/vcf-private-ai/tree/main/07-design)는 Private AI 플랫폼의 인프라·검색·서빙·조립·보안·사이징·설계를 다룹니다. 그 위에서 남는 질문은 하나입니다 — **"이 플랫폼 위에서 추론하고 도구를 호출하는 에이전트를 어떻게 만들고 운영하나?"** 이 가이드가 그 답입니다.
 
