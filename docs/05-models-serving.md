@@ -29,6 +29,7 @@ PAIS 2.1 Model Runtime이 지원하는 추론 엔진과 버전입니다(작성 �
 - **llama.cpp = 2.1 신규** — GPU 없이 CPU에서 추론하는 경로가 2.1에서 추가됐습니다. 작은 모델·저부하 보조 작업이나 GPU가 부족한 환경에서 선택지가 됩니다(성능·비용 trade-off는 [07](07-operations.md)·[⑥ TCO와 비용 모델](https://github.com/JaeHoYun/vcf-private-ai/blob/main/06-sizing-cost/docs/07-tco-cost-model.md)).
 - **버전 주의** — 9.0/PAIS 2.0 계열의 vLLM 0.6.5·Infinity 0.0.43은 **옛 수치**입니다. 2.1 기준 위 버전으로 상향됐으므로 구버전 자료를 인용하지 마십시오.
 - **엔진 버전 오버라이드** — 모델 엔드포인트 정의(YAML)의 `engineImage`로 엔진 이미지를 지정할 수 있습니다.
+- **버전 정본** — 엔진 버전의 단일 기준은 [README 기반 버전표](../README.md#기반-버전-source-of-truth)입니다. 본문·용어집의 버전 표기는 그 요약이며, 갱신은 README 표를 기준으로 맞춥니다.
 
 ## 5.3 Model Gallery — 모델 저장소
 
@@ -63,7 +64,7 @@ PAIS 2.1은 **Artifact Mirroring Tool** 로 에어갭(외부망 차단) 환경�
 
 예: `vcf pais models pull --modelStore <레지스트리>/<리포지토리> --modelName <모델> --tag <태그>`
 
-위 표는 **VCF CLI 명령 레퍼런스 페이지** 기준입니다. **`vcf pais amt`(pull/push)는 이 레퍼런스 페이지에는 누락**돼 있으나 실재하는 명령으로, PAIF Disconnected Environment 배포 문서에 pais 플러그인 명령으로 명시돼 있습니다(에어갭 반입용 → §5.4). `vcf pais agents` 같은 하위 명령은 없으며, 에이전트·MCP·지식베이스 구성은 주로 UI(Agent Builder·VCF Automation)와 REST API로 다룹니다.
+위 표는 **VCF CLI 명령 레퍼런스 페이지** 기준입니다. 에어갭 반입용 `vcf pais amt`(pull/push)는 이 레퍼런스에 빠져 있으나 실재하는 명령입니다 — 근거와 주의는 §5.4에 정리했습니다. `vcf pais agents` 같은 하위 명령은 없으며, 에이전트·MCP·지식베이스 구성은 주로 UI(Agent Builder·VCF Automation)와 REST API로 다룹니다.
 
 ## 5.6 에이전트 관점의 모델 선택
 
