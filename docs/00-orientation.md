@@ -93,5 +93,16 @@ PAIS 2.1은 여섯 모듈로 이뤄집니다. 에이전트는 이 중 여러 모
 - 운영 준비 단계라면 **[06 평가와 가드레일](06-evaluation-guardrails.md) → [07 운영과 Day-2](07-operations.md)** 가 핵심입니다.
 - 무엇에 적용할지, 도입할 가치가 있는지부터 판단해야 한다면 **[08 어디에 쓰나](08-use-cases.md)** 를 먼저 읽으십시오. 기술 문서(01~07)를 몰라도 읽을 수 있습니다.
 
+## 0.6 앞으로의 지형 — 2026-08 Explore 발표 (참고)
+
+이 가이드의 본문은 PAIS 2.1 기준입니다. 다만 2026년 8월 말 VMware Explore에서 에이전트 지형에 영향을 줄 발표가 있었으므로, 방향만 기록해 둡니다. **아래는 모두 발표 단계이며, GA 문서·릴리스 노트로 확인되기 전에는 본문 논지에 반영하지 않습니다** — 확인되는 시점에 해당 문서로 승격합니다.
+
+- **VMware Private AI Cloud** — 인프라·에이전트·데이터·보안을 아우르는 통합 스택 브랜드가 발표됐습니다.
+- **VMware AI Factory** — Private AI Cloud의 소프트웨어 정의 기반으로, 베어메탈 배포부터 모델 서빙까지의 자동화를 내세웁니다.
+- **Tanzu Platform의 에이전트 계층 공식화** — 에이전트 개발·실행 계층으로 지정되고, 발표 기준으로 기본 차단(deny-by-default) 샌드박스 — 에이전트의 API·네트워크·MCP 서버·인터넷 접근을 명시적으로 허용한 것만 여는 방식 — 와 크리덴셜 분리 보관을 내세웁니다. 이 가이드가 앱 계층 책임으로 짚어 온 통제(§0.3)의 일부가 플랫폼 계층으로 내려올 가능성이 있는 지점입니다.
+- **AgentMinder** — 에이전트 거버넌스 소프트웨어가 새로 발표됐습니다.
+
+출처(발표 보도, 2026-08-31): [Broadcom 보도자료 — VMware AI Factory](https://www.globenewswire.com/news-release/2026/08/31/3353363/19933/en/broadcom-announces-vmware-ai-factory-enabling-faster-time-to-production-ai-and-greater-control-over-ai-tokenomics.html) · [Broadcom 보도자료 — Tanzu AI-ready Data Foundations](https://www.globenewswire.com/news-release/2026/08/31/3353356/19933/en/broadcom-unveils-ai-ready-data-foundations-in-vmware-tanzu-platform-to-power-secure-enterprise-ai-cloud.html) · [SiliconANGLE](https://siliconangle.com/2026/08/31/broadcoms-private-ai-cloud-spans-infrastructure-agents-data-and-security/) · [Network World](https://www.networkworld.com/article/4215847/private-ai-cloud-agentic-infrastructure-dominate-vmware-explore.html)
+
 ---
 [목차](../README.md) · [다음: 01 에이전트 기초와 PAIS 2.1 지형 →](01-foundations.md)
