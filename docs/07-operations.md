@@ -100,7 +100,7 @@ PAIS 2.1은 추론·GPU·에이전트를 아우르는 관측을 VCF Operations�
 - **목표 수준(SLO)** — 가용성·TTFT·오류율 같은 지표에 목표값을 정해 둡니다. 기준선을 실측한 뒤 현실적인 값으로 잡고, 이탈이 잦으면 용량([⑥ 용량 계획과 운영](https://github.com/JaeHoYun/vcf-private-ai/blob/main/06-sizing-cost/docs/06-capacity-planning.md))이나 설계를 재검토합니다.
 - **온콜·에스컬레이션** — 1차 대응은 알려진 이슈·트러블슈팅(§7.4)으로, 해소되지 않으면 플랫폼 운영([① Day-2 운영](https://github.com/JaeHoYun/vcf-private-ai/blob/main/01-infra/docs/10-operations.md) §10.4)·보안([⑤](https://github.com/JaeHoYun/vcf-private-ai/tree/main/05-security))으로 에스컬레이션합니다.
 
-이로써 구축에서 운영까지의 흐름을 마칩니다. 용어·참조는 부록에 정리했습니다.
+이로써 구축에서 운영까지의 기술 흐름을 마칩니다. 남은 질문 — 이 역량을 어디에 써야 성과가 나는가 — 는 [08 어디에 쓰나](08-use-cases.md)에서 다룹니다. 용어·참조는 부록에 정리했습니다.
 
 ---
 [← 이전: 06 평가와 가드레일](06-evaluation-guardrails.md) · [목차](../README.md) · [다음: 08 어디에 쓰나 →](08-use-cases.md)
