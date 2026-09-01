@@ -70,7 +70,7 @@ PAIS의 에이전트는 각각 독립된 채팅 완성 엔드포인트로 노출
 에이전트로 풀기로 했다면, 그 에이전트를 **무엇으로 만들지**가 다음 갈림길입니다. PAIS 위에서는 두 경로가 있습니다.
 
 - **관리형 — Agent Builder** — 모델·지시문·지식베이스·도구·세션을 UI로 묶고, 검색·도구 호출·세션을 PAIS가 얹어 채팅 완성 엔드포인트로 노출합니다([03](03-agent-builder.md)). 구성이 빠르고 운영·관측이 플랫폼에 통합됩니다.
-- **자체 앱 — 직접 오케스트레이션** — 계획·분기·상태를 잇는 오케스트레이션 루프를 애플리케이션 코드나 외부 프레임워크(예: LangGraph·LlamaIndex)로 직접 짜고, PAIS의 **모델 엔드포인트(OpenAI 호환)만 백엔드로 소비**합니다([05 §5.1](05-models-serving.md)). Model Runtime이 OpenAI 규약을 따르므로, 기존 프레임워크의 모델 백엔드 주소(base URL)만 PAIS로 바꿔 그대로 쓸 수 있습니다.
+- **자체 앱 — 직접 오케스트레이션** — 계획·분기·상태를 잇는 오케스트레이션 루프를 애플리케이션 코드나 외부 프레임워크(예: LangGraph·LlamaIndex)로 직접 짜고, PAIS의 **모델 엔드포인트(OpenAI 호환)만 백엔드로 소비**합니다([05 §5.1](05-models-serving.md)). Model Runtime이 OpenAI 규약을 따르므로, 기존 프레임워크의 모델 백엔드 주소(base URL)만 PAIS로 바꿔 그대로 쓸 수 있습니다 — 예컨대 LangChain이라면 `ChatOpenAI(base_url="https://<PAIS FQDN>/api/v1/compatibility/openai/v1", api_key=<토큰>)` 한 줄입니다(구체 경로·호출 형식은 [03 §3.10](03-agent-builder.md)). LangGraph 에이전트를 커스텀 MCP 서버·vLLM 런타임과 잇는 동형 구성의 공개 데모로 [mcp-langgraph-vllm](https://github.com/davgordo/mcp-langgraph-vllm)이 있습니다.
 
 두 경로는 배타적이지 않습니다 — 자체 앱이 Agent Builder 에이전트 엔드포인트를 한 단계로 호출하는 **하이브리드**도 가능합니다(에이전트도 채팅 완성 엔드포인트이므로).
 

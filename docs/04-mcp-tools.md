@@ -43,7 +43,7 @@ PAIS에서 지식베이스 검색은 별도 배선 없이 MCP 도구로 노출�
 원격 MCP 서버를 연결하려면 다음을 충족해야 합니다([근거: Connect an MCP Server to Private AI Services](https://techdocs.broadcom.com/us/en/vmware-cis/private-ai/foundation-with-nvidia/9-0/private-ai-foundation-9-x/what-is-private-ai-services/adding-mcp-servers-for-real-time-data-access-and-specialized-ai-capabilities/connect-to-an-mcp-server.html)).
 
 - **접근** — HTTP 또는 HTTPS로 도달 가능해야 합니다.
-- **전송 방식** — Streamable HTTP 또는 Server-Sent Events(SSE)를 지원해야 합니다.
+- **전송 방식** — Streamable HTTP 또는 Server-Sent Events(SSE)를 지원해야 합니다. SSE는 `http(s)://<서버 FQDN 또는 IP>/sse` 형식의 URL로 등록합니다.
 - **인증(선택)** — 정적 인증 토큰을 헤더로 전달할 수 있습니다(예: `Authorization: Apikey <토큰>`).
 - **TLS 신뢰** — HTTPS를 쓰면 발급자 인증서를 CA 신뢰 번들에 임포트해 신뢰를 확립합니다.
 

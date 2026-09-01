@@ -76,6 +76,22 @@ Playground는 1차 검증 수단이며, 반복 가능한 품질 측정은 CI/CD 
 
 완성된 에이전트는 **채팅 완성(chat completion) 엔드포인트**로 노출됩니다. 애플리케이션은 이 엔드포인트를 OpenAI 호환 방식으로 호출해 에이전트를 소비합니다 — 모델 엔드포인트를 직접 부르는 것과 달리, 에이전트 엔드포인트는 검색·도구·세션을 그 위에 얹어 줍니다.
 
+공식 API 문서 기준 경로와 호출 형식입니다([근거: Private AI Services API](https://developer.broadcom.com/xapis/vmware-private-ai-service-api/latest/)). 모델을 직접 부르는 경로와 에이전트 전용 경로가 나뉘며, 둘 다 OpenAI 규약을 따릅니다. 요청·응답 본문의 전체 스키마는 위 API 문서를 기준으로 하십시오.
+
+```bash
+# 모델 엔드포인트 직접 호출 (stateless)
+curl 'https://<PAIS FQDN>/api/v1/compatibility/openai/v1/chat/completions' \
+    --header 'Content-Type: application/json' \
+    --header "Authorization: Bearer $TOKEN" \
+    --data '{"model": "<모델명>", "messages": [{"role": "user", "content": "..."}]}'
+
+# 에이전트 호출 — 검색·도구·세션이 얹힌 엔드포인트
+curl 'https://<PAIS FQDN>/api/v1/compatibility/openai/v1/agents/<agent-id>/chat/completions' \
+    --header 'Content-Type: application/json' \
+    --header "Authorization: Bearer $TOKEN" \
+    --data '{"messages": [{"role": "user", "content": "..."}]}'
+```
+
 - **구성 코드 내보내기** — Agent Builder는 구성 코드(View Configuration Code) 보기를 제공합니다. 이를 형상관리에 두면 에이전트 정의를 코드로 추적·재현할 수 있습니다.
 - **자동화** — 구성을 코드로 다루면 CI/CD에서 에이전트를 배포·테스트하는 파이프라인을 구성할 수 있습니다([06](06-evaluation-guardrails.md)).
 
@@ -94,18 +110,35 @@ Playground는 1차 검증 수단이며, 반복 가능한 품질 측정은 CI/CD 
 
 > **경계** — PAIS가 호출 시 받은 사용자 컨텍스트를 도구·검색까지 전파하는지는 공식 문서로 확인하십시오. 확인 전에는 앱이 사용자 신원·권한을 직접 들고 강제한다고 가정하는 편이 안전합니다.
 
+**실구성 사례(공개)** — PAIS 배포에는 Authorization Code + PKCE 흐름을 지원하는 OIDC 공급자가 필요합니다. 따라 할 수 있는 공개 구성기가 두 건 있습니다 — 클라이언트 생성(PKCE S256)·리다이렉트 URL·그룹/오디언스 매퍼 설정·액세스 토큰 발급 스크립트까지 다룹니다: [Keycloak(VCF Infrastructure Services Appliance 내장) 구성, williamlam.com 2026-08](https://williamlam.com/2026/08/configuring-oidc-with-pkce-in-keycloak-for-vcf-private-ai-services.html) · [Authentik 구성, williamlam.com 2025-09](https://williamlam.com/2025/09/ms-a2-vcf-9-0-lab-configuring-authentik-identity-provider-vmware-for-private-ai-services-pais.html).
+
 접근 통제·감사·격리의 구현 상세는 ⑤에 위임합니다.
 
 ## 3.10 엔드포인트 소비 — 인증·스트리밍·견고성
 
 에이전트 엔드포인트를 앱에서 호출할 때(§3.8), 단일 모델 호출보다 견고성이 더 중요합니다 — 에이전트는 도구·검색으로 단계가 길어 종단 지연이 크고 부분 실패가 잦기 때문입니다.
 
-- **인증** — OpenAI 호환 호출에 서비스 인증 토큰을 헤더로 싣습니다(구체 헤더 형식은 공식 문서로 확인). 토큰 발급·로테이션은 앱·플랫폼 책임이며, 최종 사용자 신원과는 별개입니다(§3.9).
+- **인증** — OpenAI 호환 호출에 서비스 인증 토큰을 `Authorization: Bearer <액세스 토큰>` 헤더로 싣습니다([근거: Private AI Services API](https://developer.broadcom.com/xapis/vmware-private-ai-service-api/latest/)). 토큰 발급·로테이션은 앱·플랫폼 책임이며, 최종 사용자 신원과는 별개입니다(§3.9).
 - **스트리밍** — 긴 응답은 스트리밍(서버가 토큰을 흘려보냄)으로 받아 체감 지연(TTFT)을 줄입니다. 앱은 부분 응답을 누적·파싱하고 중간 도구 호출 이벤트를 처리해야 합니다.
 - **타임아웃·재시도** — 에이전트 호출은 길어질 수 있으니 단일 호출보다 타임아웃을 넉넉히 잡고, 실패 시 지수 백오프로 재시도합니다. 무한 대기·즉시 연속 재시도는 피합니다.
 - **멱등** — 도구가 외부 시스템에 쓰기·전송을 하면 재시도가 같은 작업을 두 번 실행할 수 있습니다. 멱등 키나 중복 검사로 재시도 안전성을 확보합니다.
 
 전용 SDK는 없습니다 — OpenAI 호환이므로 기존 OpenAI 클라이언트(Python·JS 등)의 base URL만 PAIS 엔드포인트로 바꿔 그대로 씁니다([05 §5.1](05-models-serving.md)).
+
+```python
+from openai import OpenAI
+
+client = OpenAI(
+    base_url="https://<PAIS FQDN>/api/v1/compatibility/openai/v1",
+    api_key=access_token,  # PAIS 액세스 토큰(Bearer) — OIDC로 발급(§3.9)
+)
+response = client.chat.completions.create(
+    model="<모델명>",
+    messages=[{"role": "user", "content": "..."}],
+)
+```
+
+에이전트를 부를 때는 base URL 뒤에 에이전트 경로(`agents/<agent-id>`)가 붙습니다(§3.8). **채팅 UI를 바로 붙이려면** — Open WebUI를 PAIS 에이전트의 프론트엔드로 연결하는 공식 절차가 공개돼 있습니다. 파이프 함수(Pipe Function)로 에이전트 목록(`/assistants`)을 조회해 모델 드롭다운에 노출하고 `agents/<id>`로 라우팅하며, 클러스터 안에서는 nginx mTLS 프록시를 경유합니다([근거: How to Connect your VMware Private AI Services Agents to OpenWeb UI, blogs.vmware.com 2025-08](https://blogs.vmware.com/cloud-foundation/2025/08/15/how-to-connect-your-vmware-private-ai-services-agents-to-openweb-ui/)).
 
 다음 문서에서는 에이전트의 능력을 넓히는 **MCP 도구 통합**을 자세히 다룹니다.
 
