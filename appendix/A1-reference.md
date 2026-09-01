@@ -8,8 +8,8 @@
 
 ### A1.1.1 에이전트·도구
 
-- **에이전트(Agent)** — 사용자 요청에 대해 검색·도구 호출·종료를 스스로 판단하며 여러 단계를 잇는 워크로드. 경로가 입력에 따라 달라지는 점이 단일 호출·RAG와 다르다.
-- **Agent Builder** — 모델 엔드포인트·지시문·지식베이스·도구·세션을 묶어 에이전트를 구성하고 채팅 완성 엔드포인트로 노출하는 PAIS 모듈.
+- **에이전트(Agent)** — 사용자 요청에 대해 검색·도구 호출·종료를 스스로 판단하며 여러 단계를 잇는 워크로드. 어떤 단계를 밟을지가 입력마다 달라진다는 점이 단일 호출·RAG와 다르다.
+- **Agent Builder** — 모델 엔드포인트·지시문·지식베이스·도구·세션을 묶어 에이전트를 구성하고 챗 컴플리션 엔드포인트로 노출하는 PAIS 모듈.
 - **MCP(Model Context Protocol)** — 모델·에이전트가 외부 도구·데이터에 접근하는 개방 프로토콜. PAIS는 호출·호스팅·등록 세 방향으로 지원한다.
 - **Tool Gallery** — MCP 서버를 조직 차원에서 중앙 등록·관리하는 PAIS 2.1 신규 기능.
 - **SSE(Server-Sent Events)** — 서버가 클라이언트로 이벤트를 흘려보내는 전송 방식. MCP 연결은 Streamable HTTP 또는 SSE를 요구한다.
@@ -24,7 +24,7 @@
 - **Model Gallery** — 모델 아티팩트의 중앙 저장소. Harbor(OCI 레지스트리) 기반.
 - **Harbor** — OCI 호환 컨테이너 레지스트리. Model Gallery의 저장소 구현.
 - **vLLM · llama.cpp · Infinity** — Model Runtime의 추론 엔진. 작성 시점 vLLM 0.11.2(생성·임베딩), llama.cpp b7739(CPU 추론), Infinity 0.0.76(임베딩 전용). 버전 정본은 [README 기반 버전표](../README.md#기반-버전-source-of-truth).
-- **chat completion / OpenAI 호환 API** — `/chat/completions`·`/completions`·`/embeddings` 등 OpenAI 규약을 따르는 추론 API. 에이전트는 채팅 완성 엔드포인트로 노출된다.
+- **chat completion / OpenAI 호환 API** — `/chat/completions`·`/completions`·`/embeddings` 등 OpenAI 규약을 따르는 추론 API. 에이전트는 챗 컴플리션 엔드포인트로 노출된다.
 - **Artifact Mirroring Tool** — 에어갭 환경에 모델·아티팩트를 미러링해 반입하는 PAIS 2.1 도구. pais CLI 플러그인의 `vcf pais amt pull/push` 명령으로 수행한다(VCF CLI 명령 레퍼런스에는 누락, Disconnected Environment 배포 문서에 명시).
 - **NIM(NVIDIA Inference Microservices)** — NVIDIA가 제공하는 컨테이너형 추론 모델. Model Gallery로 반입해 관리할 수 있다.
 

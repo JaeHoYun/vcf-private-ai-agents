@@ -10,7 +10,7 @@
 
 ## 3.1 구성 흐름 개요
 
-Agent Builder는 코드를 먼저 쓰지 않습니다. **UI 위저드로 구성 → Playground로 테스트 → REST API로 소비**가 기본 흐름이며, 구성 결과를 코드로 내보내 형상관리할 수 있습니다.
+Agent Builder에서는 코드부터 작성하지 않습니다. **UI 위저드로 구성 → Playground로 테스트 → REST API로 소비**가 기본 흐름이며, 구성 결과를 코드로 내보내 형상관리할 수 있습니다.
 
 1. 새 에이전트 생성(Create Agent) — 이름·설명 입력
 2. completion 모델 엔드포인트 선택
@@ -19,9 +19,9 @@ Agent Builder는 코드를 먼저 쓰지 않습니다. **UI 위저드로 구성 
 5. 도구(MCP) 연결 — 선택
 6. 세션·검색 파라미터 조정
 7. Playground에서 대화로 검증
-8. 채팅 완성 엔드포인트를 REST API로 호출
+8. 챗 컴플리션 엔드포인트를 REST API로 호출
 
-구성요소는 [01 §1.3](01-foundations.md)에서 본 표 그대로입니다. 아래에서 항목별로 채웁니다.
+구성요소는 [01 §1.3](01-foundations.md)에서 소개한 표와 같습니다. 아래에서 항목별로 채웁니다.
 
 ## 3.2 모델 엔드포인트 선택
 
@@ -38,7 +38,7 @@ Agent Builder는 코드를 먼저 쓰지 않습니다. **UI 위저드로 구성 
 - **응답 형식·언어·톤** — 출력 형식과 어조.
 - **거절·한계** — 권한 밖 요청이나 근거 부족 시 어떻게 답할지.
 
-지시문은 짧고 구체적일수록 모델이 일관되게 따릅니다. 길고 모순된 지시문은 도구 오선택·환각을 늘립니다. 효과는 Playground와 평가([06](06-evaluation-guardrails.md))로 확인하며 다듬습니다.
+지시문은 짧고 구체적일수록 모델이 일관되게 따릅니다. 길고 모순된 지시문은 도구 오선택·환각을 늘립니다. 효과는 Playground와 평가([06](06-evaluation-guardrails.md))로 확인하며 수정·보완합니다.
 
 ## 3.4 지식베이스 연결
 
@@ -74,7 +74,7 @@ Playground는 1차 검증 수단이며, 반복 가능한 품질 측정은 CI/CD 
 
 ## 3.8 REST API 소비와 구성 코드 내보내기
 
-완성된 에이전트는 **채팅 완성(chat completion) 엔드포인트**로 노출됩니다. 애플리케이션은 이 엔드포인트를 OpenAI 호환 방식으로 호출해 에이전트를 소비합니다 — 모델 엔드포인트를 직접 부르는 것과 달리, 에이전트 엔드포인트는 검색·도구·세션을 그 위에 얹어 줍니다.
+완성된 에이전트는 **챗 컴플리션 엔드포인트**로 노출됩니다. 애플리케이션은 이 엔드포인트를 OpenAI 호환 방식으로 호출해 에이전트를 소비합니다 — 모델 엔드포인트를 직접 부르는 것과 달리, 에이전트 엔드포인트는 검색·도구·세션을 그 위에 더해 줍니다.
 
 공식 API 문서 기준 경로와 호출 형식입니다([근거: Private AI Services API](https://developer.broadcom.com/xapis/vmware-private-ai-service-api/latest/)). 모델을 직접 부르는 경로와 에이전트 전용 경로가 나뉘며, 둘 다 OpenAI 규약을 따릅니다. 요청·응답 본문의 전체 스키마는 위 API 문서를 기준으로 하십시오.
 
@@ -85,7 +85,7 @@ curl 'https://<PAIS FQDN>/api/v1/compatibility/openai/v1/chat/completions' \
     --header "Authorization: Bearer $TOKEN" \
     --data '{"model": "<모델명>", "messages": [{"role": "user", "content": "..."}]}'
 
-# 에이전트 호출 — 검색·도구·세션이 얹힌 엔드포인트
+# 에이전트 호출 — 검색·도구·세션이 더해진 엔드포인트
 curl 'https://<PAIS FQDN>/api/v1/compatibility/openai/v1/agents/<agent-id>/chat/completions' \
     --header 'Content-Type: application/json' \
     --header "Authorization: Bearer $TOKEN" \
@@ -97,12 +97,12 @@ curl 'https://<PAIS FQDN>/api/v1/compatibility/openai/v1/agents/<agent-id>/chat/
 
 ## 3.9 신원의 두 층위 — 서비스 인증과 최종 사용자
 
-에이전트 엔드포인트를 앱에서 소비할 때(§3.8), 신원은 두 층위로 나뉩니다. 이 둘을 섞으면 권한이 과대해집니다.
+에이전트 엔드포인트를 앱에서 소비할 때(§3.8), 신원은 두 층위로 나뉩니다. 이 둘을 섞으면 권한이 필요 이상으로 넓어집니다.
 
 - **서비스 인증(앱 → PAIS)** — 앱이 에이전트·모델 엔드포인트를 호출할 때 쓰는 서비스 신원(토큰·키)입니다. 토큰 발급·보관·로테이션은 앱과 플랫폼의 책임이며, 자격증명은 비밀로 관리합니다([⑤ ID·인증·접근통제](https://github.com/JaeHoYun/vcf-private-ai/blob/main/05-security/docs/03-identity-access.md)).
-- **최종 사용자 신원(사람 사용자)** — 엔드포인트는 호출하는 서비스만 알 뿐, 그 뒤의 사람 사용자가 누구인지 모릅니다. 따라서 사용자 로그인·사용자별 접근 권한·테넌트 격리는 PAIS가 아니라 앱이 책임집니다([00 §0.3](00-orientation.md) 책임 경계).
+- **최종 사용자 신원(사람 사용자)** — 엔드포인트는 호출하는 서비스만 알 뿐, 그 뒤에 있는 실제 사용자가 누구인지 모릅니다. 따라서 사용자 로그인·사용자별 접근 권한·테넌트 격리는 PAIS가 아니라 앱이 책임집니다([00 §0.3](00-orientation.md) 책임 경계).
 
-이 구분에서 따라오는 설계 원칙입니다.
+이 구분에서 다음 설계 원칙이 따라 나옵니다.
 
 - **사용자 신원은 앱이 강제한다** — 앱 앞단(또는 API 게이트웨이)에서 사용자를 인증하고 권한을 검사한 뒤에만 에이전트를 호출합니다. 엔드포인트가 사용자 신원까지 처리해 줄 것으로 가정하지 마십시오.
 - **권한 전파** — 에이전트가 도구로 사내 시스템을 건드릴 때, 넓은 서비스 자격증명이 아니라 요청한 사용자의 권한 범위 안에서만 동작하도록 앱이 컨텍스트를 좁혀 전달해야 합니다. 그러지 않으면 한 사용자가 도구를 통해 다른 사용자의 데이터에 접근할 수 있습니다([02 §2.3](02-design-patterns.md)·[04 §4.7](04-mcp-tools.md) 권한 최소화).
@@ -110,18 +110,18 @@ curl 'https://<PAIS FQDN>/api/v1/compatibility/openai/v1/agents/<agent-id>/chat/
 
 > **경계** — PAIS가 호출 시 받은 사용자 컨텍스트를 도구·검색까지 전파하는지는 공식 문서로 확인하십시오. 확인 전에는 앱이 사용자 신원·권한을 직접 들고 강제한다고 가정하는 편이 안전합니다.
 
-**실구성 사례(공개)** — PAIS 배포에는 Authorization Code + PKCE 흐름을 지원하는 OIDC 공급자가 필요합니다. 따라 할 수 있는 공개 구성기가 두 건 있습니다 — 클라이언트 생성(PKCE S256)·리다이렉트 URL·그룹/오디언스 매퍼 설정·액세스 토큰 발급 스크립트까지 다룹니다: [Keycloak(VCF Infrastructure Services Appliance 내장) 구성, williamlam.com 2026-08](https://williamlam.com/2026/08/configuring-oidc-with-pkce-in-keycloak-for-vcf-private-ai-services.html) · [Authentik 구성, williamlam.com 2025-09](https://williamlam.com/2025/09/ms-a2-vcf-9-0-lab-configuring-authentik-identity-provider-vmware-for-private-ai-services-pais.html).
+**실구성 사례(공개)** — PAIS 배포에는 Authorization Code + PKCE 흐름을 지원하는 OIDC 공급자가 필요합니다. 따라 할 수 있는 공개 구성 가이드 글이 두 건 있습니다 — 클라이언트 생성(PKCE S256)·리다이렉트 URL·그룹/오디언스 매퍼 설정·액세스 토큰 발급 스크립트까지 다룹니다: [Keycloak(VCF Infrastructure Services Appliance 내장) 구성, williamlam.com 2026-08](https://williamlam.com/2026/08/configuring-oidc-with-pkce-in-keycloak-for-vcf-private-ai-services.html) · [Authentik 구성, williamlam.com 2025-09](https://williamlam.com/2025/09/ms-a2-vcf-9-0-lab-configuring-authentik-identity-provider-vmware-for-private-ai-services-pais.html).
 
 접근 통제·감사·격리의 구현 상세는 ⑤에 위임합니다.
 
 ## 3.10 엔드포인트 소비 — 인증·스트리밍·견고성
 
-에이전트 엔드포인트를 앱에서 호출할 때(§3.8), 단일 모델 호출보다 견고성이 더 중요합니다 — 에이전트는 도구·검색으로 단계가 길어 종단 지연이 크고 부분 실패가 잦기 때문입니다.
+에이전트 엔드포인트를 앱에서 호출할 때(§3.8), 단일 모델 호출보다 견고성이 더 중요합니다 — 에이전트는 도구·검색으로 단계가 많아 종단 지연이 크고 부분 실패가 잦기 때문입니다.
 
 - **인증** — OpenAI 호환 호출에 서비스 인증 토큰을 `Authorization: Bearer <액세스 토큰>` 헤더로 싣습니다([근거: Private AI Services API](https://developer.broadcom.com/xapis/vmware-private-ai-service-api/latest/)). 토큰 발급·로테이션은 앱·플랫폼 책임이며, 최종 사용자 신원과는 별개입니다(§3.9).
 - **스트리밍** — 긴 응답은 스트리밍(서버가 토큰을 흘려보냄)으로 받아 체감 지연(TTFT)을 줄입니다. 앱은 부분 응답을 누적·파싱하고 중간 도구 호출 이벤트를 처리해야 합니다.
 - **타임아웃·재시도** — 에이전트 호출은 길어질 수 있으니 단일 호출보다 타임아웃을 넉넉히 잡고, 실패 시 지수 백오프로 재시도합니다. 무한 대기·즉시 연속 재시도는 피합니다.
-- **멱등** — 도구가 외부 시스템에 쓰기·전송을 하면 재시도가 같은 작업을 두 번 실행할 수 있습니다. 멱등 키나 중복 검사로 재시도 안전성을 확보합니다.
+- **멱등**(idempotent, 같은 요청을 여러 번 보내도 결과가 한 번과 같음) — 도구가 외부 시스템에 쓰기·전송을 하면 재시도가 같은 작업을 두 번 실행할 수 있습니다. 멱등 키나 중복 검사로 재시도 안전성을 확보합니다.
 
 전용 SDK는 없습니다 — OpenAI 호환이므로 기존 OpenAI 클라이언트(Python·JS 등)의 base URL만 PAIS 엔드포인트로 바꿔 그대로 씁니다([05 §5.1](05-models-serving.md)).
 
