@@ -4,7 +4,7 @@
 
 에이전트는 출력이 매번 다르고 경로가 동적이라, 일반 소프트웨어처럼 단언적으로 테스트하기 어렵습니다. 이 문서는 PAIS가 평가에 무엇을 제공하고 무엇은 제공하지 않는지를 분명히 한 뒤, 무엇을 어떻게 측정할지, 어떤 실패 모드를 막을지, 가드레일과 사람 개입을 어디에 둘지를 다룹니다.
 
-> 본 문서의 수치·동작은 작성 시점(2026-06) VCF 9.1 / PAIF 9.1 / PAIS 2.1 기준이며, 적용 전 공식 문서로 재확인하시기 바랍니다.
+> 본 문서의 수치·동작은 VCF 9.1 / PAIF 9.1 / PAIS 2.1 기준입니다(작성 2026-06, 공식 문서 대조 확인 2026-09). 적용 전 최신 공식 문서로 재확인하시기 바랍니다.
 
 ---
 
@@ -15,7 +15,7 @@
 ## 6.2 PAIS가 제공하는 것 — 그리고 제공하지 않는 것
 
 - **Playground(대화형 테스트)** — Agent Builder에 내장된 1차 검증 수단입니다. 사람이 직접 대화하며 검색·도구 호출·거절 동작을 눈으로 확인하고 지시문을 다듬습니다([03 §3.7](03-agent-builder.md)).
-- **CI/CD 자동 테스트** — 구성 코드를 형상관리에 두고([03 §3.8](03-agent-builder.md)) 파이프라인에서 대표 입력으로 에이전트를 호출해 회귀를 잡는 패턴이 문서화돼 있습니다.
+- **CI/CD 자동 테스트** — 공식 문서가 명시하는 것은 Playground와 구성 코드 보기(View Configuration Code)까지입니다([근거: Create an Agent for a Generative AI Application](https://techdocs.broadcom.com/us/en/vmware-cis/private-ai/foundation-with-nvidia/9-0/private-ai-foundation-9-x/what-is-private-ai-services/deploy-an-agent-for-a-rag-application.html)). 그 구성 코드를 형상관리에 두고([03 §3.8](03-agent-builder.md)) 파이프라인에서 대표 입력으로 에이전트를 호출해 회귀를 잡는 자동 테스트는 이 가이드가 권하는 실무 패턴입니다.
 
 > **솔직한 경계** — PAIS 2.1에 이름 붙은 전용 평가(eval) 스코어링 프레임워크가 있다는 공식 근거는 확인되지 않습니다. 따라서 정량 평가 묶음(테스트셋·채점 기준·회귀 추적)은 **애플리케이션·CI 계층에서 직접 설계**해야 합니다. Playground는 탐색적 1차 검증, CI는 반복 검증으로 역할을 나누십시오.
 

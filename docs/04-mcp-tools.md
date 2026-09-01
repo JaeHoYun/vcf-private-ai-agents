@@ -4,7 +4,7 @@
 
 에이전트의 능력은 붙인 도구로 정해집니다. PAIS 2.1은 Model Context Protocol(MCP)로 외부 시스템을 도구로 연결합니다. 이 문서는 PAIS가 MCP를 어떤 방향으로 다루는지, Tool Gallery로 어떻게 관리하는지, 원격 서버를 어떻게 등록·승인하는지, 그리고 전송·인증·보안 경계를 다룹니다.
 
-> 본 문서의 수치·동작은 작성 시점(2026-06) VCF 9.1 / PAIF 9.1 / PAIS 2.1 기준이며, 적용 전 공식 문서로 재확인하시기 바랍니다.
+> 본 문서의 수치·동작은 VCF 9.1 / PAIF 9.1 / PAIS 2.1 기준입니다(작성 2026-06, 공식 문서 대조 확인 2026-09). 적용 전 최신 공식 문서로 재확인하시기 바랍니다.
 
 ---
 
@@ -40,7 +40,7 @@ PAIS에서 지식베이스 검색은 별도 배선 없이 MCP 도구로 노출�
 
 ## 4.5 연결 요건 — 전송과 인증
 
-원격 MCP 서버를 연결하려면 다음을 충족해야 합니다.
+원격 MCP 서버를 연결하려면 다음을 충족해야 합니다([근거: Connect an MCP Server to Private AI Services](https://techdocs.broadcom.com/us/en/vmware-cis/private-ai/foundation-with-nvidia/9-0/private-ai-foundation-9-x/what-is-private-ai-services/adding-mcp-servers-for-real-time-data-access-and-specialized-ai-capabilities/connect-to-an-mcp-server.html)).
 
 - **접근** — HTTP 또는 HTTPS로 도달 가능해야 합니다.
 - **전송 방식** — Streamable HTTP 또는 Server-Sent Events(SSE)를 지원해야 합니다.

@@ -59,7 +59,7 @@
 - [Private AI Services 릴리스 노트 (Broadcom TechDocs)](https://techdocs.broadcom.com/us/en/vmware-cis/private-ai/foundation-with-nvidia/9-0/private-ai-release-notes/vmware-private-ai-services-release-notes.html)
 - [Private AI Services 상세 디자인 (VCF 9.1 디자인 라이브러리)](https://techdocs.broadcom.com/us/en/vmware-cis/vcf/vcf-9-0-and-later/9-1/design/design-library/private-ai-platform-detailed-design/private-ai-services.html)
 - [What is Private AI Services (Broadcom TechDocs)](https://techdocs.broadcom.com/us/en/vmware-cis/private-ai/foundation-with-nvidia/9-0/private-ai-foundation-9-x/what-is-private-ai-services.html)
-- [RAG 애플리케이션용 에이전트 배포 (Broadcom TechDocs)](https://techdocs.broadcom.com/us/en/vmware-cis/private-ai/foundation-with-nvidia/9-0/private-ai-foundation-9-x/what-is-private-ai-services/deploy-an-agent-for-a-rag-application.html)
+- [에이전트 생성 — Create an Agent for a Generative AI Application (Broadcom TechDocs)](https://techdocs.broadcom.com/us/en/vmware-cis/private-ai/foundation-with-nvidia/9-0/private-ai-foundation-9-x/what-is-private-ai-services/deploy-an-agent-for-a-rag-application.html)
 - [VCF CLI v9 — pais 명령 레퍼런스 (Broadcom TechDocs)](https://techdocs.broadcom.com/us/en/vmware-cis/vcf/vcf-consumption/latest/consumer-interfaces-in-vcf/installing-and-using-vcf-cli-v9/command-reference2/pais2.html)
 - [Streamline, Simplify and Protect all your AI workloads with VCF 9.1 (blogs.vmware.com)](https://blogs.vmware.com/cloud-foundation/2026/05/05/streamline-simplify-and-protect-all-your-ai-workloads-with-vcf-9-1/)
 - [Model Gallery — JupyterLab Notebooks (blogs.vmware.com)](https://blogs.vmware.com/cloud-foundation/2026/02/26/model-gallery-how-to-use-jupyterlab-notebooks-to-simplify-model-deployment-and-management/)

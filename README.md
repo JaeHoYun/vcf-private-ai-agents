@@ -14,7 +14,7 @@
 
 ## 기반 버전 (Source of Truth)
 
-> 본 가이드는 PAIS 2.1의 에이전트 기능 구현에 집중합니다. 광범위한 인프라 버전(vSphere·NSX·vSAN 등)은 단정하지 않고 형제 가이드의 버전 단일 기준 문서를 기준선으로 삼습니다 → [① README 버전표](https://github.com/JaeHoYun/vcf-private-ai/tree/main/01-infra#기반-버전-source-of-truth). 모든 수치는 작성 시점(2026-06) 기준이며, 엔진·CLI·기능 동작은 릴리스마다 바뀌므로 적용 전 공식 문서로 재확인하시기 바랍니다.
+> 본 가이드는 PAIS 2.1의 에이전트 기능 구현에 집중합니다. 광범위한 인프라 버전(vSphere·NSX·vSAN 등)은 단정하지 않고 형제 가이드의 버전 단일 기준 문서를 기준선으로 삼습니다 → [① README 버전표](https://github.com/JaeHoYun/vcf-private-ai/tree/main/01-infra#기반-버전-source-of-truth). 모든 수치는 작성 시점(2026-06) 기준이고 2026-09에 공식 문서와 대조 확인했으며, 엔진·CLI·기능 동작은 릴리스마다 바뀌므로 적용 전 공식 문서로 재확인하시기 바랍니다.
 
 | 구분 | 버전 | 비고 |
 |------|------|------|
