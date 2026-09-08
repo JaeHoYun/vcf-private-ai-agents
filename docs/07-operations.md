@@ -4,13 +4,13 @@
 
 에이전트를 만들었다면 이제 운영입니다. 이 문서는 에이전트·모델 워크로드를 어디에 배포하고, 무엇을 관측하며, 업그레이드 때 무엇을 조심하고, 어떤 알려진 이슈와 비용이 있는지를 다룹니다. 용량·TCO의 정밀 계산은 ⑥에, 플랫폼 Day-2 운영 전반은 ①에 위임하고, 여기서는 **에이전트 워크로드와 직결된 운영**에 집중합니다.
 
-> 본 문서의 수치·동작은 VCF 9.1 / PAIF 9.1 / PAIS 2.1 기준입니다(작성 2026-06, 공식 문서 대조 확인 2026-09). 적용 전 최신 공식 문서로 재확인하시기 바랍니다.
+> 본 문서의 수치·동작은 VCF 9.1.1 / PAIF 9.1.1 / PAIS 3.0 기준입니다(작성 2026-06, 9.1.1과 3.0 GA 반영 2026-09). 2.1 환경에서는 "PAIS 3.0부터"로 표기한 대목만 건너뛰면 됩니다. 적용 전 최신 공식 문서로 재확인하시기 바랍니다.
 
 ---
 
 ## 7.1 배포 토폴로지
 
-- **실행 기반** — 모델 엔드포인트·에이전트는 Supervisor의 vSphere Namespace에 프로비저닝된 **VKS 클러스터** 위에서 실행되며, ESXi 호스트의 GPU에 연결됩니다([01 §1.4](01-foundations.md)). PAIS는 VKr 1.33·NVIDIA GPU Operator 25.10.1 기준으로 동작합니다(작성 시점).
+- **실행 기반** — 모델 엔드포인트·에이전트는 Supervisor의 vSphere Namespace에 프로비저닝된 **VKS 클러스터** 위에서 실행되며, ESXi 호스트의 GPU에 연결됩니다([01 §1.4](01-foundations.md)). PAIS 3.0은 VKr 1.34, ClusterClass builtin-generic-v3.5.0, NVIDIA GPU Operator 25.10.1(기본) 또는 26.3.1 기준으로 동작합니다(2.1은 VKr 1.33, 25.10.1).
 - **두 경로** — 프로토타이핑·노트북 작업은 **DLVM(Deep Learning VM)**, 프로덕션 모델 엔드포인트·에이전트는 **VKS 클러스터**에 둡니다.
 - **고가용성** — 모델 엔드포인트는 서로 다른 워커 노드에 복제본 2 이상을 두기를 권장합니다. 단일 zone 배포에서는 VKS 컨트롤 플레인 등 핵심 구성요소가 단일 인스턴스로 배치돼 가용성 제약이 따릅니다.
 - **사이징 위임** — 프로덕션 모델 서빙에 필요한 최소 GPU 호스트 수·GPU 메모리·시스템 RAM 비율 등 용량 산정은 [⑥ VKS 클러스터 사이징](https://github.com/JaeHoYun/vcf-private-ai/blob/main/06-sizing-cost/docs/04-vks-cluster-sizing.md)에 위임합니다. 공식 디자인 문서도 구체 수치를 별도 사이징 자료로 위임합니다.
@@ -40,8 +40,11 @@ PAIS 2.1은 추론·GPU·에이전트를 아우르는 관측을 VCF Operations�
 
 > **반드시 알아둘 운영 리스크** — PAIS 2.0.x → 2.1 업그레이드는 **모델 엔드포인트를 호스팅하는 VKS 클러스터를 삭제·재생성**합니다. 그 과정에서 노드가 재생성되고 모델을 다시 내려받는 동안 **다운타임**이 발생합니다. ([근거: PAIS 릴리스 노트](https://techdocs.broadcom.com/us/en/vmware-cis/private-ai/foundation-with-nvidia/9-0/private-ai-release-notes/vmware-private-ai-services-release-notes.html))
 
+**2.1 → 3.0 업그레이드**는 릴리스 노트가 명시한 다운타임 범위가 다릅니다. 명시된 것은 **레플리카가 하나뿐인 모델 엔드포인트의 다운타임**이며, 2.0.x → 2.1 때와 같은 클러스터 삭제·재생성은 문서에 없습니다(VKr가 1.33에서 1.34로 올라가므로 노드 재생성은 따를 수 있습니다). 그 밖에 세 가지가 에이전트 운영에 직접 닿습니다. 첫째, 에이전트 API의 `completion_role` 필드가 제거되고 non-chat completions가 deprecated되어 기존 클라이언트가 실패할 수 있습니다([03 3.8절](03-agent-builder.md)). 둘째, Prometheus 메트릭 수집이 VKS 클러스터가 가용해진 뒤에 시작되도록 바뀌어 업그레이드 직후 메트릭 공백이 생깁니다(7.2절). 셋째, vLLM이 0.20.0(CUDA 13.0)으로 올라가 GPU 드라이버 580 미만은 지원되지 않습니다([05 5.2절](05-models-serving.md)). ([근거: PAIS 3.0 릴리스 노트](https://techdocs.broadcom.com/us/en/vmware-cis/private-ai/foundation-with-nvidia/9-1/private-ai-release-notes/vmware-private-ai-services-release-notes.html))
+
 대비:
 
+- 3.0으로 올리기 전에 중요 에이전트가 쓰는 모델 엔드포인트는 레플리카를 2 이상으로 두고, `completion_role`과 non-chat completions를 쓰는 호출부를 먼저 고칩니다.
 - 업그레이드 창(window)을 다운타임 전제로 계획하고 이해관계자에 사전 공지합니다.
 - 모델 재다운로드 시간을 고려해 충분한 창을 잡습니다(모델 크기·대역폭 의존).
 - 업그레이드 후 모델 엔드포인트·에이전트·지식베이스·MCP 연결이 정상 복구되는지 검증 절차를 둡니다.
@@ -49,14 +52,25 @@ PAIS 2.1은 추론·GPU·에이전트를 아우르는 관측을 VCF Operations�
 
 ## 7.4 알려진 이슈
 
-PAIS 2.1에서 보고된 대표 이슈입니다([근거: PAIS 릴리스 노트](https://techdocs.broadcom.com/us/en/vmware-cis/private-ai/foundation-with-nvidia/9-0/private-ai-release-notes/vmware-private-ai-services-release-notes.html) — 2026-09 재확인 시점에도 4건 모두 존치, 변동 가능).
+릴리스별로 나눠 정리합니다([근거: PAIS 릴리스 노트 3.0, 2.1.2, 2.1](https://techdocs.broadcom.com/us/en/vmware-cis/private-ai/foundation-with-nvidia/9-1/private-ai-release-notes/vmware-private-ai-services-release-notes.html), 2026-09 기준, 변동 가능).
+
+**PAIS 3.0에서 새로 보고된 이슈**
 
 | 증상 | 방향 |
 |------|------|
-| GPU 파드가 `CDI device injection failed`로 실패 | GPU Operator Helm 값 조정(CDI 관련 설정) |
-| 업그레이드 후 모델 엔드포인트가 메모리 부족으로 실패 | 2.1에서 VRAM 요구량 증가 — 자원 재산정([⑥ 컴퓨트·메모리 사이징](https://github.com/JaeHoYun/vcf-private-ai/blob/main/06-sizing-cost/docs/03-compute-memory-sizing.md)) |
+| UI로 PAIS를 활성화하면 API 토큰 발급이 켜지지 않음 | 활성화 후 설정에서 API 토큰 발급을 별도로 켬. 에이전트를 API 토큰으로 호출하거나 CLI를 쓰는 팀은 첫 배포 점검 항목에 포함 |
+| UI로 활성화하면 로컬 계정의 기본 base URL을 설정할 수 없음 | 활성화 후 별도 설정 |
+
+**PAIS 2.1에서 보고돼 3.0 시점에도 주의할 이슈**
+
+| 증상 | 방향 |
+|------|------|
+| GPU 파드가 `CDI device injection failed`로 실패 | GPU Operator Helm 값 조정(CDI 관련 설정). 3.0 알려진 이슈 목록에는 없으나 GPU Operator 25.10.1을 그대로 쓰면 같은 조합이라 재현 가능성이 있음. 26.3.1을 고르면 별도 검증 |
+| 업그레이드 후 모델 엔드포인트가 메모리 부족으로 실패 | 2.1에서 VRAM 요구량 증가, 3.0은 vLLM 0.20.0으로 다시 상향 — 자원 재산정([⑥ 컴퓨트·메모리 사이징](https://github.com/JaeHoYun/vcf-private-ai/blob/main/06-sizing-cost/docs/03-compute-memory-sizing.md)) |
 | OpenTelemetry LLM 추적이 표시되지 않음 | 추적 구성 점검(§7.2) |
 | 네임스페이스당 모델 엔드포인트 복제본 상한(작성 시점 최대 15) | 복제본·엔드포인트 수 설계 시 상한 고려 |
+
+**2.1.2(2026-08-17)에서 해결된 것** — 로컬 레지스트리 미러와 5000 포트 충돌, 중간 CA 인증서 갱신 요구, CPU 추론에서 MCP 도구를 쓸 때 reasoning 모델 타임아웃, 패키지 다운로드 URL 오류. 2.1 라인을 유지한다면 최소 2.1.2로 올리는 것이 좋습니다.
 
 증상→진단→조치 형태의 트러블슈팅 런북 패턴은 [① Day-2 운영](https://github.com/JaeHoYun/vcf-private-ai/blob/main/01-infra/docs/10-operations.md)의 §10.2 트러블슈팅 런북을 참조하십시오.
 
