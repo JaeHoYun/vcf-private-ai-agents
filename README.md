@@ -2,11 +2,11 @@
 
 > **이 가이드를 읽기 전에** — 임베딩·벡터·토큰·RAG·쿠버네티스(VKS) 같은 용어가 낯설다면, 먼저 [VCF Private AI 입문 (Primer)](https://github.com/JaeHoYun/vcf-private-ai/tree/main/00-foundations)에서 기초 어휘를 잡으시길 권합니다. 이 가이드는 그 개념들을 이미 아는 것으로 전제합니다.
 
-> VMware Cloud Foundation(VCF) 9.1 Private AI Services(PAIS) 2.1 위에서 에이전트 서비스를 설계·구축·운영하는 실무 가이드 — Agent Builder · MCP 도구 · Model Runtime · Day-2 운영 · 유스케이스 판단
+> VMware Cloud Foundation(VCF) 9.1.x Private AI Services(PAIS) 3.0 위에서 에이전트 서비스를 설계·구축·운영하는 실무 가이드 — Agent Builder · MCP 도구 · Model Runtime · Day-2 운영 · 유스케이스 판단
 
 [① 인프라](https://github.com/JaeHoYun/vcf-private-ai/tree/main/01-infra) · [② VectorDB](https://github.com/JaeHoYun/vcf-private-ai/tree/main/02-vectordb) · [③ 서빙 API](https://github.com/JaeHoYun/vcf-private-ai/tree/main/03-serving-api) · [④ RAG](https://github.com/JaeHoYun/vcf-private-ai/tree/main/04-rag) · [⑤ 보안·거버넌스](https://github.com/JaeHoYun/vcf-private-ai/tree/main/05-security) · [⑥ 사이징·비용](https://github.com/JaeHoYun/vcf-private-ai/tree/main/06-sizing-cost) · [⑦ 통합 설계](https://github.com/JaeHoYun/vcf-private-ai/tree/main/07-design)는 Private AI 플랫폼의 인프라·검색·서빙·조립·보안·사이징·설계를 다룹니다. 그 위에서 아직 답하지 않은 질문이 하나 있습니다 — **"이 플랫폼 위에서 추론하고 도구를 호출하는 에이전트를 어떻게 만들고 운영하나?"** 이 가이드가 그 답입니다.
 
-④가 한 워크로드(사내 Q&A RAG)를 **조립**하는 방법이라면, 이 가이드는 그 위 계층 — 모델 응답에 더해 **지식베이스를 검색하고 사내 시스템 도구를 호출하며 여러 단계를 스스로 잇는 에이전트 워크로드**를 PAIS 2.1의 Agent Builder·MCP·Model Runtime으로 구현·운영하는 방법을 다룹니다. ⑦이 플랫폼을 설계한다면, 이 가이드는 그 플랫폼 위에 에이전트 서비스를 올립니다.
+④가 한 워크로드(사내 Q&A RAG)를 **조립**하는 방법이라면, 이 가이드는 그 위 계층 — 모델 응답에 더해 **지식베이스를 검색하고 사내 시스템 도구를 호출하며 여러 단계를 스스로 잇는 에이전트 워크로드**를 PAIS 3.0의 Agent Builder·MCP·Model Runtime으로 구현·운영하는 방법을 다룹니다. 에이전트 기능의 골격은 2.1에서 갖춰졌고, 3.0은 그 위에 공유 모델, 원격 클라우드 모델, API 토큰을 더했습니다. ⑦이 플랫폼을 설계한다면, 이 가이드는 그 플랫폼 위에 에이전트 서비스를 올립니다.
 
 > **VCF Private AI 가이드 시리즈 위에 올리는 에이전트 서비스 가이드**입니다. 시리즈 본편(인프라·데이터·서빙·RAG·보안·사이징·통합 설계 ①–⑦)은 [시리즈 허브](https://github.com/JaeHoYun/vcf-private-ai)에서, 상위 전략은 [AX 방법론](https://github.com/JaeHoYun/enterprise-ax-methodology)에서 다룹니다. 프로필의 **AX(전략) → Private AI(인프라) → 에이전트(실행)** 3단계 중 실행 편입니다.
 
@@ -14,14 +14,16 @@
 
 ## 기반 버전 (Source of Truth)
 
-> 본 가이드는 PAIS 2.1의 에이전트 기능 구현에 집중합니다. 광범위한 인프라 버전(vSphere·NSX·vSAN 등)은 단정하지 않고 형제 가이드의 버전 단일 기준 문서를 기준선으로 삼습니다 → [① README 버전표](https://github.com/JaeHoYun/vcf-private-ai/tree/main/01-infra#기반-버전-source-of-truth). 모든 수치는 작성 시점(2026-06) 기준이고 2026-09에 공식 문서와 대조 확인했으며, 엔진·CLI·기능 동작은 릴리스마다 바뀌므로 적용 전 공식 문서로 재확인하시기 바랍니다.
+> 본 가이드는 PAIS 3.0의 에이전트 기능 구현에 집중합니다. 광범위한 인프라 버전(vSphere·NSX·vSAN 등)은 단정하지 않고 형제 가이드의 버전 단일 기준 문서를 기준선으로 삼습니다 → [① README 버전표](https://github.com/JaeHoYun/vcf-private-ai/tree/main/01-infra#기반-버전-source-of-truth). 모든 수치는 작성 시점(2026-06) 기준이고 2026-09에 VCF 9.1.1 / PAIS 3.0 GA(2026-09-03) 내용을 반영했으며, 엔진·CLI·기능 동작은 릴리스마다 바뀌므로 적용 전 공식 문서로 재확인하시기 바랍니다.
 
 | 구분 | 버전 | 비고 |
 |------|------|------|
-| VMware Cloud Foundation / PAIF | 9.1 | GA 2026-05 |
-| Private AI Services (PAIS) | 2.1 | 6개 모듈 — Model Gallery · Model Runtime · Data Indexing and Retrieval · MCP Servers and Tool Gallery · Agent Builder · Observability |
-| 서빙 엔진 (Model Runtime) | vLLM 0.11.2 · llama.cpp b7739 · Infinity 0.0.76 | llama.cpp(CPU 추론)·Infinity(임베딩)는 2.1 기준 |
-| 실행 기반 (VKS) | VKr 1.33 · NVIDIA GPU Operator 25.10.1 | 모델 엔드포인트·에이전트 실행 |
+| VMware Cloud Foundation / PAIF | 9.1.1 | 9.1 GA 2026-05, 9.1.1 GA 2026-09. PAIS 3.0은 VCF 9.1.x 호환 |
+| Private AI Services (PAIS) | 3.0 | 6개 모듈 — Model Gallery · Model Runtime · Data Indexing and Retrieval · MCP Servers and Tool Gallery · Agent Builder · Observability. 3.0에서 공유 모델 호스팅, 원격 클라우드 모델, API 토큰, 지식베이스 복제 추가 |
+| 서빙 엔진 (Model Runtime) | vLLM 0.20.0, llama.cpp b9309, Infinity 0.0.76 | vLLM 0.20.0은 CUDA 13.0 기본(드라이버 580 이상). 2.1은 vLLM 0.11.2, llama.cpp b7739 |
+| 실행 기반 (VKS) | VKr 1.34, ClusterClass builtin-generic-v3.5.0, NVIDIA GPU Operator 25.10.1(기본) 또는 26.3.1 | 모델 엔드포인트·에이전트 실행. 2.1은 VKr 1.33, v3.2.0 |
+
+> **2.1 환경을 운영 중이라면** — 본문에서 "PAIS 3.0부터"로 표기한 대목만 건너뛰면 됩니다. 기능별 도입 버전은 [① 00 What's New의 버전별 기능 이력](https://github.com/JaeHoYun/vcf-private-ai/blob/main/01-infra/docs/00-whats-new.md#08-버전별-기능-이력-pais-2089--21--30)에, 2.1 기준으로 쓰인 2026-06 시점 문서 전체는 태그 [`baseline-pais-2.1`](https://github.com/JaeHoYun/vcf-private-ai-agents/tree/baseline-pais-2.1)에 있습니다.
 
 ## 이 가이드의 관점 — 조립이 아니라 에이전트 워크로드
 

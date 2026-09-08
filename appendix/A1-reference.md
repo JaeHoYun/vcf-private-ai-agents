@@ -23,7 +23,7 @@
 - **Model Runtime** — completion·embedding 모델을 추론 엔진으로 실행해 OpenAI 호환 엔드포인트로 노출하는 PAIS 모듈.
 - **Model Gallery** — 모델 아티팩트의 중앙 저장소. Harbor(OCI 레지스트리) 기반.
 - **Harbor** — OCI 호환 컨테이너 레지스트리. Model Gallery의 저장소 구현.
-- **vLLM · llama.cpp · Infinity** — Model Runtime의 추론 엔진. 작성 시점 vLLM 0.11.2(생성·임베딩), llama.cpp b7739(CPU 추론), Infinity 0.0.76(임베딩 전용). 버전 정본은 [README 기반 버전표](../README.md#기반-버전-source-of-truth).
+- **vLLM · llama.cpp · Infinity** — Model Runtime의 추론 엔진. PAIS 3.0 기준 vLLM 0.20.0(생성·임베딩, CUDA 13.0 기본), llama.cpp b9309(CPU 추론), Infinity 0.0.76(임베딩 전용). 2.1은 vLLM 0.11.2, llama.cpp b7739. 버전 정본은 [README 기반 버전표](../README.md#기반-버전-source-of-truth).
 - **chat completion / OpenAI 호환 API** — `/chat/completions`·`/completions`·`/embeddings` 등 OpenAI 규약을 따르는 추론 API. 에이전트는 챗 컴플리션 엔드포인트로 노출된다.
 - **Artifact Mirroring Tool** — 에어갭 환경에 모델·아티팩트를 미러링해 반입하는 PAIS 2.1 도구. pais CLI 플러그인의 `vcf pais amt pull/push` 명령으로 수행한다(VCF CLI 명령 레퍼런스에는 누락, Disconnected Environment 배포 문서에 명시).
 - **NIM(NVIDIA Inference Microservices)** — NVIDIA가 제공하는 컨테이너형 추론 모델. Model Gallery로 반입해 관리할 수 있다.
@@ -44,7 +44,7 @@
 - **VKr(vSphere Kubernetes release)** — VKS 클러스터에 쓰는, VMware가 서명·지원하는 쿠버네티스 배포 릴리스. 버전은 쿠버네티스 마이너 버전을 따른다(예: VKr 1.33 = 쿠버네티스 1.33 기반).
 - **Supervisor / vSphere Namespace** — VKS·PAIS가 동작하는 vSphere 상의 쿠버네티스 제어·격리 단위.
 - **DLVM(Deep Learning VM)** — 프로토타이핑·노트북용 딥러닝 VM 이미지. 프로덕션은 VKS를 쓴다.
-- **GPU Operator** — VKS에서 GPU 드라이버·자원을 관리하는 쿠버네티스 오퍼레이터. PAIS 2.1 기준 25.10.1.
+- **GPU Operator** — VKS에서 GPU 드라이버·자원을 관리하는 쿠버네티스 오퍼레이터. PAIS 3.0 기준 25.10.1이 기본이고 26.3.1을 선택할 수 있다(2.1은 25.10.1 단일).
 - **Observability** — 추론·GPU·에이전트 상호작용을 추적·관측하는 PAIS 모듈. 2.1에서 확장.
 - **OpenTelemetry / LLM trace** — 표준 관측 프레임워크와 그 위의 LLM 추적. 사용자·모델·에이전트·지식베이스 상호작용을 따라간다.
 - **TTFT(Time to First Token)** — 첫 토큰까지 걸린 시간. 체감 응답성 지표.
@@ -56,7 +56,8 @@
 
 작성 시점 1차 출처입니다. 기능·버전·동작은 릴리스마다 바뀌므로 적용 전 최신 공식 문서로 재확인하시기 바랍니다.
 
-- [Private AI Services 릴리스 노트 (Broadcom TechDocs)](https://techdocs.broadcom.com/us/en/vmware-cis/private-ai/foundation-with-nvidia/9-0/private-ai-release-notes/vmware-private-ai-services-release-notes.html)
+- [Private AI Services 릴리스 노트 — 3.0, 2.1.2, 2.1 (Broadcom TechDocs, 9.1 문서 경로)](https://techdocs.broadcom.com/us/en/vmware-cis/private-ai/foundation-with-nvidia/9-1/private-ai-release-notes/vmware-private-ai-services-release-notes.html)
+- [Private AI Services 릴리스 노트 — 2.1, 2.0.x (Broadcom TechDocs, 9.0 문서 경로)](https://techdocs.broadcom.com/us/en/vmware-cis/private-ai/foundation-with-nvidia/9-0/private-ai-release-notes/vmware-private-ai-services-release-notes.html)
 - [Private AI Services 상세 디자인 (VCF 9.1 디자인 라이브러리)](https://techdocs.broadcom.com/us/en/vmware-cis/vcf/vcf-9-0-and-later/9-1/design/design-library/private-ai-platform-detailed-design/private-ai-services.html)
 - [What is Private AI Services (Broadcom TechDocs)](https://techdocs.broadcom.com/us/en/vmware-cis/private-ai/foundation-with-nvidia/9-0/private-ai-foundation-9-x/what-is-private-ai-services.html)
 - [에이전트 생성 — Create an Agent for a Generative AI Application (Broadcom TechDocs)](https://techdocs.broadcom.com/us/en/vmware-cis/private-ai/foundation-with-nvidia/9-0/private-ai-foundation-9-x/what-is-private-ai-services/deploy-an-agent-for-a-rag-application.html)
