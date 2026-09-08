@@ -36,7 +36,7 @@
 
 **다루는 것**
 
-- PAIS 2.1 Agent Builder로 에이전트를 구성하는 절차(모델 엔드포인트·지시문·지식베이스·도구·세션)
+- PAIS 3.0 Agent Builder로 에이전트를 구성하는 절차(모델 엔드포인트·지시문·지식베이스·도구·세션)
 - MCP로 사내·외부 시스템 도구를 연결하고 승인·관리하는 방법
 - 에이전트가 쓰는 모델을 Model Runtime으로 서빙하고 Model Gallery로 관리하는 방법
 - 에이전트 워크로드의 평가·가드레일 한계와 운영(배포·관측·업그레이드·비용)
@@ -73,18 +73,18 @@ PAIS가 제공하는 모듈과 시리즈가 떠받치는 인프라 위에는, �
 
 ## 0.4 PAIS 6개 모듈 지도
 
-PAIS 2.1은 여섯 모듈로 이뤄집니다. 에이전트는 이 중 여러 모듈을 함께 씁니다.
+PAIS 3.0은 여섯 모듈로 이뤄집니다(모듈 구성은 2.1과 같고, 3.0은 Model Runtime의 연결 방식과 인증 수단을 넓혔습니다). 에이전트는 이 중 여러 모듈을 함께 씁니다.
 
 | 모듈 | 역할 | 이 가이드 |
 |------|------|-----------|
 | Model Gallery | 모델 아티팩트 저장소(Harbor 기반 OCI 레지스트리) | [05](05-models-serving.md) |
-| Model Runtime | 추론·임베딩 모델 서빙(OpenAI 호환 엔드포인트) | [05](05-models-serving.md) |
+| Model Runtime | 추론·임베딩 모델 서빙(OpenAI 호환 엔드포인트). 3.0부터 로컬 서빙에 더해 다른 인스턴스의 공유 모델과 원격 클라우드 모델을 같은 엔드포인트 형태로 연결 | [05](05-models-serving.md) |
 | Data Indexing and Retrieval | 지식베이스 인덱싱·검색(pgvector) | [03](03-agent-builder.md) 연결 · ④ 위임 |
 | MCP Servers and Tool Gallery | 외부 도구를 MCP로 연결·중앙 관리(2.1 신규) | [04](04-mcp-tools.md) |
 | Agent Builder | 모델·지식·도구·세션을 묶어 에이전트 구성 | [03](03-agent-builder.md) |
 | Observability | 추론·GPU·에이전트 상호작용 추적·관측(2.1 확장) | [07](07-operations.md) |
 
-세 모듈(MCP·Agent Builder·확장된 Observability)이 2.0과 구분되는 2.1의 에이전트 기능을 이룹니다. 자세한 모듈별 역할과 에이전트 구성요소는 [01](01-foundations.md)에서 풀어 설명합니다.
+세 모듈(MCP·Agent Builder·확장된 Observability)이 2.0과 구분되는 2.1의 에이전트 기능을 이룹니다. 3.0은 새 모듈을 더하지 않고, 에이전트가 쓸 모델을 어디서 가져오는지(공유 모델, 원격 클라우드 모델)와 무엇으로 인증하는지(API 토큰)를 넓혔습니다. 자세한 모듈별 역할과 에이전트 구성요소는 [01](01-foundations.md)에서 풀어 설명합니다.
 
 ## 0.5 읽는 순서
 
@@ -105,4 +105,4 @@ PAIS 2.1은 여섯 모듈로 이뤄집니다. 에이전트는 이 중 여러 모
 출처(발표 보도, 2026-08-31): [Broadcom 보도자료 — VMware AI Factory](https://www.globenewswire.com/news-release/2026/08/31/3353363/19933/en/broadcom-announces-vmware-ai-factory-enabling-faster-time-to-production-ai-and-greater-control-over-ai-tokenomics.html) · [Broadcom 보도자료 — Tanzu AI-ready Data Foundations](https://www.globenewswire.com/news-release/2026/08/31/3353356/19933/en/broadcom-unveils-ai-ready-data-foundations-in-vmware-tanzu-platform-to-power-secure-enterprise-ai-cloud.html) · [SiliconANGLE](https://siliconangle.com/2026/08/31/broadcoms-private-ai-cloud-spans-infrastructure-agents-data-and-security/) · [Network World](https://www.networkworld.com/article/4215847/private-ai-cloud-agentic-infrastructure-dominate-vmware-explore.html)
 
 ---
-[목차](../README.md) · [다음: 01 에이전트 기초와 PAIS 2.1 지형 →](01-foundations.md)
+[목차](../README.md) · [다음: 01 에이전트 기초와 PAIS 3.0 지형 →](01-foundations.md)

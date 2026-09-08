@@ -95,4 +95,4 @@ PAIS의 에이전트는 각각 독립된 챗 컴플리션 엔드포인트로 노
 관리형 방식의 실제 구성 절차는 다음 문서에서 Agent Builder로 다룹니다. 자체 앱이든 관리형이든, 완성된 에이전트는 챗 컴플리션 엔드포인트로 소비합니다([03 §3.8](03-agent-builder.md)).
 
 ---
-[← 이전: 01 에이전트 기초와 PAIS 2.1 지형](01-foundations.md) · [목차](../README.md) · [다음: 03 Agent Builder로 구축 →](03-agent-builder.md)
+[← 이전: 01 에이전트 기초와 PAIS 3.0 지형](01-foundations.md) · [목차](../README.md) · [다음: 03 Agent Builder로 구축 →](03-agent-builder.md)

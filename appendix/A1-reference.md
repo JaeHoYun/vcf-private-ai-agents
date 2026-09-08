@@ -27,6 +27,9 @@
 - **chat completion / OpenAI 호환 API** — `/chat/completions`·`/completions`·`/embeddings` 등 OpenAI 규약을 따르는 추론 API. 에이전트는 챗 컴플리션 엔드포인트로 노출된다.
 - **Artifact Mirroring Tool** — 에어갭 환경에 모델·아티팩트를 미러링해 반입하는 PAIS 2.1 도구. pais CLI 플러그인의 `vcf pais amt pull/push` 명령으로 수행한다(VCF CLI 명령 레퍼런스에는 누락, Disconnected Environment 배포 문서에 명시).
 - **NIM(NVIDIA Inference Microservices)** — NVIDIA가 제공하는 컨테이너형 추론 모델. Model Gallery로 반입해 관리할 수 있다.
+- **공유 모델(provider / consumer)** — PAIS 3.0부터 한 인스턴스(provider)가 서빙하는 completion 또는 embedding 엔드포인트를 다른 인스턴스와 네임스페이스(consumer)가 자기 엔드포인트처럼 참조하는 방식. 지식베이스, 에이전트, 도구는 consumer 쪽에 남는다. 인스턴스 간 접근에는 provider가 발급한 API 토큰이 필요하다.
+- **원격 클라우드 모델** — PAIS 3.0부터 Google Gemini 네이티브 API, Gemini Enterprise Agent Platform(구 Vertex AI), OpenAI 호환 서비스의 모델을 `InferenceGatewayRoute` 리소스로 연결해 같은 엔드포인트 형태로 쓰는 방식. 프롬프트가 사외로 나가므로 반출 정책이 전제된다.
+- **API 토큰** — PAIS 3.0부터 VCF Automation 계정(`vcfa-<org>-...`) 또는 PAIS 로컬 계정(`pais-<인증공급자>-...`)이 직접 발급하는 장기 토큰. 공유 모델 접근, VCF Consumption CLI 실행, PAIS API 인증에 쓰며 `Authorization: Bearer` 헤더로 보낸다. 외부 OIDC 토큰은 인스턴스 간 접근에 쓸 수 없다.
 
 ### A1.1.3 데이터·검색
 
@@ -65,6 +68,9 @@
 - [Streamline, Simplify and Protect all your AI workloads with VCF 9.1 (blogs.vmware.com)](https://blogs.vmware.com/cloud-foundation/2026/05/05/streamline-simplify-and-protect-all-your-ai-workloads-with-vcf-9-1/)
 - [Model Gallery — JupyterLab Notebooks (blogs.vmware.com)](https://blogs.vmware.com/cloud-foundation/2026/02/26/model-gallery-how-to-use-jupyterlab-notebooks-to-simplify-model-deployment-and-management/)
 - [Private AI Services API 레퍼런스 (developer.broadcom.com)](https://developer.broadcom.com/xapis/vmware-private-ai-service-api/latest/)
+- [Share a Model with Other Private AI Services Instances (Broadcom TechDocs, 3.0)](https://techdocs.broadcom.com/us/en/vmware-cis/private-ai/foundation-with-nvidia/9-1/what-is-private-ai-services/share-a-model-with-other-private-ai-services-instances.html)
+- [Connect to a Remote Model Running in the Cloud (Broadcom TechDocs, 3.0)](https://techdocs.broadcom.com/us/en/vmware-cis/private-ai/foundation-with-nvidia/9-1/what-is-private-ai-services/connect-to-a-remote-model-running-in-the-cloud.html)
+- [Generate API Tokens for VCF Automation or Local Private AI Services Accounts (Broadcom TechDocs, 3.0)](https://techdocs.broadcom.com/us/en/vmware-cis/private-ai/foundation-with-nvidia/9-1/what-is-private-ai-services/generate-api-tokens-for-local-accounts.html)
 - [Connect an MCP Server to Private AI Services (Broadcom TechDocs)](https://techdocs.broadcom.com/us/en/vmware-cis/private-ai/foundation-with-nvidia/9-0/private-ai-foundation-9-x/what-is-private-ai-services/adding-mcp-servers-for-real-time-data-access-and-specialized-ai-capabilities/connect-to-an-mcp-server.html)
 
 **실습·구성 사례(공개 자료)** — 본문에서 인용한 따라 하기용 자료입니다.
