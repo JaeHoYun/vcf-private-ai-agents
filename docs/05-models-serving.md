@@ -4,7 +4,7 @@
 
 에이전트는 Model Runtime이 서빙하는 모델 위에서 동작합니다. 이 문서는 모델을 어떻게 서빙하고(엔진·엔드포인트), 어디에 보관하며(Model Gallery), 에어갭 환경에 어떻게 반입하고(Artifact Mirroring Tool), CLI로 어떻게 다루는지를 다룹니다. 서빙 자체의 깊은 설계는 ③에 위임하고, 여기서는 **에이전트 관점에서 알아야 할 만큼**을 정리합니다.
 
-> 본 문서의 수치·동작은 VCF 9.1 / PAIF 9.1 / PAIS 2.1 기준입니다(작성 2026-06, 공식 문서 대조 확인 2026-09). 적용 전 최신 공식 문서로 재확인하시기 바랍니다.
+> 본 문서의 수치·동작은 VCF 9.1.1 / PAIF 9.1.1 / PAIS 3.0 기준입니다(작성 2026-06, 9.1.1과 3.0 GA 반영 2026-09). 2.1 환경에서는 "PAIS 3.0부터"로 표기한 대목만 건너뛰면 됩니다. 적용 전 최신 공식 문서로 재확인하시기 바랍니다.
 
 ---
 
@@ -18,16 +18,16 @@ Model Runtime은 completion(생성)·embedding(임베딩) 모델을 추론 엔�
 
 ## 5.2 서빙 엔진
 
-PAIS 2.1 Model Runtime이 지원하는 추론 엔진과 버전입니다([근거: PAIS 릴리스 노트](https://techdocs.broadcom.com/us/en/vmware-cis/private-ai/foundation-with-nvidia/9-0/private-ai-release-notes/vmware-private-ai-services-release-notes.html)).
+PAIS 3.0 Model Runtime이 지원하는 추론 엔진과 버전입니다([근거: PAIS 릴리스 노트](https://techdocs.broadcom.com/us/en/vmware-cis/private-ai/foundation-with-nvidia/9-1/private-ai-release-notes/vmware-private-ai-services-release-notes.html)).
 
-| 엔진 | 버전 | 용도 |
-|------|------|------|
-| vLLM | 0.11.2 | 생성 + 임베딩 |
-| llama.cpp | b7739 | 생성 + 임베딩 (**CPU 추론**) |
-| Infinity | 0.0.76 | 임베딩 전용 |
+| 엔진 | 3.0 | 2.1 | 용도 |
+|------|-----|-----|------|
+| vLLM | 0.20.0 | 0.11.2 | 생성 + 임베딩. 0.20.0은 CUDA 13.0이 기본이라 GPU 드라이버 580 이상이 필요 |
+| llama.cpp | b9309 | b7739 | 생성 + 임베딩 (**CPU 추론**) |
+| Infinity | 0.0.76 | 0.0.76 | 임베딩 전용 |
 
-- **llama.cpp = 2.1 신규** — GPU 없이 CPU에서 추론하는 경로가 2.1에서 추가됐습니다. 작은 모델·저부하 보조 작업이나 GPU가 부족한 환경에서 선택지가 됩니다(성능·비용 트레이드오프는 [07](07-operations.md)·[⑥ TCO와 비용 모델](https://github.com/JaeHoYun/vcf-private-ai/blob/main/06-sizing-cost/docs/07-tco-cost-model.md)).
-- **버전 주의** — 9.0/PAIS 2.0 계열의 vLLM 0.6.5·Infinity 0.0.43은 **이전 버전(2.0 계열) 기준 수치**입니다. 2.1 기준 위 버전으로 상향됐으므로 구버전 자료를 인용하지 마십시오.
+- **llama.cpp = 2.1 신규** — GPU 없이 CPU에서 추론하는 경로가 2.1에서 추가됐습니다. 작은 모델·저부하 보조 작업이나 GPU가 부족한 환경에서 선택지가 됩니다(성능·비용 트레이드오프는 [07](07-operations.md)·[⑥ TCO와 비용 모델](https://github.com/JaeHoYun/vcf-private-ai/blob/main/06-sizing-cost/docs/07-tco-cost-model.md)). CPU 추론에서 MCP 도구를 함께 쓸 때 reasoning 모델이 타임아웃되던 문제는 2.1.2에서 수정됐습니다.
+- **버전 주의** — 9.0/PAIS 2.0 계열의 vLLM 0.6.5·Infinity 0.0.43은 **이전 버전(2.0 계열) 기준 수치**입니다. 3.0으로 올라갈 때 vLLM이 0.11.2에서 0.20.0으로 크게 뛰므로, 모델 엔드포인트의 VRAM 요구량과 양자화 포맷 지원을 다시 확인하십시오.
 - **엔진 버전 오버라이드** — 모델 엔드포인트 정의(YAML)의 `engineImage`로 엔진 이미지를 지정할 수 있습니다.
 - **버전 정본** — 엔진 버전의 단일 기준은 [README 기반 버전표](../README.md#기반-버전-source-of-truth)입니다. 본문·용어집의 버전 표기는 그 요약이며, 갱신은 README 표를 기준으로 맞춥니다.
 
@@ -65,6 +65,8 @@ PAIS 2.1은 **Artifact Mirroring Tool** 로 에어갭(외부망 차단) 환경�
 예: `vcf pais models pull --modelStore <레지스트리>/<리포지토리> --modelName <모델> --tag <태그>`
 
 위 표는 **VCF CLI 명령 레퍼런스 페이지** 기준입니다. 에어갭 반입용 `vcf pais amt`(pull/push)는 이 레퍼런스에 빠져 있으나 실재하는 명령입니다 — 근거와 주의는 §5.4에 정리했습니다. `vcf pais agents` 같은 하위 명령은 없으며, 에이전트·MCP·지식베이스 구성은 주로 UI(Agent Builder·VCF Automation)와 REST API로 다룹니다.
+
+CLI의 형태에 대해 한 가지 정리해 둡니다. 단독 실행 파일 형태의 `pais` CLI는 DLVM 9.1 이미지에서 제거됐고, 지금 쓰는 것은 VCF Consumption CLI의 `pais` 플러그인입니다. DLVM 9.1.1 이미지에는 VCF CLI 9.1.0과 확장된 플러그인, helm, kubectl vSphere 플러그인이 함께 들어 있습니다. PAIS 3.0부터는 이 CLI로 PAIS 관리 클러스터의 kubeconfig를 받는 절차와 지원 번들 수집이 간단해졌습니다. VCF Automation 네임스페이스에서 CLI 명령을 실행하려면 3.0부터 API 토큰이 필요합니다([03 3.9절](03-agent-builder.md)).
 
 ## 5.6 에이전트 관점의 모델 선택
 

@@ -4,7 +4,7 @@
 
 이 문서는 PAIS 2.1 Agent Builder로 에이전트 하나를 처음부터 구성하는 절차를 다룹니다. 모델 엔드포인트 선택부터 지시문·지식베이스·도구·세션 구성, Playground 테스트, REST API 소비까지 순서대로 따라갑니다. 화면 라벨·세부 단계는 릴리스에 따라 다를 수 있으므로 공식 문서와 함께 보시기 바랍니다.
 
-> 본 문서의 수치·동작은 VCF 9.1 / PAIF 9.1 / PAIS 2.1 기준입니다(작성 2026-06, 공식 문서 대조 확인 2026-09). 적용 전 최신 공식 문서로 재확인하시기 바랍니다.
+> 본 문서의 수치·동작은 VCF 9.1.1 / PAIF 9.1.1 / PAIS 3.0 기준입니다(작성 2026-06, 9.1.1과 3.0 GA 반영 2026-09). 2.1 환경에서는 "PAIS 3.0부터"로 표기한 대목만 건너뛰면 됩니다. 적용 전 최신 공식 문서로 재확인하시기 바랍니다.
 
 ---
 
@@ -91,6 +91,8 @@ curl 'https://<PAIS FQDN>/api/v1/compatibility/openai/v1/agents/<agent-id>/chat/
     --header "Authorization: Bearer $TOKEN" \
     --data '{"messages": [{"role": "user", "content": "..."}]}'
 ```
+
+> **PAIS 3.0에서 바뀐 것** — 에이전트 API의 `completion_role` 필드가 제거되고 응답 role은 항상 `assistant`입니다. 메시지 배열 없이 프롬프트 문자열을 보내는 non-chat completions 형태는 OpenAI 호환 API와 Agent Builder API 양쪽에서 deprecated이므로 위 `chat/completions` 경로만 쓰십시오. boolean 필드는 엄격히 검증되어 `"stream": "true"` 같은 문자열 값은 거부됩니다. ([근거: PAIS 3.0 릴리스 노트](https://techdocs.broadcom.com/us/en/vmware-cis/private-ai/foundation-with-nvidia/9-1/private-ai-release-notes/vmware-private-ai-services-release-notes.html))
 
 - **구성 코드 내보내기** — Agent Builder는 구성 코드(View Configuration Code) 보기를 제공합니다. 이를 형상관리에 두면 에이전트 정의를 코드로 추적·재현할 수 있습니다.
 - **자동화** — 구성을 코드로 다루면 CI/CD에서 에이전트를 배포·테스트하는 파이프라인을 구성할 수 있습니다([06](06-evaluation-guardrails.md)).
