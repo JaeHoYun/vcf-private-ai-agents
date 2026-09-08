@@ -93,16 +93,26 @@ PAIS 3.0은 여섯 모듈로 이뤄집니다(모듈 구성은 2.1과 같고, 3.0
 - 운영 준비 단계라면 **[06 평가와 가드레일](06-evaluation-guardrails.md) → [07 운영과 Day-2](07-operations.md)** 가 핵심입니다.
 - 무엇에 적용할지, 도입할 가치가 있는지부터 판단해야 한다면 **[08 어디에 쓰나](08-use-cases.md)** 를 먼저 읽으십시오. 기술 문서(01~07)를 몰라도 읽을 수 있습니다.
 
-## 0.6 앞으로의 지형 — 2026-08 Explore 발표 (참고)
+## 0.6 앞으로의 지형 — 2026-08 Explore 발표와 9.1.1 GA 이후 (참고)
 
-이 가이드의 본문은 PAIS 2.1 기준입니다. 다만 2026년 8월 말 VMware Explore에서 에이전트 지형에 영향을 줄 발표가 있었으므로, 방향만 기록해 둡니다. **아래는 모두 발표 단계이며, GA 문서·릴리스 노트로 확인되기 전에는 본문 논지에 반영하지 않습니다** — 확인되는 시점에 해당 본문에 정식 반영합니다.
+이 가이드의 본문은 PAIS 3.0(2026-09-03 GA) 기준입니다. 2026년 8월 말 VMware Explore에서 발표된 항목 가운데 일부는 9.1.1 / 3.0 릴리스 노트로 확인되어 본문에 들어갔고, 나머지는 아직 발표 단계입니다. 이 절은 그 경계를 기록하는 자리입니다. **아래 "발표 단계" 항목은 GA 문서와 릴리스 노트로 확인되기 전에는 본문 논지에 반영하지 않습니다.** 본문의 각 절에서는 이 절로 링크만 두고, 확인되는 시점에 해당 본문에 정식 반영합니다.
 
-- **VMware Private AI Cloud** — 인프라·에이전트·데이터·보안을 아우르는 통합 스택 브랜드가 발표됐습니다.
-- **VMware AI Factory** — Private AI Cloud의 소프트웨어 정의 기반으로, 베어메탈 배포부터 모델 서빙까지의 자동화를 내세웁니다.
-- **Tanzu Platform의 에이전트 계층 공식화** — 에이전트 개발·실행 계층으로 지정되고, 발표 기준으로 기본 차단(deny-by-default) 샌드박스 — 에이전트의 API·네트워크·MCP 서버·인터넷 접근을 명시적으로 허용한 것만 여는 방식 — 와 크리덴셜 분리 보관을 내세웁니다. 이 가이드가 앱 계층 책임으로 정리해 온 통제(§0.3)의 일부가 플랫폼 계층으로 내려올 수 있습니다. §0.3과 함께 지켜볼 대목입니다.
-- **AgentMinder** — 에이전트 거버넌스 소프트웨어가 새로 발표됐습니다.
+**9.1.1 / PAIS 3.0에서 GA로 확인되어 본문에 반영한 것**
 
-출처(발표 보도, 2026-08-31): [Broadcom 보도자료 — VMware AI Factory](https://www.globenewswire.com/news-release/2026/08/31/3353363/19933/en/broadcom-announces-vmware-ai-factory-enabling-faster-time-to-production-ai-and-greater-control-over-ai-tokenomics.html) · [Broadcom 보도자료 — Tanzu AI-ready Data Foundations](https://www.globenewswire.com/news-release/2026/08/31/3353356/19933/en/broadcom-unveils-ai-ready-data-foundations-in-vmware-tanzu-platform-to-power-secure-enterprise-ai-cloud.html) · [SiliconANGLE](https://siliconangle.com/2026/08/31/broadcoms-private-ai-cloud-spans-infrastructure-agents-data-and-security/) · [Network World](https://www.networkworld.com/article/4215847/private-ai-cloud-agentic-infrastructure-dominate-vmware-explore.html)
+- **멀티테넌트 모델 공유** — Explore에서 "Model Runtime 강화"로 발표된 것이 PAIS 3.0의 공유 모델 호스팅으로 나왔습니다. [05 5.1절](05-models-serving.md)과 [07 7.1절](07-operations.md)에 반영했습니다.
+- **원격 클라우드 모델과 API 토큰** — 발표 자료에는 부각되지 않았지만 3.0 릴리스 노트에 있는 GA 기능입니다. [05](05-models-serving.md), [03 3.9절](03-agent-builder.md), [06 6.5절](06-evaluation-guardrails.md)에 반영했습니다.
+- **VCF Operations AI Assistant** — PAIS 모델 엔드포인트를 백엔드로 플랫폼을 진단하는 기능이 9.1.1로 GA됐습니다. 에이전트 가이드 범위 밖이라 [① 10 10.4.4절](https://github.com/JaeHoYun/vcf-private-ai/blob/main/01-infra/docs/10-operations.md)에 있습니다.
+
+**발표 단계 — 본문 미반영**
+
+- **AI Gateway** — 온프레미스와 클라우드 모델 사이의 프롬프트 라우팅, 사용자 단위 토큰 제한, OpenID Connect 기반 애플리케이션 인가. 공식 블로그와 보도 모두 "향후 릴리스"로 표기합니다. 지금은 호출 빈도 제어를 앱 계층이 맡는다는 [③ 05 5.5절](https://github.com/JaeHoYun/vcf-private-ai/blob/main/03-serving-api/docs/05-auth-and-gateway.md)의 결론이 그대로입니다.
+- **Secure Agent Framework** — 에이전트가 생성한 코드를 격리 실행하는 샌드박스와, 도구 접근과 에이전트 간 통신과 출력 검증을 통제하는 Agent Harness. 향후 릴리스입니다. 이 가이드가 앱 계층 책임으로 정리한 통제(0.3절, [06 6.5절](06-evaluation-guardrails.md))의 일부가 플랫폼으로 내려올 수 있는 대목이라 계속 지켜봅니다.
+- **Model Autoscaling** — 지연과 세션 임계 기반 자동 스케일. 향후 릴리스이며, 레플리카 수는 여전히 수동 설정입니다([07 7.8절](07-operations.md)).
+- **AgentMinder** — 에이전트에 신원과 임무를 부여하고 호출 단위로 정책을 평가해 OpenTelemetry로 감사하는 별도 제품. GA로 보도됐지만 PAIS 구성요소가 아니므로 이 가이드 범위 밖입니다.
+- **VMware Private AI Cloud, VMware AI Factory** — 인프라와 에이전트와 데이터와 보안을 아우르는 브랜드와, 베어메탈부터 모델 서빙까지의 자동화 프로그램(AMD Instinct MI350과 ROCm, OEM AI ReadyNode 포함). 라이선스 패키징은 공개되지 않았고 애널리스트는 새 AI 기능 대부분이 별도 애드온일 가능성을 짚습니다.
+- **Tanzu Platform의 에이전트 계층** — 기본 차단(deny-by-default) 샌드박스와 크리덴셜 분리 보관을 내세우는 에이전트 개발과 실행 계층. Secure Agent Framework와 같은 방향의 발표입니다.
+
+출처: [Explore 2026: VMware AI Factory and other new AI innovations in VCF (VMware Cloud Foundation Blog, 2026-09-03)](https://blogs.vmware.com/cloud-foundation/2026/09/03/explore-2026-vmware-ai-factory-and-other-new-ai-innovations-in-vcf/) · [Announcing General Availability of VCF 9.1.1 (VMware Cloud Foundation Blog, 2026-09-03)](https://blogs.vmware.com/cloud-foundation/2026/09/03/announcing-general-availability-of-vmware-cloud-foundation-9-1-1/) · [VMware Cloud Foundation 9.1.1 Adds Shared AI Models, but Key Features Remain in Preview (eWeek)](https://www.eweek.com/news/vmware-vcf-shared-ai-models/) · [Broadcom 보도자료 — VMware AI Factory (2026-08-31)](https://www.globenewswire.com/news-release/2026/08/31/3353363/19933/en/broadcom-announces-vmware-ai-factory-enabling-faster-time-to-production-ai-and-greater-control-over-ai-tokenomics.html) · [Broadcom 보도자료 — Tanzu AI-ready Data Foundations](https://www.globenewswire.com/news-release/2026/08/31/3353356/19933/en/broadcom-unveils-ai-ready-data-foundations-in-vmware-tanzu-platform-to-power-secure-enterprise-ai-cloud.html) · [SiliconANGLE](https://siliconangle.com/2026/08/31/broadcoms-private-ai-cloud-spans-infrastructure-agents-data-and-security/) · [Network World](https://www.networkworld.com/article/4215847/private-ai-cloud-agentic-infrastructure-dominate-vmware-explore.html)
 
 ---
 [목차](../README.md) · [다음: 01 에이전트 기초와 PAIS 3.0 지형 →](01-foundations.md)
