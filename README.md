@@ -38,7 +38,7 @@
 | 순서 | 문서 | 내용 |
 |------|------|------|
 | 00 | [개관](docs/00-orientation.md) | 이 가이드의 역할·독자·선행지식, 다루는 것과 다루지 않는 것, PAIS 6개 모듈 지도 |
-| 01 | [에이전트 기초와 PAIS 2.1 지형](docs/01-foundations.md) | 에이전트 vs RAG vs 워크플로우 경계, 6개 모듈, 에이전트의 구성요소 |
+| 01 | [에이전트 기초와 PAIS 3.0 지형](docs/01-foundations.md) | 에이전트 vs RAG vs 워크플로우 경계, 6개 모듈, 에이전트의 구성요소 |
 | 02 | [에이전트 설계 패턴](docs/02-design-patterns.md) | 단일·멀티 에이전트, 도구·지식 연결, 세션 관리, 언제 에이전트로 푸나 |
 | 03 | [Agent Builder로 구축](docs/03-agent-builder.md) | 에이전트 생성, 모델 엔드포인트·지시문·지식베이스·도구·세션, Playground, REST API |
 | 04 | [MCP 도구 통합](docs/04-mcp-tools.md) | MCP 3방향(호출·호스팅·등록), Tool Gallery, 전송·인증, 보안 경계 |

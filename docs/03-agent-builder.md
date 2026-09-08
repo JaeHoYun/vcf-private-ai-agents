@@ -101,7 +101,7 @@ curl 'https://<PAIS FQDN>/api/v1/compatibility/openai/v1/agents/<agent-id>/chat/
 
 에이전트 엔드포인트를 앱에서 소비할 때(§3.8), 신원은 두 층위로 나뉩니다. 이 둘을 섞으면 권한이 필요 이상으로 넓어집니다.
 
-- **서비스 인증(앱 → PAIS)** — 앱이 에이전트·모델 엔드포인트를 호출할 때 쓰는 서비스 신원(토큰·키)입니다. 토큰 발급·보관·로테이션은 앱과 플랫폼의 책임이며, 자격증명은 비밀로 관리합니다([⑤ ID·인증·접근통제](https://github.com/JaeHoYun/vcf-private-ai/blob/main/05-security/docs/03-identity-access.md)).
+- **서비스 인증(앱 → PAIS)** — 앱이 에이전트·모델 엔드포인트를 호출할 때 쓰는 서비스 신원(토큰·키)입니다. 토큰 발급·보관·로테이션은 앱과 플랫폼의 책임이며, 자격증명은 비밀로 관리합니다([⑤ ID·인증·접근통제](https://github.com/JaeHoYun/vcf-private-ai/blob/main/05-security/docs/03-identity-access.md)). PAIS 3.0부터는 OIDC 액세스 토큰 외에 계정이 직접 발급하는 **API 토큰**(`vcfa-<org>-...` 또는 `pais-<인증공급자>-...`)이 생겼습니다. 용도는 다른 인스턴스의 공유 모델 접근, VCF Consumption CLI 실행, PAIS API 인증이며, 같은 `Authorization: Bearer` 헤더로 보냅니다. 사용자 신원을 담지 않는 장기 토큰이므로 일반 앱의 사용자 요청 경로에는 쓰지 않고 인스턴스 간 연결과 자동화에만 씁니다. UI로 PAIS를 활성화하면 API 토큰 발급이 기본으로 꺼져 있는 알려진 이슈가 있으니 첫 배포 때 확인하십시오([③ 05 5.6절](https://github.com/JaeHoYun/vcf-private-ai/blob/main/03-serving-api/docs/05-auth-and-gateway.md)).
 - **최종 사용자 신원(사람 사용자)** — 엔드포인트는 호출하는 서비스만 알 뿐, 그 뒤에 있는 실제 사용자가 누구인지 모릅니다. 따라서 사용자 로그인·사용자별 접근 권한·테넌트 격리는 PAIS가 아니라 앱이 책임집니다([00 §0.3](00-orientation.md) 책임 경계).
 
 이 구분에서 다음 설계 원칙이 따라 나옵니다.
