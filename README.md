@@ -1,51 +1,51 @@
 # VCF 9.1 PAIS 에이전트 서비스 가이드
 
-> **이 가이드를 읽기 전에** — 임베딩·벡터·토큰·RAG·쿠버네티스(VKS) 같은 용어가 낯설다면, 먼저 [VCF Private AI 입문 (Primer)](https://github.com/JaeHoYun/vcf-private-ai/tree/main/00-foundations)에서 기초 어휘를 잡으시길 권합니다. 이 가이드는 그 개념들을 이미 아는 것으로 전제합니다.
+> **이 가이드를 읽기 전에** — 임베딩, 벡터, 토큰, RAG, 쿠버네티스(VKS) 같은 용어가 낯설다면, 먼저 [VCF Private AI 입문 (Primer)](https://github.com/JaeHoYun/vcf-private-ai/tree/main/00-foundations)에서 기초 어휘를 잡으시길 권합니다. 이 가이드는 그 개념들을 이미 아는 것으로 전제합니다.
 
-> VMware Cloud Foundation(VCF) 9.1.x Private AI Services(PAIS) 3.0 위에서 에이전트 서비스를 설계·구축·운영하는 실무 가이드 — Agent Builder · MCP 도구 · Model Runtime · Day-2 운영 · 유스케이스 판단
+> VMware Cloud Foundation(VCF) 9.1.x Private AI Services(PAIS) 3.0 위에서 에이전트 서비스를 설계, 구축, 운영하는 실무 가이드 — Agent Builder, MCP 도구, Model Runtime, Day-2 운영, 유스케이스 판단
 
-[① 인프라](https://github.com/JaeHoYun/vcf-private-ai/tree/main/01-infra) · [② VectorDB](https://github.com/JaeHoYun/vcf-private-ai/tree/main/02-vectordb) · [③ 서빙 API](https://github.com/JaeHoYun/vcf-private-ai/tree/main/03-serving-api) · [④ RAG](https://github.com/JaeHoYun/vcf-private-ai/tree/main/04-rag) · [⑤ 보안·거버넌스](https://github.com/JaeHoYun/vcf-private-ai/tree/main/05-security) · [⑥ 사이징·비용](https://github.com/JaeHoYun/vcf-private-ai/tree/main/06-sizing-cost) · [⑦ 통합 설계](https://github.com/JaeHoYun/vcf-private-ai/tree/main/07-design)는 Private AI 플랫폼의 인프라·검색·서빙·조립·보안·사이징·설계를 다룹니다. 그 위에서 아직 답하지 않은 질문이 하나 있습니다 — **"이 플랫폼 위에서 추론하고 도구를 호출하는 에이전트를 어떻게 만들고 운영하나?"** 이 가이드가 그 답입니다.
+[① 인프라](https://github.com/JaeHoYun/vcf-private-ai/tree/main/01-infra), [② VectorDB](https://github.com/JaeHoYun/vcf-private-ai/tree/main/02-vectordb), [③ 서빙 API](https://github.com/JaeHoYun/vcf-private-ai/tree/main/03-serving-api), [④ RAG](https://github.com/JaeHoYun/vcf-private-ai/tree/main/04-rag), [⑤ 보안과 거버넌스](https://github.com/JaeHoYun/vcf-private-ai/tree/main/05-security), [⑥ 사이징과 비용](https://github.com/JaeHoYun/vcf-private-ai/tree/main/06-sizing-cost), [⑦ 통합 설계](https://github.com/JaeHoYun/vcf-private-ai/tree/main/07-design)는 Private AI 플랫폼의 인프라, 검색, 서빙, 조립, 보안, 사이징, 설계를 다룹니다. 그 위에서 아직 답하지 않은 질문이 하나 있습니다 — **"이 플랫폼 위에서 추론하고 도구를 호출하는 에이전트를 어떻게 만들고 운영하나?"** 이 가이드가 그 답입니다.
 
-④가 한 워크로드(사내 Q&A RAG)를 **조립**하는 방법이라면, 이 가이드는 그 위 계층 — 모델 응답에 더해 **지식베이스를 검색하고 사내 시스템 도구를 호출하며 여러 단계를 스스로 잇는 에이전트 워크로드**를 PAIS 3.0의 Agent Builder·MCP·Model Runtime으로 구현·운영하는 방법을 다룹니다. 에이전트 기능의 골격은 2.1에서 갖춰졌고, 3.0은 그 위에 공유 모델, 원격 클라우드 모델, API 토큰을 더했습니다. ⑦이 플랫폼을 설계한다면, 이 가이드는 그 플랫폼 위에 에이전트 서비스를 올립니다.
+④가 한 워크로드(사내 Q&A RAG)를 **조립**하는 방법이라면, 이 가이드는 그 위 계층 — 모델 응답에 더해 **지식베이스를 검색하고 사내 시스템 도구를 호출하며 여러 단계를 스스로 잇는 에이전트 워크로드**를 PAIS 3.0의 Agent Builder, MCP, Model Runtime으로 구현, 운영하는 방법을 다룹니다. 에이전트 기능의 골격은 2.1에서 갖춰졌고, 3.0은 그 위에 공유 모델, 원격 클라우드 모델, API 토큰을 더했습니다. ⑦이 플랫폼을 설계한다면, 이 가이드는 그 플랫폼 위에 에이전트 서비스를 올립니다.
 
-> **VCF Private AI 가이드 시리즈 위에 올리는 에이전트 서비스 가이드**입니다. 시리즈 본편(인프라·데이터·서빙·RAG·보안·사이징·통합 설계 ①–⑦)은 [시리즈 허브](https://github.com/JaeHoYun/vcf-private-ai)에서, 상위 전략은 [AX 방법론](https://github.com/JaeHoYun/enterprise-ax-methodology)에서 다룹니다. 프로필의 **AX(전략) → Private AI(인프라) → 에이전트(실행)** 3단계 중 실행 편입니다.
+> **VCF Private AI 가이드 시리즈 위에 올리는 에이전트 서비스 가이드**입니다. 시리즈 본편(인프라, 데이터, 서빙, RAG, 보안, 사이징, 통합 설계 ①–⑦)은 [시리즈 허브](https://github.com/JaeHoYun/vcf-private-ai)에서, 상위 전략은 [AX 방법론](https://github.com/JaeHoYun/enterprise-ax-methodology)에서 다룹니다. 프로필의 **AX(전략) → Private AI(인프라) → 에이전트(실행)** 3단계 중 실행 편입니다.
 
 ---
 
 ## 기반 버전 (Source of Truth)
 
-> 본 가이드는 PAIS 3.0의 에이전트 기능 구현에 집중합니다. 광범위한 인프라 버전(vSphere·NSX·vSAN 등)은 단정하지 않고 형제 가이드의 버전 단일 기준 문서를 기준선으로 삼습니다 → [① README 버전표](https://github.com/JaeHoYun/vcf-private-ai/tree/main/01-infra#기반-버전-source-of-truth). 모든 수치는 작성 시점(2026-06) 기준이고 2026-09에 VCF 9.1.1 / PAIS 3.0 GA(2026-09-03) 내용을 반영했으며, 엔진·CLI·기능 동작은 릴리스마다 바뀌므로 적용 전 공식 문서로 재확인하시기 바랍니다.
+> 본 가이드는 PAIS 3.0의 에이전트 기능 구현에 집중합니다. 광범위한 인프라 버전(vSphere, NSX, vSAN 등)은 단정하지 않고 형제 가이드의 버전 단일 기준 문서를 기준선으로 삼습니다 → [① README 버전표](https://github.com/JaeHoYun/vcf-private-ai/tree/main/01-infra#기반-버전-source-of-truth). 모든 수치는 작성 시점(2026-06) 기준이고 2026-09에 VCF 9.1.1 / PAIS 3.0 GA(2026-09-03) 내용을 반영했으며, 엔진, CLI, 기능 동작은 릴리스마다 바뀌므로 적용 전 공식 문서로 재확인하시기 바랍니다.
 
 | 구분 | 버전 | 비고 |
 |------|------|------|
 | VMware Cloud Foundation / PAIF | 9.1.1 | 9.1 GA 2026-05, 9.1.1 GA 2026-09. PAIS 3.0은 VCF 9.1.x 호환 |
-| Private AI Services (PAIS) | 3.0 | 6개 모듈 — Model Gallery · Model Runtime · Data Indexing and Retrieval · MCP Servers and Tool Gallery · Agent Builder · Observability. 3.0에서 공유 모델 호스팅, 원격 클라우드 모델, API 토큰, 지식베이스 복제 추가 |
+| Private AI Services (PAIS) | 3.0 | 6개 모듈 — Model Gallery, Model Runtime, Data Indexing and Retrieval, MCP Servers and Tool Gallery, Agent Builder, Observability. 3.0에서 공유 모델 호스팅, 원격 클라우드 모델, API 토큰, 지식베이스 복제 추가 |
 | 서빙 엔진 (Model Runtime) | vLLM 0.20.0, llama.cpp b9309, Infinity 0.0.76 | vLLM 0.20.0은 CUDA 13.0 기본(드라이버 580 이상). 2.1은 vLLM 0.11.2, llama.cpp b7739 |
-| 실행 기반 (VKS) | VKr 1.34, ClusterClass builtin-generic-v3.5.0, NVIDIA GPU Operator 25.10.1(기본) 또는 26.3.1 | 모델 엔드포인트·에이전트 실행. 2.1은 VKr 1.33, v3.2.0 |
+| 실행 기반 (VKS) | VKr 1.34, ClusterClass builtin-generic-v3.5.0, NVIDIA GPU Operator 25.10.1(기본) 또는 26.3.1 | 모델 엔드포인트와 에이전트 실행. 2.1은 VKr 1.33, v3.2.0 |
 
 > **2.1 환경을 운영 중이라면** — 본문에서 "PAIS 3.0부터"로 표기한 대목만 건너뛰면 됩니다. 기능별 도입 버전은 [① 00 What's New의 버전별 기능 이력](https://github.com/JaeHoYun/vcf-private-ai/blob/main/01-infra/docs/00-whats-new.md#08-버전별-기능-이력-pais-2089--21--30)에, 2.1 기준으로 쓰인 2026-06 시점 문서 전체는 태그 [`baseline-pais-2.1`](https://github.com/JaeHoYun/vcf-private-ai-agents/tree/baseline-pais-2.1)에 있습니다.
 
 ## 이 가이드의 관점 — 조립이 아니라 에이전트 워크로드
 
-에이전트는 "모델에게 한 번 묻고 한 번 답받는" 호출과 다릅니다. 에이전트는 **무엇을 검색할지, 어떤 도구를 부를지, 언제 멈출지를 스스로 정하는** 워크로드입니다. PAIS는 이 워크로드를 직접 다루는 모듈(Agent Builder·MCP·Observability)을 2.1에서 처음 정식 제공했습니다.
+에이전트는 "모델에게 한 번 묻고 한 번 답받는" 호출과 다릅니다. 에이전트는 **무엇을 검색할지, 어떤 도구를 부를지, 언제 멈출지를 스스로 정하는** 워크로드입니다. PAIS는 이 워크로드를 직접 다루는 모듈(Agent Builder, MCP, Observability)을 2.1에서 처음 정식 제공했습니다.
 
-- **관리형 위에서 만든다** — Agent Builder는 모델 엔드포인트·지식베이스·도구·세션 정책을 묶어 에이전트를 구성하고, 챗 컴플리션(chat completion, 대화형 응답 API) 엔드포인트로 노출합니다. 오케스트레이션 코드를 직접 작성하는 대신, 화면에서 구성하는 방식으로 시작합니다.
-- **도구는 MCP로 붙인다** — 사내 데이터베이스·이슈 트래커·협업 도구를 Model Context Protocol(MCP) 서버로 연결하고, 관리자가 승인한 도구만 에이전트에 노출합니다.
-- **운영을 전제로 설계한다** — 토큰 처리량·첫 토큰까지 시간(TTFT)·종단 지연·에이전트 추적(trace)을 관측 지표로 두고, 업그레이드·다운타임·실패 유형를 미리 설계합니다.
+- **관리형 위에서 만든다** — Agent Builder는 모델 엔드포인트, 지식베이스, 도구, 세션 정책을 묶어 에이전트를 구성하고, 챗 컴플리션(chat completion, 대화형 응답 API) 엔드포인트로 노출합니다. 오케스트레이션 코드를 직접 작성하는 대신, 화면에서 구성하는 방식으로 시작합니다.
+- **도구는 MCP로 붙인다** — 사내 데이터베이스, 이슈 트래커, 협업 도구를 Model Context Protocol(MCP) 서버로 연결하고, 관리자가 승인한 도구만 에이전트에 노출합니다.
+- **운영을 전제로 설계한다** — 토큰 처리량과 첫 토큰까지 시간(TTFT), 종단 지연, 에이전트 추적(trace)을 관측 지표로 두고, 업그레이드, 다운타임, 실패 유형를 미리 설계합니다.
 
 ## 문서 구성
 
 | 순서 | 문서 | 내용 |
 |------|------|------|
-| 00 | [개관](docs/00-orientation.md) | 이 가이드의 역할·독자·선행지식, 다루는 것과 다루지 않는 것, PAIS 6개 모듈 지도 |
+| 00 | [개관](docs/00-orientation.md) | 이 가이드의 역할, 독자, 선행지식, 다루는 것과 다루지 않는 것, PAIS 6개 모듈 지도 |
 | 01 | [에이전트 기초와 PAIS 3.0 지형](docs/01-foundations.md) | 에이전트 vs RAG vs 워크플로우 경계, 6개 모듈, 에이전트의 구성요소 |
-| 02 | [에이전트 설계 패턴](docs/02-design-patterns.md) | 단일·멀티 에이전트, 도구·지식 연결, 세션 관리, 언제 에이전트로 푸나 |
-| 03 | [Agent Builder로 구축](docs/03-agent-builder.md) | 에이전트 생성, 모델 엔드포인트·지시문·지식베이스·도구·세션, Playground, REST API |
-| 04 | [MCP 도구 통합](docs/04-mcp-tools.md) | MCP 3방향(호출·호스팅·등록), Tool Gallery, 전송·인증, 보안 경계 |
+| 02 | [에이전트 설계 패턴](docs/02-design-patterns.md) | 단일, 멀티 에이전트, 도구와 지식 연결, 세션 관리, 언제 에이전트로 푸나 |
+| 03 | [Agent Builder로 구축](docs/03-agent-builder.md) | 에이전트 생성, 모델 엔드포인트, 지시문, 지식베이스, 도구, 세션, Playground, REST API |
+| 04 | [MCP 도구 통합](docs/04-mcp-tools.md) | MCP 3방향(호출, 호스팅, 등록), Tool Gallery, 전송과 인증, 보안 경계 |
 | 05 | [모델과 서빙](docs/05-models-serving.md) | Model Runtime, OpenAI 호환 API, 서빙 엔진, Model Gallery, 에어갭(Artifact Mirroring Tool), CLI |
-| 06 | [평가와 가드레일](docs/06-evaluation-guardrails.md) | Playground·CI/CD 테스트, 실패 유형, 가드레일·휴먼인더루프 경계 |
-| 07 | [운영과 Day-2](docs/07-operations.md) | 배포 토폴로지, 관측성, 업그레이드·다운타임, 알려진 이슈, 비용 |
-| 08 | [어디에 쓰나](docs/08-use-cases.md) | 성과가 나는 일과 실패하는 일 — 파일럿이 멈추는 다섯 실패 유형, 유스케이스 선별 기준, 사례 2종(사내 지식 응대·운영 알림 1차 진단) |
+| 06 | [평가와 가드레일](docs/06-evaluation-guardrails.md) | Playground, CI/CD 테스트, 실패 유형, 가드레일과 휴먼인더루프 경계 |
+| 07 | [운영과 Day-2](docs/07-operations.md) | 배포 토폴로지, 관측성, 업그레이드와 다운타임, 알려진 이슈, 비용 |
+| 08 | [어디에 쓰나](docs/08-use-cases.md) | 성과가 나는 일과 실패하는 일 — 파일럿이 멈추는 다섯 실패 유형, 유스케이스 선별 기준, 사례 2종(사내 지식 응대와 운영 알림 1차 진단) |
 | A1 | [부록](appendix/A1-reference.md) | 용어집, 참조 링크 |
 | A2 | [워크시트](appendix/A2-worksheets.md) | 유스케이스 선별 워크시트, 운영 투입 전 점검표, MCP 서버 등록 체크리스트 |
 
@@ -55,7 +55,7 @@
 - **"바로 하나 만들어 본다"** → [03 Agent Builder로 구축](docs/03-agent-builder.md)
 - **"사내 시스템을 도구로 붙인다"** → [04 MCP 도구 통합](docs/04-mcp-tools.md)
 - **"어떤 모델을 어떻게 서빙하나"** → [05 모델과 서빙](docs/05-models-serving.md)
-- **"운영에 올리기 전 점검한다"** → [06 평가와 가드레일](docs/06-evaluation-guardrails.md) · [07 운영과 Day-2](docs/07-operations.md)
+- **"운영에 올리기 전 점검한다"** → [06 평가와 가드레일](docs/06-evaluation-guardrails.md) | [07 운영과 Day-2](docs/07-operations.md)
 - **"이걸로 무슨 가치를 내나, 어디서 실패하나"** → [08 어디에 쓰나](docs/08-use-cases.md)
 
 ## 라이선스
@@ -64,4 +64,4 @@
 
 ## 면책
 
-**비공식 문서** — Broadcom·NVIDIA 등 벤더의 공식 입장을 대변하지 않습니다. 본문의 구성값·버전·동작은 작성 시점 기준 **예시**이며, 에이전트·MCP·서빙 기능은 릴리스마다 바뀝니다. 적용 전 반드시 공식 문서로 확인하시기 바랍니다. 언급된 제품명·상표는 각 소유자의 자산입니다.
+**비공식 문서** — Broadcom, NVIDIA 등 벤더의 공식 입장을 대변하지 않습니다. 본문의 구성값, 버전, 동작은 작성 시점 기준 **예시**이며, 에이전트, MCP, 서빙 기능은 릴리스마다 바뀝니다. 적용 전 반드시 공식 문서로 확인하시기 바랍니다. 언급된 제품명과 상표는 각 소유자의 자산입니다.
