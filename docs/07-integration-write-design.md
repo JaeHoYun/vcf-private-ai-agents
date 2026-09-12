@@ -112,4 +112,4 @@
 6. 도구 스키마 버전과 변경 절차.
 
 ---
-[← 이전: 04 사용자 신원과 권한 전파](04-identity-propagation.md) | [목차](../README.md) | [다음: 08 Agent Builder로 구축 →](08-agent-builder.md)
+[← 이전: 05 플랫폼 소비: 게이트웨이, 온보딩, 쿼터와 토큰 예산](05-platform-consumption.md) | [목차](../README.md) | [다음: 08 Agent Builder로 구축 →](08-agent-builder.md)

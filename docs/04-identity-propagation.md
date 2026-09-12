@@ -109,4 +109,4 @@ PAIS 3.0의 LLM 상호작용 추적은 세션과 도구 호출을 OpenTelemetry�
 5. PAIS가 사용자 컨텍스트를 도구와 검색까지 전파하는지 공식 문서로 확인했는가. 확인 전에는 전파되지 않는다고 가정한다.
 
 ---
-[← 이전: 03 에이전트 설계 패턴](03-design-patterns.md) | [목차](../README.md) | [다음: 07 사내 시스템 연동과 쓰기 설계 →](07-integration-write-design.md)
+[← 이전: 03 에이전트 설계 패턴](03-design-patterns.md) | [목차](../README.md) | [다음: 05 플랫폼 소비: 게이트웨이, 온보딩, 쿼터와 토큰 예산 →](05-platform-consumption.md)
