@@ -58,18 +58,18 @@ PAIS가 제공하는 모듈과 시리즈가 떠받치는 인프라 위에는, �
 
 | 책임 영역 | 왜 PAIS 밖인가 | 방향 |
 |-----------|----------------|------|
-| 최종 사용자 신원과 인가(사용자별 접근 권한과 테넌트 격리) | 에이전트 엔드포인트는 호출하는 서비스만 알 뿐, 최종 사용자가 누구인지 모른다 | 앱이 사용자 신원을 주입과 강제, [03 3.9절](03-agent-builder.md), [⑤ ID, 인증, 접근통제](https://github.com/JaeHoYun/vcf-private-ai/blob/main/05-security/docs/03-identity-access.md) |
-| 평가 방법 설계(골든셋, 채점, 회귀, A/B) | PAIS에 이름 붙은 전용 평가 프레임워크는 확인되지 않음 | 앱과 CI 계층에서 설계 [06](06-evaluation-guardrails.md) |
-| 콘텐츠 가드레일(입출력 필터, PII, 프롬프트 인젝션) | PAIS 내장 콘텐츠 가드레일은 확인되지 않음 | 앱 계층 필터 [06](06-evaluation-guardrails.md), [⑤ 앱 계층 가드레일](https://github.com/JaeHoYun/vcf-private-ai/blob/main/05-security/docs/06-app-guardrails.md) |
-| 휴먼인더루프(되돌리기 어려운 행동 승인) | PAIS 내장 휴먼인더루프 기능은 확인되지 않음 | 앱 계층 승인 게이트 [02 2.5절](02-design-patterns.md), [06](06-evaluation-guardrails.md) |
-| 사내 MCP 서버 구현과 호스팅 | PAIS는 도구의 등록, 승인, 소비만 담당하며, 서버 자체는 사용자 자산이다 | 앱, 플랫폼 계층에서 구현, 운영 [04](04-mcp-tools.md) |
-| 모델 파인튜닝과 도메인 적응 학습 | Model Gallery는 모델 보관과 반입만 담당하며, 학습 파이프라인은 범위 밖이다 | 외부와 DLVM에서 학습 후 Gallery로 반입 [05](05-models-serving.md) |
-| 애플리케이션 자체(런타임, UI, 세션 저장, CI/CD, 호출 견고성) | 에이전트를 소비하고 노출하는 앱은 PAIS가 아니다 | 자체 구현, 엔드포인트 소비는 [03 3.8절](03-agent-builder.md) |
-| 외부 시크릿 관리, 관측 백엔드, 온콜 연동 | 기업 표준 보안과 관측 시스템과의 통합 영역 | 외부 시스템 통합 [07](07-operations.md), [⑤ ID, 인증, 접근통제](https://github.com/JaeHoYun/vcf-private-ai/blob/main/05-security/docs/03-identity-access.md) |
+| 최종 사용자 신원과 인가(사용자별 접근 권한과 테넌트 격리) | 에이전트 엔드포인트는 호출하는 서비스만 알 뿐, 최종 사용자가 누구인지 모른다 | 앱이 사용자 신원을 주입과 강제, [08 8.9절](08-agent-builder.md), [⑤ ID, 인증, 접근통제](https://github.com/JaeHoYun/vcf-private-ai/blob/main/05-security/docs/03-identity-access.md) |
+| 평가 방법 설계(골든셋, 채점, 회귀, A/B) | PAIS에 이름 붙은 전용 평가 프레임워크는 확인되지 않음 | 앱과 CI 계층에서 설계 [13](13-evaluation-guardrails.md) |
+| 콘텐츠 가드레일(입출력 필터, PII, 프롬프트 인젝션) | PAIS 내장 콘텐츠 가드레일은 확인되지 않음 | 앱 계층 필터 [13](13-evaluation-guardrails.md), [⑤ 앱 계층 가드레일](https://github.com/JaeHoYun/vcf-private-ai/blob/main/05-security/docs/06-app-guardrails.md) |
+| 휴먼인더루프(되돌리기 어려운 행동 승인) | PAIS 내장 휴먼인더루프 기능은 확인되지 않음 | 앱 계층 승인 게이트 [03 3.5절](03-design-patterns.md), [13](13-evaluation-guardrails.md) |
+| 사내 MCP 서버 구현과 호스팅 | PAIS는 도구의 등록, 승인, 소비만 담당하며, 서버 자체는 사용자 자산이다 | 앱, 플랫폼 계층에서 구현, 운영 [09](09-mcp-tools.md) |
+| 모델 파인튜닝과 도메인 적응 학습 | Model Gallery는 모델 보관과 반입만 담당하며, 학습 파이프라인은 범위 밖이다 | 외부와 DLVM에서 학습 후 Gallery로 반입 [10](10-models-serving.md) |
+| 애플리케이션 자체(런타임, UI, 세션 저장, CI/CD, 호출 견고성) | 에이전트를 소비하고 노출하는 앱은 PAIS가 아니다 | 자체 구현, 엔드포인트 소비는 [08 8.8절](08-agent-builder.md) |
+| 외부 시크릿 관리, 관측 백엔드, 온콜 연동 | 기업 표준 보안과 관측 시스템과의 통합 영역 | 외부 시스템 통합 [14](14-operations.md), [⑤ ID, 인증, 접근통제](https://github.com/JaeHoYun/vcf-private-ai/blob/main/05-security/docs/03-identity-access.md) |
 
 이 영역들은 PAIS가 *못* 하는 것이 아니라 *플랫폼의 일이 아닌* 것입니다. 각 항목을 본문 해당 문서에서 다시 다룹니다.
 
-벤더중립 에이전트 설계 이론(추론, 계획, 평가 방법론 일반)은 이 가이드의 범위 밖이며, 필요한 만큼만 [01](01-foundations.md), [02](02-design-patterns.md)에서 다루고 곧바로 PAIS 구현 설명으로 넘어갑니다.
+벤더중립 에이전트 설계 이론(추론, 계획, 평가 방법론 일반)은 이 가이드의 범위 밖이며, 필요한 만큼만 [01](01-foundations.md), [03](03-design-patterns.md)에서 다루고 곧바로 PAIS 구현 설명으로 넘어갑니다.
 
 ## 0.4 PAIS 6개 모듈 지도
 
@@ -77,21 +77,22 @@ PAIS 3.0은 여섯 모듈로 이뤄집니다(모듈 구성은 2.1과 같고, 3.0
 
 | 모듈 | 역할 | 이 가이드 |
 |------|------|-----------|
-| Model Gallery | 모델 아티팩트 저장소(Harbor 기반 OCI 레지스트리) | [05](05-models-serving.md) |
-| Model Runtime | 추론과 임베딩 모델 서빙(OpenAI 호환 엔드포인트). 3.0부터 로컬 서빙에 더해 다른 인스턴스의 공유 모델과 원격 클라우드 모델을 같은 엔드포인트 형태로 연결 | [05](05-models-serving.md) |
-| Data Indexing and Retrieval | 지식베이스 인덱싱과 검색(pgvector) | [03](03-agent-builder.md) 연결, ④ 위임 |
-| MCP Servers and Tool Gallery | 외부 도구를 MCP로 연결과 중앙 관리(2.1 신규) | [04](04-mcp-tools.md) |
-| Agent Builder | 모델, 지식, 도구, 세션을 묶어 에이전트 구성 | [03](03-agent-builder.md) |
-| Observability | 추론, GPU, 에이전트 상호작용 추적, 관측(2.1 확장) | [07](07-operations.md) |
+| Model Gallery | 모델 아티팩트 저장소(Harbor 기반 OCI 레지스트리) | [10](10-models-serving.md) |
+| Model Runtime | 추론과 임베딩 모델 서빙(OpenAI 호환 엔드포인트). 3.0부터 로컬 서빙에 더해 다른 인스턴스의 공유 모델과 원격 클라우드 모델을 같은 엔드포인트 형태로 연결 | [10](10-models-serving.md) |
+| Data Indexing and Retrieval | 지식베이스 인덱싱과 검색(pgvector) | [08](08-agent-builder.md) 연결, ④ 위임 |
+| MCP Servers and Tool Gallery | 외부 도구를 MCP로 연결과 중앙 관리(2.1 신규) | [09](09-mcp-tools.md) |
+| Agent Builder | 모델, 지식, 도구, 세션을 묶어 에이전트 구성 | [08](08-agent-builder.md) |
+| Observability | 추론, GPU, 에이전트 상호작용 추적, 관측(2.1 확장) | [14](14-operations.md) |
 
 세 모듈(MCP, Agent Builder, 확장된 Observability)이 2.0과 구분되는 2.1의 에이전트 기능을 이룹니다. 3.0은 새 모듈을 더하지 않고, 에이전트가 쓸 모델을 어디서 가져오는지(공유 모델, 원격 클라우드 모델)와 무엇으로 인증하는지(API 토큰)를 넓혔습니다. 자세한 모듈별 역할과 에이전트 구성요소는 [01](01-foundations.md)에서 풀어 설명합니다.
 
 ## 0.5 읽는 순서
 
-- 개념부터 잡으려면 **00 → 01 → 02**를 차례로 읽으십시오.
-- 손으로 먼저 만들어 보려면 **[03 Agent Builder](03-agent-builder.md)** 로 건너뛰고, 도구 연결이 필요할 때 **[04 MCP](04-mcp-tools.md)**, 모델 선택이 필요할 때 **[05 모델과 서빙](05-models-serving.md)** 으로 돌아오십시오.
-- 운영 준비 단계라면 **[06 평가와 가드레일](06-evaluation-guardrails.md) → [07 운영과 Day-2](07-operations.md)** 가 핵심입니다.
-- 무엇에 적용할지, 도입할 가치가 있는지부터 판단해야 한다면 **[08 어디에 쓰나](08-use-cases.md)** 를 먼저 읽으십시오. 기술 문서(01~07)를 몰라도 읽을 수 있습니다.
+- 문서 번호는 서비스 수명주기 순서(기획과 선정 00~02, 설계 03~07, 구축 08~11, 검증과 출시 12~13, 운영과 종료 14)를 따릅니다. 처음부터 끝까지 읽으면 서비스 하나의 흐름이 됩니다.
+- 무엇에 적용할지, 도입할 가치가 있는지부터 판단해야 한다면 **[02 어디에 쓰나](02-use-cases.md)** 를 먼저 읽으십시오. 뒤의 설계와 구축 문서를 몰라도 읽을 수 있습니다.
+- 개념부터 잡으려면 **00 → 01 → 03**을 차례로 읽으십시오.
+- 손으로 먼저 만들어 보려면 **[08 Agent Builder](08-agent-builder.md)** 로 건너뛰고, 도구 연결이 필요할 때 **[09 MCP](09-mcp-tools.md)**, 모델 선택이 필요할 때 **[10 모델과 서빙](10-models-serving.md)** 으로 돌아오십시오.
+- 운영 준비 단계라면 **[13 평가와 가드레일](13-evaluation-guardrails.md) → [14 운영과 Day-2](14-operations.md)** 가 핵심입니다.
 
 ## 0.6 앞으로의 지형 — 2026-08 Explore 발표와 9.1.1 GA 이후 (참고)
 
@@ -99,15 +100,15 @@ PAIS 3.0은 여섯 모듈로 이뤄집니다(모듈 구성은 2.1과 같고, 3.0
 
 **9.1.1 / PAIS 3.0에서 GA로 확인되어 본문에 반영한 것**
 
-- **멀티테넌트 모델 공유** — Explore에서 "Model Runtime 강화"로 발표된 것이 PAIS 3.0의 공유 모델 호스팅으로 나왔습니다. [05 5.1절](05-models-serving.md)과 [07 7.1절](07-operations.md)에 반영했습니다.
-- **원격 클라우드 모델과 API 토큰** — 발표 자료에는 부각되지 않았지만 3.0 릴리스 노트에 있는 GA 기능입니다. [05](05-models-serving.md), [03 3.9절](03-agent-builder.md), [06 6.5절](06-evaluation-guardrails.md)에 반영했습니다.
+- **멀티테넌트 모델 공유** — Explore에서 "Model Runtime 강화"로 발표된 것이 PAIS 3.0의 공유 모델 호스팅으로 나왔습니다. [10 10.1절](10-models-serving.md)과 [14 14.1절](14-operations.md)에 반영했습니다.
+- **원격 클라우드 모델과 API 토큰** — 발표 자료에는 부각되지 않았지만 3.0 릴리스 노트에 있는 GA 기능입니다. [10](10-models-serving.md), [08 8.9절](08-agent-builder.md), [13 13.5절](13-evaluation-guardrails.md)에 반영했습니다.
 - **VCF Operations AI Assistant** — PAIS 모델 엔드포인트를 백엔드로 플랫폼을 진단하는 기능이 9.1.1로 GA됐습니다. 에이전트 가이드 범위 밖이라 [① 10 10.4.4절](https://github.com/JaeHoYun/vcf-private-ai/blob/main/01-infra/docs/10-operations.md)에 있습니다.
 
 **발표 단계 — 본문 미반영**
 
 - **AI Gateway** — 온프레미스와 클라우드 모델 사이의 프롬프트 라우팅, 사용자 단위 토큰 제한, OpenID Connect 기반 애플리케이션 인가. 공식 블로그와 보도 모두 "향후 릴리스"로 표기합니다. 지금은 호출 빈도 제어를 앱 계층이 맡는다는 [③ 05 5.5절](https://github.com/JaeHoYun/vcf-private-ai/blob/main/03-serving-api/docs/05-auth-and-gateway.md)의 결론이 그대로입니다.
-- **Secure Agent Framework** — 에이전트가 생성한 코드를 격리 실행하는 샌드박스와, 도구 접근과 에이전트 간 통신과 출력 검증을 통제하는 Agent Harness. 향후 릴리스입니다. 이 가이드가 앱 계층 책임으로 정리한 통제(0.3절, [06 6.5절](06-evaluation-guardrails.md))의 일부가 플랫폼으로 내려올 수 있는 대목이라 계속 지켜봅니다.
-- **Model Autoscaling** — 지연과 세션 임계 기반 자동 스케일. 향후 릴리스이며, 레플리카 수는 여전히 수동 설정입니다([07 7.8절](07-operations.md)).
+- **Secure Agent Framework** — 에이전트가 생성한 코드를 격리 실행하는 샌드박스와, 도구 접근과 에이전트 간 통신과 출력 검증을 통제하는 Agent Harness. 향후 릴리스입니다. 이 가이드가 앱 계층 책임으로 정리한 통제(0.3절, [13 13.5절](13-evaluation-guardrails.md))의 일부가 플랫폼으로 내려올 수 있는 대목이라 계속 지켜봅니다.
+- **Model Autoscaling** — 지연과 세션 임계 기반 자동 스케일. 향후 릴리스이며, 레플리카 수는 여전히 수동 설정입니다([14 14.8절](14-operations.md)).
 - **AgentMinder** — 에이전트에 신원과 임무를 부여하고 호출 단위로 정책을 평가해 OpenTelemetry로 감사하는 별도 제품. GA로 보도됐지만 PAIS 구성요소가 아니므로 이 가이드 범위 밖입니다.
 - **VMware Private AI Cloud, VMware AI Factory** — 인프라와 에이전트와 데이터와 보안을 아우르는 브랜드와, 베어메탈부터 모델 서빙까지의 자동화 프로그램(AMD Instinct MI350과 ROCm, OEM AI ReadyNode 포함). 라이선스 패키징은 공개되지 않았고 애널리스트는 새 AI 기능 대부분이 별도 애드온일 가능성을 짚습니다.
 - **Tanzu Platform의 에이전트 계층** — 기본 차단(deny-by-default) 샌드박스와 크리덴셜 분리 보관을 내세우는 에이전트 개발과 실행 계층. Secure Agent Framework와 같은 방향의 발표입니다.
