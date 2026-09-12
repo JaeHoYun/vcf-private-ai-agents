@@ -65,7 +65,7 @@ PAIS의 에이전트는 각각 독립된 챗 컴플리션 엔드포인트로 노
 - **도구 오류 처리** — 도구가 실패하거나 비정상 응답을 줄 때 에이전트가 어떻게 대응하는가.
 - **사람 개입 지점** — 되돌리기 어려운 행동(쓰기, 전송, 결제) 앞에 사람의 확인을 둘지. PAIS에 내장된 휴먼인더루프 기능은 확인되지 않으므로, 이런 게이트는 **애플리케이션 계층에서 설계**해야 합니다([13](13-evaluation-guardrails.md)).
 
-이 실패 유형과 평가와 가드레일은 [13 평가와 가드레일](13-evaluation-guardrails.md)에서 자세히 다룹니다.
+이 실패 유형과 평가와 가드레일은 [13 평가와 출시 게이트](13-evaluation-guardrails.md)에서 자세히 다룹니다.
 
 ## 3.6 관리형 Agent Builder와 자체 앱
 
@@ -102,7 +102,7 @@ PAIS의 에이전트는 각각 독립된 챗 컴플리션 엔드포인트로 노
 
 설계에서 무거운 결정은 세 가지입니다.
 
-- **온라인 서비스와의 GPU 나눔** — PAIS의 Model Runtime은 온라인 OpenAI 호환 엔드포인트를 제공하며, 추론 엔진을 오프라인 배치 모드로 직접 돌리는 경로는 공식 문서에서 확인되지 않습니다. 따라서 배치도 같은 엔드포인트를 호출하되, 대화형 서비스의 지연 목표를 지키려면 **별도 모델 엔드포인트(또는 별도 네임스페이스)를 배치 전용으로 두거나, 야간 윈도우로 몰거나, 드라이버의 동시성을 낮게 고정**해야 합니다. 같은 엔드포인트를 나눠 쓰면 배치가 대화형의 첫 토큰 지연을 잡아먹습니다. 플랫폼 쪽 쿼터와 우선순위 수단은 [⑥ 06 용량 계획](https://github.com/JaeHoYun/vcf-private-ai/blob/main/06-sizing-cost/docs/06-capacity-planning.md)과 [① 06 스케일링](https://github.com/JaeHoYun/vcf-private-ai/blob/main/01-infra/docs/06-production.md)을 참조합니다.
+- **온라인 서비스와의 GPU 나눔** — PAIS의 Model Runtime은 온라인 OpenAI 호환 엔드포인트를 제공하며, 추론 엔진을 오프라인 배치 모드로 직접 돌리는 경로는 공식 문서에서 확인되지 않습니다. 따라서 배치도 같은 엔드포인트를 호출하되, 대화형 서비스의 지연 목표를 지키려면 **별도 모델 엔드포인트(또는 별도 네임스페이스)를 배치 전용으로 두거나, 야간 윈도우로 몰거나, 드라이버의 동시성을 낮게 고정**해야 합니다. 같은 엔드포인트를 나눠 쓰면 배치가 대화형의 첫 토큰 지연을 잡아먹습니다. 실행 경로 세 가지와 플랫폼 쪽 우선순위 수단은 [③ 07 7.9절](https://github.com/JaeHoYun/vcf-private-ai/blob/main/03-serving-api/docs/07-observability-ops.md)이 정본이고, 쿼터와 용량은 [⑥ 06 용량 계획](https://github.com/JaeHoYun/vcf-private-ai/blob/main/06-sizing-cost/docs/06-capacity-planning.md)과 [① 06 스케일링](https://github.com/JaeHoYun/vcf-private-ai/blob/main/01-infra/docs/06-production.md)을 참조합니다. 운영에 올린 뒤의 규율(체크포인트, 백프레셔, 관측, 샘플 검수)은 [14 14.9절](14-operations.md)에 있습니다.
 - **단가** — 배치는 처리량이 곧 비용이라 건당 토큰과 GPU 시간을 미리 셈합니다. 사이징 입력값의 "문서 요약(배치)" 프로파일(장문 입력, 버스트, 저지연 불필요)이 출발점이며([⑥ A2](https://github.com/JaeHoYun/vcf-private-ai/blob/main/06-sizing-cost/appendix/A2-inputs-and-defaults.md)), 야간 유휴 GPU를 채우면 단위비용이 내려갑니다.
 - **품질 검증** — 대화형과 달리 사람이 결과를 하나씩 보지 않으므로, 샘플 검수와 스키마 검증과 골든셋 회귀를 파이프라인 안에 넣어야 합니다([13 13.7절](13-evaluation-guardrails.md)). 임베딩 인덱싱도 같은 배치 워크로드이며 ④의 인입 파이프라인이 그 예입니다.
 

@@ -157,4 +157,4 @@ OWASP Top 10 for Agentic Applications 2026의 열 항목을 이 서비스에 대
 6. 원격 모델을 쓴다면 반출 허용 목록과 인입 단 마스킹의 검증 결과.
 
 ---
-[← 이전: 11 앱 통합과 신뢰 UX](11-app-integration-ux.md) | [목차](../README.md) | [다음: 13 평가와 가드레일 →](13-evaluation-guardrails.md)
+[← 이전: 11 앱 통합과 신뢰 UX](11-app-integration-ux.md) | [목차](../README.md) | [다음: 13 평가와 출시 게이트 →](13-evaluation-guardrails.md)

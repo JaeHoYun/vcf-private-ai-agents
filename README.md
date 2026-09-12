@@ -51,11 +51,11 @@
 | | 07 | [사내 시스템 연동과 쓰기 설계](docs/07-integration-write-design.md) | API와 MCP와 RPA 선택, 작업 분류표, 승인 게이트와 승인 큐, 멱등 키와 보상, 다운스트림 보호, 도구 스키마 계약 |
 | 구축 | 08 | [Agent Builder로 구축](docs/08-agent-builder.md) | 에이전트 생성, 모델 엔드포인트, 지시문, 지식베이스, 도구, 세션, Playground, REST API |
 | | 09 | [MCP 도구 통합](docs/09-mcp-tools.md) | MCP 3방향(호출, 호스팅, 등록), Tool Gallery, 전송과 인증, 보안 경계 |
-| | 10 | [모델과 서빙](docs/10-models-serving.md) | Model Runtime, OpenAI 호환 API, 서빙 엔진, Model Gallery, 에어갭(Artifact Mirroring Tool), CLI |
+| | 10 | [모델과 서빙](docs/10-models-serving.md) | Model Runtime, OpenAI 호환 API, 서빙 엔진, Model Gallery, 에어갭(Artifact Mirroring Tool), CLI, 한국어 모델과 임베딩 선정 기준, 모델 라이선스 심사 체크리스트 |
 | | 11 | [앱 통합과 신뢰 UX](docs/11-app-integration-ux.md) | 4-Tier와 BFF, 세션과 멀티턴, 출처 카드와 폴백 문구와 신뢰도와 진행 표시, 사람 이관 페이로드, 피드백 이벤트 스키마, AI 생성 고지와 표시, 대화 데이터 거버넌스, 메신저 봇과 임베드 코파일럿 |
 | 검증과 출시 | 12 | [서비스 보안 준비와 가드레일](docs/12-service-security.md) | 플랫폼 보안과 서비스 보안의 경계, 준비물 점검, 가드레일 선택과 배치, 에이전트 위협 열 항목의 서비스 대입, 자율성 상한 적용, 레드팀 게이트, PoC와 파일럿과 프로덕션 체크리스트 |
-| | 13 | [평가와 가드레일](docs/13-evaluation-guardrails.md) | Playground, CI/CD 테스트, 실패 유형, 가드레일과 휴먼인더루프 경계 |
-| 운영과 종료 | 14 | [운영과 Day-2](docs/14-operations.md) | 배포 토폴로지, 관측성, 업그레이드와 다운타임, 알려진 이슈, 비용 |
+| | 13 | [평가와 출시 게이트](docs/13-evaluation-guardrails.md) | Playground, CI/CD 테스트, 실패 유형, 가드레일과 휴먼인더루프 경계, 골든셋과 채점, 프롬프트 수명주기, 릴리스 매니페스트와 A/B, 출시 심사 패키지 |
+| 운영과 종료 | 14 | [운영과 Day-2](docs/14-operations.md) | 배포 토폴로지, 관측성, 업그레이드와 다운타임, 알려진 이슈, 비용, 배치 워크로드 운영, 모델 폐기 고지, 플랫폼 SLA, 서비스 퇴역 |
 | 부록 | A1 | [부록](appendix/A1-reference.md) | 용어집, 참조 링크 |
 | | A2 | [워크시트](appendix/A2-worksheets.md) | 유스케이스 선별 워크시트, 운영 투입 전 점검표, MCP 서버 등록 체크리스트 |
 
@@ -74,7 +74,7 @@
 - **"어떤 모델을 어떻게 서빙하나"** → [10 모델과 서빙](docs/10-models-serving.md)
 - **"화면에서 사용자가 답을 믿게 하려면, 고지는 어떻게"** → [11 앱 통합과 신뢰 UX](docs/11-app-integration-ux.md)
 - **"이 서비스를 출시하려면 보안에서 무엇을 준비하나"** → [12 서비스 보안 준비와 가드레일](docs/12-service-security.md)
-- **"운영에 올리기 전 점검한다"** → [13 평가와 가드레일](docs/13-evaluation-guardrails.md) | [14 운영과 Day-2](docs/14-operations.md)
+- **"운영에 올리기 전 점검한다"** → [13 평가와 출시 게이트](docs/13-evaluation-guardrails.md) | [14 운영과 Day-2](docs/14-operations.md)
 
 ## 라이선스
 

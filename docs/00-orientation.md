@@ -55,9 +55,9 @@
 
 - **기획과 선정** — 어떤 일에 써야 성과가 나는지, 파일럿이 어디서 멈추는지, 위험 등급과 자율성 상한을 어떻게 정하는지([02](02-use-cases.md))
 - **설계** — 언제 에이전트로 풀지, 단일과 멀티, 도구와 지식 연결, 세션, 배치 파이프라인([03](03-design-patterns.md)), 사용자 신원이 어디까지 따라가는지([04](04-identity-propagation.md)), 앱 팀이 플랫폼에서 무엇을 받고 게이트웨이와 토큰 예산을 어떻게 소비하는지([05](05-platform-consumption.md)), 어떤 문서를 어떤 승인으로 들이고 보호 문서는 어떻게 다루는지([06](06-data-onboarding.md)), 사내 시스템 연동과 쓰기의 승인과 정합성([07](07-integration-write-design.md))
-- **구축** — PAIS 3.0 Agent Builder로 에이전트를 구성하는 절차([08](08-agent-builder.md)), MCP로 사내와 외부 시스템 도구를 연결하고 승인하고 관리하는 방법([09](09-mcp-tools.md)), 에이전트가 쓰는 모델을 Model Runtime으로 서빙하고 Model Gallery로 관리하는 방법([10](10-models-serving.md)), 앱으로 감싸고 사용자가 답을 믿게 만드는 화면과 고지와 대화 데이터([11](11-app-integration-ux.md))
-- **검증과 출시** — 서비스 하나를 출시하기까지 앱 팀이 준비하고 증명할 보안, 곧 가드레일 선택과 배치, 에이전트 위협 점검, 자율성 상한, 레드팀, 게이트별 체크리스트([12](12-service-security.md)), 평가와 가드레일 한계와 휴먼인더루프([13](13-evaluation-guardrails.md))
-- **운영과 종료** — 배포 토폴로지, 관측, 업그레이드, 비용, 서비스 퇴역([14](14-operations.md))
+- **구축** — PAIS 3.0 Agent Builder로 에이전트를 구성하는 절차([08](08-agent-builder.md)), MCP로 사내와 외부 시스템 도구를 연결하고 승인하고 관리하는 방법([09](09-mcp-tools.md)), 에이전트가 쓰는 모델을 Model Runtime으로 서빙하고 Model Gallery로 관리하는 방법과 한국어 모델 선정 기준과 라이선스 심사([10](10-models-serving.md)), 앱으로 감싸고 사용자가 답을 믿게 만드는 화면과 고지와 대화 데이터([11](11-app-integration-ux.md))
+- **검증과 출시** — 서비스 하나를 출시하기까지 앱 팀이 준비하고 증명할 보안, 곧 가드레일 선택과 배치, 에이전트 위협 점검, 자율성 상한, 레드팀, 게이트별 체크리스트([12](12-service-security.md)), 평가와 가드레일 한계와 휴먼인더루프, 프롬프트 수명주기와 릴리스 매니페스트와 출시 심사 패키지([13](13-evaluation-guardrails.md))
+- **운영과 종료** — 배포 토폴로지, 관측, 업그레이드, 비용, 배치 워크로드 운영, 모델 폐기 고지, 플랫폼 SLA, 서비스 퇴역([14](14-operations.md))
 
 **다루지 않는 것 (위임)**
 
@@ -108,7 +108,7 @@ PAIS 3.0은 여섯 모듈로 이뤄집니다(모듈 구성은 2.1과 같고, 3.0
 - **무엇에 적용할지, 도입할 가치가 있는지부터 판단해야 한다면** [02 어디에 쓰나](02-use-cases.md)를 먼저 읽으십시오. 위험 등급과 자율성 상한을 정하는 절도 거기 있습니다. 뒤의 설계와 구축 문서를 몰라도 읽을 수 있습니다.
 - **개념부터 잡으려면** 00 → [01](01-foundations.md) → [03](03-design-patterns.md)을 차례로 읽으십시오.
 - **손으로 먼저 만들어 보려면** [08 Agent Builder](08-agent-builder.md)로 건너뛰고, 도구 연결이 필요할 때 [09 MCP](09-mcp-tools.md), 모델 선택이 필요할 때 [10 모델과 서빙](10-models-serving.md)으로 돌아오십시오.
-- **출시를 심사하거나 준비하는 단계라면** [12 서비스 보안 준비와 가드레일](12-service-security.md) → [13 평가와 가드레일](13-evaluation-guardrails.md) → [14 운영과 Day-2](14-operations.md)가 핵심입니다. 플랫폼 전체의 보안 착수 순서는 [⑤ 00 어디서부터 시작하나](https://github.com/JaeHoYun/vcf-private-ai/blob/main/05-security/docs/00-where-to-start.md)가 맡습니다.
+- **출시를 심사하거나 준비하는 단계라면** [12 서비스 보안 준비와 가드레일](12-service-security.md) → [13 평가와 출시 게이트](13-evaluation-guardrails.md) → [14 운영과 Day-2](14-operations.md)가 핵심입니다. 플랫폼 전체의 보안 착수 순서는 [⑤ 00 어디서부터 시작하나](https://github.com/JaeHoYun/vcf-private-ai/blob/main/05-security/docs/00-where-to-start.md)가 맡습니다.
 
 ## 0.6 앞으로의 지형 — 2026-08 Explore 발표와 9.1.1 GA 이후 (참고)
 
