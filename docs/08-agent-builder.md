@@ -1,4 +1,4 @@
-# 03 — Agent Builder로 구축
+# 08 — Agent Builder로 구축
 
 [← 목차로](../README.md)
 
@@ -8,7 +8,7 @@
 
 ---
 
-## 3.1 구성 흐름 개요
+## 8.1 구성 흐름 개요
 
 Agent Builder에서는 코드부터 작성하지 않습니다. **UI 위저드로 구성 → Playground로 테스트 → REST API로 소비**가 기본 흐름이며, 구성 결과를 코드로 내보내 형상관리할 수 있습니다.
 
@@ -23,13 +23,13 @@ Agent Builder에서는 코드부터 작성하지 않습니다. **UI 위저드로
 
 구성요소는 [01 1.3절](01-foundations.md)에서 소개한 표와 같습니다. 아래에서 항목별로 채웁니다.
 
-## 3.2 모델 엔드포인트 선택
+## 8.2 모델 엔드포인트 선택
 
-에이전트는 **Model Runtime에서 서빙 중인 completion 모델 엔드포인트** 하나를 사용합니다. Agent Builder에서 드롭다운으로 선택하며, 목록에 없다면 먼저 모델을 서빙해야 합니다([05](05-models-serving.md)).
+에이전트는 **Model Runtime에서 서빙 중인 completion 모델 엔드포인트** 하나를 사용합니다. Agent Builder에서 드롭다운으로 선택하며, 목록에 없다면 먼저 모델을 서빙해야 합니다([10](10-models-serving.md)).
 
-선택 기준(도구 호출 지원, 컨텍스트 길이, 비용, 지연, 임베딩 모델)은 [05 5.6절 에이전트 관점의 모델 선택](05-models-serving.md)에 모아 두었습니다. 구성 단계에서는 특히 **도구 호출 지원**을 먼저 확인하십시오 — 도구를 적극적으로 쓰는 에이전트를 네이티브 도구 호출(tool calling) 미지원 모델로 구성하면 별도 설정이 필요합니다([02 2.4절](02-design-patterns.md)).
+선택 기준(도구 호출 지원, 컨텍스트 길이, 비용, 지연, 임베딩 모델)은 [10 10.6절 에이전트 관점의 모델 선택](10-models-serving.md)에 모아 두었습니다. 구성 단계에서는 특히 **도구 호출 지원**을 먼저 확인하십시오 — 도구를 적극적으로 쓰는 에이전트를 네이티브 도구 호출(tool calling) 미지원 모델로 구성하면 별도 설정이 필요합니다([03 3.4절](03-design-patterns.md)).
 
-## 3.3 지시문(Instructions) 작성
+## 8.3 지시문(Instructions) 작성
 
 지시문은 에이전트의 시스템 프롬프트이자 행동 정책입니다(선택 항목). 다음을 명확히 적습니다.
 
@@ -38,9 +38,9 @@ Agent Builder에서는 코드부터 작성하지 않습니다. **UI 위저드로
 - **응답 형식, 언어, 톤** — 출력 형식과 어조.
 - **거절과 한계** — 권한 밖 요청이나 근거 부족 시 어떻게 답할지.
 
-지시문은 짧고 구체적일수록 모델이 일관되게 따릅니다. 길고 모순된 지시문은 도구 오선택과 환각을 늘립니다. 효과는 Playground와 평가([06](06-evaluation-guardrails.md))로 확인하며 수정과 보완합니다.
+지시문은 짧고 구체적일수록 모델이 일관되게 따릅니다. 길고 모순된 지시문은 도구 오선택과 환각을 늘립니다. 효과는 Playground와 평가([13](13-evaluation-guardrails.md))로 확인하며 수정과 보완합니다.
 
-## 3.4 지식베이스 연결
+## 8.4 지식베이스 연결
 
 검색이 필요하면 Data Indexing and Retrieval에서 만든 지식베이스를 연결합니다. 지식베이스 구성, 청크, 임베딩의 상세는 ④에 위임하고, 여기서는 **에이전트가 검색을 어떻게 쓰는지**만 다룹니다.
 
@@ -50,18 +50,18 @@ Agent Builder에서는 코드부터 작성하지 않습니다. **UI 위저드로
 
 > 지식베이스의 벡터 저장은 pgvector 확장을 갖춘 외부 PostgreSQL을 사용합니다. 임베딩 모델은 Model Runtime이 서빙하며, 인덱싱과 질의에 **같은 임베딩 모델**이 쓰입니다(상세와 구성은 [②](https://github.com/JaeHoYun/vcf-private-ai/tree/main/02-vectordb), [④](https://github.com/JaeHoYun/vcf-private-ai/tree/main/04-rag)). 특정 기본 임베딩 모델명은 공식 문서로 확인하시기 바랍니다.
 
-## 3.5 도구(MCP) 연결
+## 8.5 도구(MCP) 연결
 
-에이전트에 외부 시스템 도구를 붙이려면 MCP 서버의 도구를 연결합니다. 등록, 승인, 전송, 인증의 상세는 [04 MCP 도구 통합](04-mcp-tools.md)에서 다룹니다. 여기서는 다음만 기억하면 됩니다.
+에이전트에 외부 시스템 도구를 붙이려면 MCP 서버의 도구를 연결합니다. 등록, 승인, 전송, 인증의 상세는 [09 MCP 도구 통합](09-mcp-tools.md)에서 다룹니다. 여기서는 다음만 기억하면 됩니다.
 
 - 도구는 **관리자가 승인한 것만** 에이전트에 노출됩니다.
-- 도구는 최소한으로 명확하게 — 비슷한 도구가 많으면 모델이 잘못 고릅니다([02 2.3절](02-design-patterns.md)).
+- 도구는 최소한으로 명확하게 — 비슷한 도구가 많으면 모델이 잘못 고릅니다([03 3.3절](03-design-patterns.md)).
 
-## 3.6 세션과 검색 파라미터
+## 8.6 세션과 검색 파라미터
 
-[02 2.4절](02-design-patterns.md)에서 설계한 값을 여기서 적용합니다 — 대화 이력 길이, 유지 시간(TTL), 요약 전략, 그리고 위의 검색 파라미터. 기본값에서 시작해 실제 대화와 평가로 조정하는 편이 안전합니다.
+[03 3.4절](03-design-patterns.md)에서 설계한 값을 여기서 적용합니다 — 대화 이력 길이, 유지 시간(TTL), 요약 전략, 그리고 위의 검색 파라미터. 기본값에서 시작해 실제 대화와 평가로 조정하는 편이 안전합니다.
 
-## 3.7 Playground로 테스트
+## 8.7 Playground로 테스트
 
 Agent Builder는 **Playground**(대화형 테스트 화면)를 제공합니다. 배포 전에 다음을 확인하십시오.
 
@@ -70,9 +70,9 @@ Agent Builder는 **Playground**(대화형 테스트 화면)를 제공합니다. 
 - 근거 없이 단정하지 않는가, 권한 밖 요청을 적절히 거절하는가.
 - 지시문 변경이 행동을 의도대로 바꾸는가.
 
-Playground는 1차 검증 수단이며, 반복 가능한 품질 측정은 CI/CD 자동 테스트로 보완합니다([06](06-evaluation-guardrails.md)).
+Playground는 1차 검증 수단이며, 반복 가능한 품질 측정은 CI/CD 자동 테스트로 보완합니다([13](13-evaluation-guardrails.md)).
 
-## 3.8 REST API 소비와 구성 코드 내보내기
+## 8.8 REST API 소비와 구성 코드 내보내기
 
 완성된 에이전트는 **챗 컴플리션 엔드포인트**로 노출됩니다. 애플리케이션은 이 엔드포인트를 OpenAI 호환 방식으로 호출해 에이전트를 소비합니다 — 모델 엔드포인트를 직접 부르는 것과 달리, 에이전트 엔드포인트는 검색, 도구, 세션을 그 위에 더해 줍니다.
 
@@ -95,11 +95,11 @@ curl 'https://<PAIS FQDN>/api/v1/compatibility/openai/v1/agents/<agent-id>/chat/
 > **PAIS 3.0에서 바뀐 것** — 에이전트 API의 `completion_role` 필드가 제거되고 응답 role은 항상 `assistant`입니다. 메시지 배열 없이 프롬프트 문자열을 보내는 non-chat completions 형태는 OpenAI 호환 API와 Agent Builder API 양쪽에서 deprecated이므로 위 `chat/completions` 경로만 쓰십시오. boolean 필드는 엄격히 검증되어 `"stream": "true"` 같은 문자열 값은 거부됩니다. ([근거: PAIS 3.0 릴리스 노트](https://techdocs.broadcom.com/us/en/vmware-cis/private-ai/foundation-with-nvidia/9-1/private-ai-release-notes/vmware-private-ai-services-release-notes.html))
 
 - **구성 코드 내보내기** — Agent Builder는 구성 코드(View Configuration Code) 보기를 제공합니다. 이를 형상관리에 두면 에이전트 정의를 코드로 추적하고 재현할 수 있습니다.
-- **자동화** — 구성을 코드로 다루면 CI/CD에서 에이전트를 배포하고 테스트하는 파이프라인을 구성할 수 있습니다([06](06-evaluation-guardrails.md)).
+- **자동화** — 구성을 코드로 다루면 CI/CD에서 에이전트를 배포하고 테스트하는 파이프라인을 구성할 수 있습니다([13](13-evaluation-guardrails.md)).
 
-## 3.9 신원의 두 층위 — 서비스 인증과 최종 사용자
+## 8.9 신원의 두 층위 — 서비스 인증과 최종 사용자
 
-에이전트 엔드포인트를 앱에서 소비할 때(3.8절), 신원은 두 층위로 나뉩니다. 이 둘을 섞으면 권한이 필요 이상으로 넓어집니다.
+에이전트 엔드포인트를 앱에서 소비할 때(8.8절), 신원은 두 층위로 나뉩니다. 이 둘을 섞으면 권한이 필요 이상으로 넓어집니다.
 
 - **서비스 인증(앱 → PAIS)** — 앱이 에이전트와 모델 엔드포인트를 호출할 때 쓰는 서비스 신원(토큰과 키)입니다. 토큰 발급, 보관, 로테이션은 앱과 플랫폼의 책임이며, 자격증명은 비밀로 관리합니다([⑤ ID, 인증, 접근통제](https://github.com/JaeHoYun/vcf-private-ai/blob/main/05-security/docs/03-identity-access.md)). PAIS 3.0부터는 OIDC 액세스 토큰 외에 계정이 직접 발급하는 **API 토큰**(`vcfa-<org>-...` 또는 `pais-<인증공급자>-...`)이 생겼습니다. 용도는 다른 인스턴스의 공유 모델 접근, VCF Consumption CLI 실행, PAIS API 인증이며, 같은 `Authorization: Bearer` 헤더로 보냅니다. 사용자 신원을 담지 않는 장기 토큰이므로 일반 앱의 사용자 요청 경로에는 쓰지 않고 인스턴스 간 연결과 자동화에만 씁니다. UI로 PAIS를 활성화하면 API 토큰 발급이 기본으로 꺼져 있는 알려진 이슈가 있으니 첫 배포 때 확인하십시오([③ 05 5.6절](https://github.com/JaeHoYun/vcf-private-ai/blob/main/03-serving-api/docs/05-auth-and-gateway.md)).
 - **최종 사용자 신원(사람 사용자)** — 엔드포인트는 호출하는 서비스만 알 뿐, 그 뒤에 있는 실제 사용자가 누구인지 모릅니다. 따라서 사용자 로그인, 사용자별 접근 권한, 테넌트 격리는 PAIS가 아니라 앱이 책임집니다([00 0.3절](00-orientation.md) 책임 경계).
@@ -107,7 +107,7 @@ curl 'https://<PAIS FQDN>/api/v1/compatibility/openai/v1/agents/<agent-id>/chat/
 이 구분에서 다음 설계 원칙이 따라 나옵니다.
 
 - **사용자 신원은 앱이 강제한다** — 앱 앞단(또는 API 게이트웨이)에서 사용자를 인증하고 권한을 검사한 뒤에만 에이전트를 호출합니다. 엔드포인트가 사용자 신원까지 처리해 줄 것으로 가정하지 마십시오.
-- **권한 전파** — 에이전트가 도구로 사내 시스템을 건드릴 때, 넓은 서비스 자격증명이 아니라 요청한 사용자의 권한 범위 안에서만 동작하도록 앱이 컨텍스트를 좁혀 전달해야 합니다. 그러지 않으면 한 사용자가 도구를 통해 다른 사용자의 데이터에 접근할 수 있습니다([02 2.3절](02-design-patterns.md), [04 4.7절](04-mcp-tools.md) 권한 최소화).
+- **권한 전파** — 에이전트가 도구로 사내 시스템을 건드릴 때, 넓은 서비스 자격증명이 아니라 요청한 사용자의 권한 범위 안에서만 동작하도록 앱이 컨텍스트를 좁혀 전달해야 합니다. 그러지 않으면 한 사용자가 도구를 통해 다른 사용자의 데이터에 접근할 수 있습니다([03 3.3절](03-design-patterns.md), [09 9.7절](09-mcp-tools.md) 권한 최소화).
 - **테넌트 격리** — 팀, 고객별로 지식베이스, 도구, 세션이 섞이면 안 된다면, 테넌트별로 에이전트(또는 지식베이스와 도구 집합)를 분리하거나 vSphere Namespace 단위로 격리합니다(상세 [⑤ 네트워크, 테넌트, GPU 격리](https://github.com/JaeHoYun/vcf-private-ai/blob/main/05-security/docs/02-network-tenant-isolation.md)).
 
 > **경계** — PAIS가 호출 시 받은 사용자 컨텍스트를 도구와 검색까지 전파하는지는 공식 문서로 확인하십시오. 확인 전에는 앱이 사용자 신원과 권한을 직접 들고 강제한다고 가정하는 편이 안전합니다.
@@ -116,23 +116,23 @@ curl 'https://<PAIS FQDN>/api/v1/compatibility/openai/v1/agents/<agent-id>/chat/
 
 접근 통제, 감사, 격리의 구현 상세는 ⑤에 위임합니다.
 
-## 3.10 엔드포인트 소비 — 인증, 스트리밍, 견고성
+## 8.10 엔드포인트 소비 — 인증, 스트리밍, 견고성
 
-에이전트 엔드포인트를 앱에서 호출할 때(3.8절), 단일 모델 호출보다 견고성이 더 중요합니다 — 에이전트는 도구와 검색으로 단계가 많아 종단 지연이 크고 부분 실패가 잦기 때문입니다.
+에이전트 엔드포인트를 앱에서 호출할 때(8.8절), 단일 모델 호출보다 견고성이 더 중요합니다 — 에이전트는 도구와 검색으로 단계가 많아 종단 지연이 크고 부분 실패가 잦기 때문입니다.
 
-- **인증** — OpenAI 호환 호출에 서비스 인증 토큰을 `Authorization: Bearer <액세스 토큰>` 헤더로 싣습니다([근거: Private AI Services API](https://developer.broadcom.com/xapis/vmware-private-ai-service-api/latest/)). 토큰 발급, 로테이션은 앱, 플랫폼 책임이며, 최종 사용자 신원과는 별개입니다(3.9절).
+- **인증** — OpenAI 호환 호출에 서비스 인증 토큰을 `Authorization: Bearer <액세스 토큰>` 헤더로 싣습니다([근거: Private AI Services API](https://developer.broadcom.com/xapis/vmware-private-ai-service-api/latest/)). 토큰 발급, 로테이션은 앱, 플랫폼 책임이며, 최종 사용자 신원과는 별개입니다(8.9절).
 - **스트리밍** — 긴 응답은 스트리밍(서버가 토큰을 흘려보냄)으로 받아 체감 지연(TTFT)을 줄입니다. 앱은 부분 응답을 누적하고 파싱하고 중간 도구 호출 이벤트를 처리해야 합니다.
 - **타임아웃과 재시도** — 에이전트 호출은 길어질 수 있으니 단일 호출보다 타임아웃을 넉넉히 잡고, 실패 시 지수 백오프로 재시도합니다. 무한 대기, 즉시 연속 재시도는 피합니다.
 - **멱등**(idempotent, 같은 요청을 여러 번 보내도 결과가 한 번과 같음) — 도구가 외부 시스템에 쓰기와 전송을 하면 재시도가 같은 작업을 두 번 실행할 수 있습니다. 멱등 키나 중복 검사로 재시도 안전성을 확보합니다.
 
-전용 SDK는 없습니다 — OpenAI 호환이므로 기존 OpenAI 클라이언트(Python, JS 등)의 base URL만 PAIS 엔드포인트로 바꿔 그대로 씁니다([05 5.1절](05-models-serving.md)).
+전용 SDK는 없습니다 — OpenAI 호환이므로 기존 OpenAI 클라이언트(Python, JS 등)의 base URL만 PAIS 엔드포인트로 바꿔 그대로 씁니다([10 10.1절](10-models-serving.md)).
 
 ```python
 from openai import OpenAI
 
 client = OpenAI(
     base_url="https://<PAIS FQDN>/api/v1/compatibility/openai/v1",
-    api_key=access_token,  # PAIS 액세스 토큰(Bearer) — OIDC로 발급(3.9절)
+    api_key=access_token,  # PAIS 액세스 토큰(Bearer) — OIDC로 발급(8.9절)
 )
 response = client.chat.completions.create(
     model="<모델명>",
@@ -140,9 +140,9 @@ response = client.chat.completions.create(
 )
 ```
 
-에이전트를 부를 때는 base URL 뒤에 에이전트 경로(`agents/<agent-id>`)가 붙습니다(3.8절). **채팅 UI를 바로 붙이려면** — Open WebUI를 PAIS 에이전트의 프론트엔드로 연결하는 공식 절차가 공개돼 있습니다. 파이프 함수(Pipe Function)로 에이전트 목록(`/assistants`)을 조회해 모델 드롭다운에 노출하고 `agents/<id>`로 라우팅하며, 클러스터 안에서는 nginx mTLS 프록시를 경유합니다([근거: How to Connect your VMware Private AI Services Agents to OpenWeb UI, blogs.vmware.com 2025-08](https://blogs.vmware.com/cloud-foundation/2025/08/15/how-to-connect-your-vmware-private-ai-services-agents-to-openweb-ui/)).
+에이전트를 부를 때는 base URL 뒤에 에이전트 경로(`agents/<agent-id>`)가 붙습니다(8.8절). **채팅 UI를 바로 붙이려면** — Open WebUI를 PAIS 에이전트의 프론트엔드로 연결하는 공식 절차가 공개돼 있습니다. 파이프 함수(Pipe Function)로 에이전트 목록(`/assistants`)을 조회해 모델 드롭다운에 노출하고 `agents/<id>`로 라우팅하며, 클러스터 안에서는 nginx mTLS 프록시를 경유합니다([근거: How to Connect your VMware Private AI Services Agents to OpenWeb UI, blogs.vmware.com 2025-08](https://blogs.vmware.com/cloud-foundation/2025/08/15/how-to-connect-your-vmware-private-ai-services-agents-to-openweb-ui/)).
 
 다음 문서에서는 에이전트의 능력을 넓히는 **MCP 도구 통합**을 자세히 다룹니다.
 
 ---
-[← 이전: 02 에이전트 설계 패턴](02-design-patterns.md) | [목차](../README.md) | [다음: 04 MCP 도구 통합 →](04-mcp-tools.md)
+[← 이전: 03 에이전트 설계 패턴](03-design-patterns.md) | [목차](../README.md) | [다음: 09 MCP 도구 통합 →](09-mcp-tools.md)

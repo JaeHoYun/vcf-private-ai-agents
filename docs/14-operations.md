@@ -1,4 +1,4 @@
-# 07 — 운영과 Day-2
+# 14 — 운영과 Day-2
 
 [← 목차로](../README.md)
 
@@ -8,7 +8,7 @@
 
 ---
 
-## 7.1 배포 토폴로지
+## 14.1 배포 토폴로지
 
 - **실행 기반** — 모델 엔드포인트와 에이전트는 Supervisor의 vSphere Namespace에 프로비저닝된 **VKS 클러스터** 위에서 실행되며, ESXi 호스트의 GPU에 연결됩니다([01 1.4절](01-foundations.md)). PAIS 3.0은 VKr 1.34, ClusterClass builtin-generic-v3.5.0, NVIDIA GPU Operator 25.10.1(기본) 또는 26.3.1 기준으로 동작합니다(2.1은 VKr 1.33, 25.10.1).
 - **두 경로** — 프로토타이핑과 노트북 작업은 **DLVM(Deep Learning VM)**, 프로덕션 모델 엔드포인트와 에이전트는 **VKS 클러스터**에 둡니다.
@@ -17,7 +17,7 @@
 - **사이징 위임** — 프로덕션 모델 서빙에 필요한 최소 GPU 호스트 수, GPU 메모리, 시스템 RAM 비율 등 용량 산정은 [⑥ VKS 클러스터 사이징](https://github.com/JaeHoYun/vcf-private-ai/blob/main/06-sizing-cost/docs/04-vks-cluster-sizing.md)에 위임합니다. 공식 디자인 문서도 구체 수치를 별도 사이징 자료로 위임합니다.
 - **배포 실무 참조(공개)** — PAIS 활성화 절차와 Supervisor 네트워킹 구성은 공식 블로그가 실무 관점으로 다룹니다: [Activate VCF Private AI Services (2026-01)](https://blogs.vmware.com/cloud-foundation/2026/01/15/activate-vcf-private-ai-services/), [Navigating Supervisor Networking Stack (2026-06)](https://blogs.vmware.com/cloud-foundation/2026/06/11/deploying-vmware-cloud-foundation-private-ai-services-navigating-supervisor-networking-stack/).
 
-## 7.2 관측성
+## 14.2 관측성
 
 PAIS 2.1은 추론, GPU, 에이전트를 아우르는 관측을 VCF Operations의 AI 지표 화면으로 제공하며, OpenTelemetry 기반 LLM 추적을 지원합니다([01 1.2.5절](01-foundations.md)).
 
@@ -33,17 +33,17 @@ PAIS 2.1은 추론, GPU, 에이전트를 아우르는 관측을 VCF Operations�
 
 **GPU 지표** — 사용률, 온도, 전력, 메모리 온도, 메모리 클럭 등.
 
-**에이전트 추적** — OpenTelemetry LLM 추적으로 "사용자 ↔ 모델 ↔ 에이전트 ↔ 지식베이스" 상호작용을 따라갑니다. 백엔드는 Prometheus, Grafana를 씁니다. 추적이 보이지 않으면 구성 오류일 수 있습니다(7.4절).
+**에이전트 추적** — OpenTelemetry LLM 추적으로 "사용자 ↔ 모델 ↔ 에이전트 ↔ 지식베이스" 상호작용을 따라갑니다. 백엔드는 Prometheus, Grafana를 씁니다. 추적이 보이지 않으면 구성 오류일 수 있습니다(14.4절).
 
-> 평가([06](06-evaluation-guardrails.md))가 "출시 전 품질"이라면, 관측성은 "운영 중 품질과 비용"입니다. TTFT, 종단 지연, 토큰 처리량을 기준선으로 잡아 두고 이탈을 감시하십시오.
+> 평가([13](13-evaluation-guardrails.md))가 "출시 전 품질"이라면, 관측성은 "운영 중 품질과 비용"입니다. TTFT, 종단 지연, 토큰 처리량을 기준선으로 잡아 두고 이탈을 감시하십시오.
 
-**PAIS 3.0에서 더해진 것** — 모델과 에이전트 메트릭을 PAIS UI에서 실시간 대시보드로 볼 수 있고, 조직이 배포한 Grafana에 올릴 예시 구성이 제공되며, 추론 백엔드 헬스가 실시간으로 노출되고, 트레이싱은 LLM 상호작용 전체로 넓어졌습니다. 에이전트 운영에 직접 닿는 변화는 두 가지입니다. 첫째, 원격 클라우드 모델을 쓰는 에이전트는 그 토큰 사용량이 별도로 추적되므로 실비와 반출 증빙으로 함께 남깁니다. 둘째, Prometheus 수집이 PAIS 관리 VKS 클러스터가 가용해진 뒤에 시작되도록 바뀌어 업그레이드 직후 기준선 지표가 비는 구간이 생기니, 그 구간의 알람은 유예합니다(7.3절). ([근거: PAIS 3.0 릴리스 노트](https://techdocs.broadcom.com/us/en/vmware-cis/private-ai/foundation-with-nvidia/9-1/private-ai-release-notes/vmware-private-ai-services-release-notes.html))
+**PAIS 3.0에서 더해진 것** — 모델과 에이전트 메트릭을 PAIS UI에서 실시간 대시보드로 볼 수 있고, 조직이 배포한 Grafana에 올릴 예시 구성이 제공되며, 추론 백엔드 헬스가 실시간으로 노출되고, 트레이싱은 LLM 상호작용 전체로 넓어졌습니다. 에이전트 운영에 직접 닿는 변화는 두 가지입니다. 첫째, 원격 클라우드 모델을 쓰는 에이전트는 그 토큰 사용량이 별도로 추적되므로 실비와 반출 증빙으로 함께 남깁니다. 둘째, Prometheus 수집이 PAIS 관리 VKS 클러스터가 가용해진 뒤에 시작되도록 바뀌어 업그레이드 직후 기준선 지표가 비는 구간이 생기니, 그 구간의 알람은 유예합니다(14.3절). ([근거: PAIS 3.0 릴리스 노트](https://techdocs.broadcom.com/us/en/vmware-cis/private-ai/foundation-with-nvidia/9-1/private-ai-release-notes/vmware-private-ai-services-release-notes.html))
 
-## 7.3 업그레이드 — 다운타임 주의
+## 14.3 업그레이드 — 다운타임 주의
 
 > **반드시 알아둘 운영 리스크** — PAIS 2.0.x → 2.1 업그레이드는 **모델 엔드포인트를 호스팅하는 VKS 클러스터를 삭제하고 재생성**합니다. 그 과정에서 노드가 재생성되고 모델을 다시 내려받는 동안 **다운타임**이 발생합니다. ([근거: PAIS 릴리스 노트](https://techdocs.broadcom.com/us/en/vmware-cis/private-ai/foundation-with-nvidia/9-0/private-ai-release-notes/vmware-private-ai-services-release-notes.html))
 
-**2.1 → 3.0 업그레이드**는 릴리스 노트가 명시한 다운타임 범위가 다릅니다. 명시된 것은 **레플리카가 하나뿐인 모델 엔드포인트의 다운타임**이며, 2.0.x → 2.1 때와 같은 클러스터 삭제와 재생성은 문서에 없습니다(VKr가 1.33에서 1.34로 올라가므로 노드 재생성은 따를 수 있습니다). 그 밖에 세 가지가 에이전트 운영에 직접 닿습니다. 첫째, 에이전트 API의 `completion_role` 필드가 제거되고 non-chat completions가 deprecated되어 기존 클라이언트가 실패할 수 있습니다([03 3.8절](03-agent-builder.md)). 둘째, Prometheus 메트릭 수집이 VKS 클러스터가 가용해진 뒤에 시작되도록 바뀌어 업그레이드 직후 메트릭 공백이 생깁니다(7.2절). 셋째, vLLM이 0.20.0(CUDA 13.0)으로 올라가 GPU 드라이버 580 미만은 지원되지 않습니다([05 5.2절](05-models-serving.md)). ([근거: PAIS 3.0 릴리스 노트](https://techdocs.broadcom.com/us/en/vmware-cis/private-ai/foundation-with-nvidia/9-1/private-ai-release-notes/vmware-private-ai-services-release-notes.html))
+**2.1 → 3.0 업그레이드**는 릴리스 노트가 명시한 다운타임 범위가 다릅니다. 명시된 것은 **레플리카가 하나뿐인 모델 엔드포인트의 다운타임**이며, 2.0.x → 2.1 때와 같은 클러스터 삭제와 재생성은 문서에 없습니다(VKr가 1.33에서 1.34로 올라가므로 노드 재생성은 따를 수 있습니다). 그 밖에 세 가지가 에이전트 운영에 직접 닿습니다. 첫째, 에이전트 API의 `completion_role` 필드가 제거되고 non-chat completions가 deprecated되어 기존 클라이언트가 실패할 수 있습니다([08 8.8절](08-agent-builder.md)). 둘째, Prometheus 메트릭 수집이 VKS 클러스터가 가용해진 뒤에 시작되도록 바뀌어 업그레이드 직후 메트릭 공백이 생깁니다(14.2절). 셋째, vLLM이 0.20.0(CUDA 13.0)으로 올라가 GPU 드라이버 580 미만은 지원되지 않습니다([10 10.2절](10-models-serving.md)). ([근거: PAIS 3.0 릴리스 노트](https://techdocs.broadcom.com/us/en/vmware-cis/private-ai/foundation-with-nvidia/9-1/private-ai-release-notes/vmware-private-ai-services-release-notes.html))
 
 대비:
 
@@ -53,7 +53,7 @@ PAIS 2.1은 추론, GPU, 에이전트를 아우르는 관측을 VCF Operations�
 - 업그레이드 후 모델 엔드포인트, 에이전트, 지식베이스, MCP 연결이 정상 복구되는지 검증 절차를 둡니다.
 - 플랫폼 LCM 업그레이드 순서와 롤백 등 전반은 [① Day-2 운영](https://github.com/JaeHoYun/vcf-private-ai/blob/main/01-infra/docs/10-operations.md)의 10.1절 LCM 런북에 위임합니다.
 
-## 7.4 알려진 이슈
+## 14.4 알려진 이슈
 
 릴리스별로 나눠 정리합니다([근거: PAIS 릴리스 노트 3.0, 2.1.2, 2.1](https://techdocs.broadcom.com/us/en/vmware-cis/private-ai/foundation-with-nvidia/9-1/private-ai-release-notes/vmware-private-ai-services-release-notes.html), 2026-09 기준, 변동 가능).
 
@@ -70,55 +70,55 @@ PAIS 2.1은 추론, GPU, 에이전트를 아우르는 관측을 VCF Operations�
 |------|------|
 | GPU 파드가 `CDI device injection failed`로 실패 | GPU Operator Helm 값 조정(CDI 관련 설정). 3.0 알려진 이슈 목록에는 없으나 GPU Operator 25.10.1을 그대로 쓰면 같은 조합이라 재현 가능성이 있음. 26.3.1을 고르면 별도 검증 |
 | 업그레이드 후 모델 엔드포인트가 메모리 부족으로 실패 | 2.1에서 VRAM 요구량 증가, 3.0은 vLLM 0.20.0으로 다시 상향 — 자원 재산정([⑥ 컴퓨트와 메모리 사이징](https://github.com/JaeHoYun/vcf-private-ai/blob/main/06-sizing-cost/docs/03-compute-memory-sizing.md)) |
-| OpenTelemetry LLM 추적이 표시되지 않음 | 추적 구성 점검(7.2절) |
+| OpenTelemetry LLM 추적이 표시되지 않음 | 추적 구성 점검(14.2절) |
 | 네임스페이스당 모델 엔드포인트 복제본 상한(작성 시점 최대 15) | 복제본과 엔드포인트 수 설계 시 상한 고려 |
 
 **2.1.2(2026-08-17)에서 해결된 것** — 로컬 레지스트리 미러와 5000 포트 충돌, 중간 CA 인증서 갱신 요구, CPU 추론에서 MCP 도구를 쓸 때 reasoning 모델 타임아웃, 패키지 다운로드 URL 오류. 2.1 라인을 유지한다면 최소 2.1.2로 올리는 것이 좋습니다.
 
 증상→진단→조치 형태의 트러블슈팅 런북 패턴은 [① Day-2 운영](https://github.com/JaeHoYun/vcf-private-ai/blob/main/01-infra/docs/10-operations.md)의 10.2절 트러블슈팅 런북을 참조하십시오.
 
-## 7.5 비용
+## 14.5 비용
 
 에이전트 자체는 모델과 도구를 잇는 경량 계층이고, 비용의 대부분은 **모델 추론(GPU)** 에서 발생합니다.
 
 - **GPU 라이선스** — vGPU(가상 GPU)를 쓰면 NVIDIA AI Enterprise(NVAIE) 라이선스가 필요합니다(호스트와 게스트 드라이버 모두). GPU 패스스루(DirectPath) 모드는 NVAIE가 불필요하나 vMotion 등 기능 제약이 따릅니다. 정확한 라이선스 과금 단위는 NVIDIA, Broadcom 라이선싱 자료로 확인하시기 바랍니다.
-- **CPU 추론 대안** — 작은 모델, 저부하 작업은 llama.cpp CPU 추론으로 GPU 비용을 줄이는 선택지가 있습니다([05 5.2절](05-models-serving.md)). 성능 트레이드오프를 평가로 확인하십시오.
-- **토큰과 단계 비용** — 에이전트는 도구 호출과 재시도로 단계가 늘어 단일 호출보다 토큰을 많이 씁니다. 종료 조건([06 6.4절](06-evaluation-guardrails.md))과 세션 요약([02 2.4절](02-design-patterns.md))으로 토큰 폭증을 통제하십시오.
+- **CPU 추론 대안** — 작은 모델, 저부하 작업은 llama.cpp CPU 추론으로 GPU 비용을 줄이는 선택지가 있습니다([10 10.2절](10-models-serving.md)). 성능 트레이드오프를 평가로 확인하십시오.
+- **토큰과 단계 비용** — 에이전트는 도구 호출과 재시도로 단계가 늘어 단일 호출보다 토큰을 많이 씁니다. 종료 조건([13 13.4절](13-evaluation-guardrails.md))과 세션 요약([03 3.4절](03-design-patterns.md))으로 토큰 폭증을 통제하십시오.
 - **TCO 위임** — GPU, 노드, 스토리지 비용의 정밀 산정과 자원 활용도 개선은 [⑥ TCO와 비용 모델](https://github.com/JaeHoYun/vcf-private-ai/blob/main/06-sizing-cost/docs/07-tco-cost-model.md)에 위임합니다.
 
-## 7.6 운영 점검 리듬
+## 14.6 운영 점검 리듬
 
 에이전트 워크로드에 맞춘 가벼운 점검 리듬을 제안합니다(플랫폼 전반 리듬은 ①).
 
 - **일상** — TTFT, 종단 지연, 오류율, GPU 사용률 기준선 이탈 감시, 에이전트 추적 표본 점검.
-- **주기** — 평가 묶음 회귀([06](06-evaluation-guardrails.md)) 재실행, MCP 도구와 자격증명 유효성 점검, 토큰과 비용 추세 검토.
-- **변경 시** — 모델, 지시문, 도구 변경 후 평가와 관측 기준선 갱신, 업그레이드는 다운타임 창 계획(7.3절).
+- **주기** — 평가 묶음 회귀([13](13-evaluation-guardrails.md)) 재실행, MCP 도구와 자격증명 유효성 점검, 토큰과 비용 추세 검토.
+- **변경 시** — 모델, 지시문, 도구 변경 후 평가와 관측 기준선 갱신, 업그레이드는 다운타임 창 계획(14.3절).
 
-## 7.7 백업과 복구
+## 14.7 백업과 복구
 
 에이전트 서비스는 stateless가 아닙니다 — 여러 stateful 자산이 흩어져 있어, 무엇을 백업하는지부터 정리해야 합니다.
 
 | 자산 | 저장 위치 | 백업과 복구 |
 |------|-----------|-----------|
 | 지식베이스 벡터와 데이터 | pgvector(외부 PostgreSQL) | PostgreSQL 백업([②](https://github.com/JaeHoYun/vcf-private-ai/tree/main/02-vectordb)) |
-| 모델 아티팩트 | Model Gallery(Harbor) | 레지스트리 백업 또는 Artifact Mirroring Tool로 재미러([05 5.4절](05-models-serving.md)) |
-| 에이전트와 도구 구성 | Agent Builder 구성 코드 | 형상관리(Git)에 보관과 재현([03 3.8절](03-agent-builder.md)) |
-| MCP 서버 등록과 승인 | Tool Gallery 등록 정보 | 등록 절차를 문서화해 재등록 가능하게([04 4.4절](04-mcp-tools.md)) |
+| 모델 아티팩트 | Model Gallery(Harbor) | 레지스트리 백업 또는 Artifact Mirroring Tool로 재미러([10 10.4절](10-models-serving.md)) |
+| 에이전트와 도구 구성 | Agent Builder 구성 코드 | 형상관리(Git)에 보관과 재현([08 8.8절](08-agent-builder.md)) |
+| MCP 서버 등록과 승인 | Tool Gallery 등록 정보 | 등록 절차를 문서화해 재등록 가능하게([09 9.4절](09-mcp-tools.md)) |
 | 세션 상태 | 배포 단위 확인 필요 | 영속성과 복구 가능 여부는 공식 문서로 확인([01 1.4절](01-foundations.md)) |
 
 - **복구 우선순위** — 구성(Git)과 모델(재미러)은 재현이 쉽고, **지식베이스 데이터는 원본 재인덱싱 비용이 크므로** 백업 가치가 가장 높습니다. PAIS 3.0부터 지식베이스와 인덱스를 복제(clone)할 수 있으므로, 에이전트의 지시문이나 임베딩 모델을 바꾸는 변경은 복제본에 연결한 스테이징 에이전트에서 먼저 검증하고 승격하는 흐름이 가능합니다.
 - **DR 위임** — 멀티사이트 재해복구, RTO/RPO, 백업 주기 등 플랫폼 DR 정책은 [① Day-2 운영](https://github.com/JaeHoYun/vcf-private-ai/blob/main/01-infra/docs/10-operations.md)의 10.3절 백업과 복구에 위임합니다. 이 가이드의 몫은 **무엇이 stateful한지 식별**해 DR 범위에서 빠뜨리지 않게 하는 것입니다.
 
-## 7.8 스케일, 알람, SLO, 온콜
+## 14.8 스케일, 알람, SLO, 온콜
 
-7.2절가 무엇을 관측하는지였다면, 여기서는 그 위에 임계, 목표, 대응을 더합니다.
+14.2절가 무엇을 관측하는지였다면, 여기서는 그 위에 임계, 목표, 대응을 더합니다.
 
-- **스케일** — 모델 엔드포인트는 복제본으로 가용성과 처리량을 늘리되 네임스페이스당 상한이 있습니다(7.4절). 에이전트는 도구 호출 루프와 동시 세션 급증으로 부하가 갑자기 치솟으므로, 복제본을 수동으로 늘릴지 부하 기반 자동 확장이 되는지는 공식 문서로 확인하십시오. 토큰 폭증 통제는 종료 조건과 세션 요약으로 합니다(7.5절).
-- **알람** — 7.2절 기준선 위에 임계를 정합니다 — TTFT, 종단 지연 P95(95 백분위), 오류율, GPU 포화, 복제본 가용성. 1차로는 VCF Operations 알람으로 설정하고, 외부 온콜 도구 연동은 앱, 외부 계층입니다.
+- **스케일** — 모델 엔드포인트는 복제본으로 가용성과 처리량을 늘리되 네임스페이스당 상한이 있습니다(14.4절). 에이전트는 도구 호출 루프와 동시 세션 급증으로 부하가 갑자기 치솟으므로, 복제본을 수동으로 늘릴지 부하 기반 자동 확장이 되는지는 공식 문서로 확인하십시오. 토큰 폭증 통제는 종료 조건과 세션 요약으로 합니다(14.5절).
+- **알람** — 14.2절 기준선 위에 임계를 정합니다 — TTFT, 종단 지연 P95(95 백분위), 오류율, GPU 포화, 복제본 가용성. 1차로는 VCF Operations 알람으로 설정하고, 외부 온콜 도구 연동은 앱, 외부 계층입니다.
 - **목표 수준(SLO)** — 가용성, TTFT, 오류율 같은 지표에 목표값을 정해 둡니다. 기준선을 실측한 뒤 현실적인 값으로 잡고, 이탈이 잦으면 용량([⑥ 용량 계획과 운영](https://github.com/JaeHoYun/vcf-private-ai/blob/main/06-sizing-cost/docs/06-capacity-planning.md))이나 설계를 재검토합니다.
-- **온콜과 에스컬레이션** — 1차 대응은 알려진 이슈와 트러블슈팅(7.4절)으로, 해소되지 않으면 플랫폼 운영([① Day-2 운영](https://github.com/JaeHoYun/vcf-private-ai/blob/main/01-infra/docs/10-operations.md) 10.4절)과 보안([⑤](https://github.com/JaeHoYun/vcf-private-ai/tree/main/05-security))으로 에스컬레이션합니다.
+- **온콜과 에스컬레이션** — 1차 대응은 알려진 이슈와 트러블슈팅(14.4절)으로, 해소되지 않으면 플랫폼 운영([① Day-2 운영](https://github.com/JaeHoYun/vcf-private-ai/blob/main/01-infra/docs/10-operations.md) 10.4절)과 보안([⑤](https://github.com/JaeHoYun/vcf-private-ai/tree/main/05-security))으로 에스컬레이션합니다.
 
-구축에서 운영까지의 기술 설명은 여기까지입니다. 남은 질문 — 이 역량을 어디에 써야 성과가 나는가 — 는 [08 어디에 쓰나](08-use-cases.md)에서 다룹니다. 용어와 참조는 부록에 정리했습니다.
+구축에서 운영까지의 기술 설명은 여기까지입니다. 남은 질문 — 이 역량을 어디에 써야 성과가 나는가 — 는 [02 어디에 쓰나](02-use-cases.md)에서 다룹니다. 용어와 참조는 부록에 정리했습니다.
 
 ---
-[← 이전: 06 평가와 가드레일](06-evaluation-guardrails.md) | [목차](../README.md) | [다음: 08 어디에 쓰나 →](08-use-cases.md)
+[← 이전: 13 평가와 가드레일](13-evaluation-guardrails.md) | [목차](../README.md) | [다음: A1 부록 →](../appendix/A1-reference.md)
