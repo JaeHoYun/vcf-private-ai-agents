@@ -2,7 +2,7 @@
 
 [← 목차로](../README.md)
 
-플랫폼 편(①~⑦)은 PAIS를 세우는 쪽의 문서입니다. 이 문서는 그 플랫폼을 **쓰는 쪽** — 새 앱 팀이 무엇을 신청해 무엇을 받고, 어떤 계약으로 모델을 호출하며, 토큰을 어떻게 아끼고 어떻게 정산되는가 — 를 한 장으로 잇습니다. 플랫폼 팀이 게이트웨이 계층을 어떻게 설계하는지는 [③ 05 5.7절](https://github.com/JaeHoYun/vcf-private-ai/blob/main/03-serving-api/docs/05-auth-and-gateway.md)과 [⑦ D13](https://github.com/JaeHoYun/vcf-private-ai/blob/main/07-design/docs/06-decision-forks.md)이 정하고, 이 문서는 앱 팀이 그 결정을 어떻게 소비하는지를 다룹니다.
+플랫폼 편(①–⑦)은 PAIS를 세우는 쪽의 문서입니다. 이 문서는 그 플랫폼을 **쓰는 쪽** — 새 앱 팀이 무엇을 신청해 무엇을 받고, 어떤 계약으로 모델을 호출하며, 토큰을 어떻게 아끼고 어떻게 정산되는가 — 를 한 장으로 잇습니다. 플랫폼 팀이 게이트웨이 계층을 어떻게 설계하는지는 [③ 05 5.7절](https://github.com/JaeHoYun/vcf-private-ai/blob/main/03-serving-api/docs/05-auth-and-gateway.md)과 [⑦ D13](https://github.com/JaeHoYun/vcf-private-ai/blob/main/07-design/docs/06-decision-forks.md)이 정하고, 이 문서는 앱 팀이 그 결정을 어떻게 소비하는지를 다룹니다.
 
 > 본 문서의 수치와 동작은 VCF 9.1.1 / PAIF 9.1.1 / PAIS 3.0 기준입니다(작성 2026-09). PAIS의 내장 게이트웨이에는 사용자나 키 단위의 레이트리밋과 토큰 예산 기능이 공식 문서로 확인되지 않으며, 2026-08 Explore에서 발표된 AI Gateway는 향후 릴리스입니다([00 0.6절](00-orientation.md)). 적용 전 최신 공식 문서로 재확인하시기 바랍니다.
 
