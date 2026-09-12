@@ -131,7 +131,7 @@ response = client.chat.completions.create(
 )
 ```
 
-에이전트를 부를 때는 base URL 뒤에 에이전트 경로(`agents/<agent-id>`)가 붙습니다(8.8절). **채팅 UI를 바로 붙이려면** — Open WebUI를 PAIS 에이전트의 프론트엔드로 연결하는 공식 절차가 공개돼 있습니다. 파이프 함수(Pipe Function)로 에이전트 목록(`/assistants`)을 조회해 모델 드롭다운에 노출하고 `agents/<id>`로 라우팅하며, 클러스터 안에서는 nginx mTLS 프록시를 경유합니다([근거: How to Connect your VMware Private AI Services Agents to OpenWeb UI, blogs.vmware.com 2025-08](https://blogs.vmware.com/cloud-foundation/2025/08/15/how-to-connect-your-vmware-private-ai-services-agents-to-openweb-ui/)).
+에이전트를 부를 때는 base URL 뒤에 에이전트 경로(`agents/<agent-id>`)가 붙습니다(8.8절). 호출 코드 위에 얹는 앱의 골격(4-Tier, BFF, 세션)과 화면 명세(출처 카드, 폴백, 진행 표시, 사람 이관, 고지)는 [11 앱 통합과 신뢰 UX](11-app-integration-ux.md)에서 다룹니다. **채팅 UI를 바로 붙이려면** — Open WebUI를 PAIS 에이전트의 프론트엔드로 연결하는 공식 절차가 공개돼 있습니다. 파이프 함수(Pipe Function)로 에이전트 목록(`/assistants`)을 조회해 모델 드롭다운에 노출하고 `agents/<id>`로 라우팅하며, 클러스터 안에서는 nginx mTLS 프록시를 경유합니다([근거: How to Connect your VMware Private AI Services Agents to OpenWeb UI, blogs.vmware.com 2025-08](https://blogs.vmware.com/cloud-foundation/2025/08/15/how-to-connect-your-vmware-private-ai-services-agents-to-openweb-ui/)).
 
 다음 문서에서는 에이전트의 능력을 넓히는 **MCP 도구 통합**을 자세히 다룹니다.
 

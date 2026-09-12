@@ -55,7 +55,7 @@
 
 - **기획과 선정** — 어떤 일에 써야 성과가 나는지, 파일럿이 어디서 멈추는지, 위험 등급과 자율성 상한을 어떻게 정하는지([02](02-use-cases.md))
 - **설계** — 언제 에이전트로 풀지, 단일과 멀티, 도구와 지식 연결, 세션, 배치 파이프라인([03](03-design-patterns.md)), 사용자 신원이 어디까지 따라가는지([04](04-identity-propagation.md)), 앱 팀이 플랫폼에서 무엇을 받고 게이트웨이와 토큰 예산을 어떻게 소비하는지([05](05-platform-consumption.md)), 어떤 문서를 어떤 승인으로 들이고 보호 문서는 어떻게 다루는지([06](06-data-onboarding.md)), 사내 시스템 연동과 쓰기의 승인과 정합성([07](07-integration-write-design.md))
-- **구축** — PAIS 3.0 Agent Builder로 에이전트를 구성하는 절차([08](08-agent-builder.md)), MCP로 사내와 외부 시스템 도구를 연결하고 승인하고 관리하는 방법([09](09-mcp-tools.md)), 에이전트가 쓰는 모델을 Model Runtime으로 서빙하고 Model Gallery로 관리하는 방법([10](10-models-serving.md)), 그리고 앱 통합과 신뢰 UX(구축 편에 순차로 더함)
+- **구축** — PAIS 3.0 Agent Builder로 에이전트를 구성하는 절차([08](08-agent-builder.md)), MCP로 사내와 외부 시스템 도구를 연결하고 승인하고 관리하는 방법([09](09-mcp-tools.md)), 에이전트가 쓰는 모델을 Model Runtime으로 서빙하고 Model Gallery로 관리하는 방법([10](10-models-serving.md)), 앱으로 감싸고 사용자가 답을 믿게 만드는 화면과 고지와 대화 데이터([11](11-app-integration-ux.md))
 - **검증과 출시** — 평가와 가드레일 한계와 휴먼인더루프([13](13-evaluation-guardrails.md)), 서비스 단위 보안 준비(검증 편에 순차로 더함)
 - **운영과 종료** — 배포 토폴로지, 관측, 업그레이드, 비용, 서비스 퇴역([14](14-operations.md))
 
@@ -82,7 +82,7 @@ PAIS가 제공하는 모듈과 시리즈가 떠받치는 인프라 위에는, �
 | 휴먼인더루프(되돌리기 어려운 행동 승인) | PAIS 내장 휴먼인더루프 기능은 확인되지 않음 | [07 7.3절](07-integration-write-design.md)의 승인 게이트와 승인 큐가 정본, [03 3.5절](03-design-patterns.md), [13 13.6절](13-evaluation-guardrails.md) 검증 점검 |
 | 사내 MCP 서버 구현과 호스팅 | PAIS는 도구의 등록, 승인, 소비만 담당하며, 서버 자체는 사용자 자산이다 | 앱, 플랫폼 계층에서 구현, 운영 [09](09-mcp-tools.md) |
 | 모델 파인튜닝과 도메인 적응 학습 | Model Gallery는 모델 보관과 반입만 담당하며, 학습 파이프라인은 범위 밖이다 | 외부와 DLVM에서 학습 후 Gallery로 반입 [10](10-models-serving.md) |
-| 애플리케이션 자체(런타임, UI, 세션 저장, CI/CD, 호출 견고성) | 서비스를 소비하고 노출하는 앱은 PAIS가 아니다 | 자체 구현, 엔드포인트 소비는 [08 8.8절](08-agent-builder.md), 구축 편의 앱 통합과 신뢰 UX로 확장 |
+| 애플리케이션 자체(런타임, UI, 세션 저장, CI/CD, 호출 견고성) | 서비스를 소비하고 노출하는 앱은 PAIS가 아니다 | 자체 구현, 엔드포인트 소비는 [08 8.8절](08-agent-builder.md), 골격과 화면 명세와 대화 데이터는 [11](11-app-integration-ux.md) |
 | 외부 시크릿 관리, 관측 백엔드, 온콜 연동 | 기업 표준 보안과 관측 시스템과의 통합 영역 | 외부 시스템 통합 [14](14-operations.md), [⑤ ID, 인증, 접근통제](https://github.com/JaeHoYun/vcf-private-ai/blob/main/05-security/docs/03-identity-access.md) |
 
 이 영역들은 PAIS가 *못* 하는 것이 아니라 *플랫폼의 일이 아닌* 것입니다. 벤더중립 에이전트 설계 이론(추론, 계획, 평가 방법론 일반)은 이 가이드의 범위 밖이며, 필요한 만큼만 [01](01-foundations.md), [03](03-design-patterns.md)에서 다루고 곧바로 PAIS 구현 설명으로 넘어갑니다.
