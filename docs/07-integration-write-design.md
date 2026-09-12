@@ -112,4 +112,4 @@
 6. 도구 스키마 버전과 변경 절차.
 
 ---
-[← 이전: 05 플랫폼 소비: 게이트웨이, 온보딩, 쿼터와 토큰 예산](05-platform-consumption.md) | [목차](../README.md) | [다음: 08 Agent Builder로 구축 →](08-agent-builder.md)
+[← 이전: 06 데이터 소스 온보딩과 보호 문서](06-data-onboarding.md) | [목차](../README.md) | [다음: 08 Agent Builder로 구축 →](08-agent-builder.md)

@@ -99,4 +99,4 @@ Broadcom이 발표한 AI Gateway(프롬프트 라우팅, 사용자 단위 토큰
 6. 온보딩 소요 시간 실측값과 플랫폼 지원 모델(에스컬레이션, 사전 통지 기간).
 
 ---
-[← 이전: 04 사용자 신원과 권한 전파](04-identity-propagation.md) | [목차](../README.md) | [다음: 07 사내 시스템 연동과 쓰기 설계 →](07-integration-write-design.md)
+[← 이전: 04 사용자 신원과 권한 전파](04-identity-propagation.md) | [목차](../README.md) | [다음: 06 데이터 소스 온보딩과 보호 문서 →](06-data-onboarding.md)

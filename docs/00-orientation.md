@@ -54,7 +54,7 @@
 **다루는 것** — 서비스 수명주기 다섯 부입니다.
 
 - **기획과 선정** — 어떤 일에 써야 성과가 나는지, 파일럿이 어디서 멈추는지, 위험 등급과 자율성 상한을 어떻게 정하는지([02](02-use-cases.md))
-- **설계** — 언제 에이전트로 풀지, 단일과 멀티, 도구와 지식 연결, 세션, 배치 파이프라인([03](03-design-patterns.md)), 사용자 신원이 어디까지 따라가는지([04](04-identity-propagation.md)), 앱 팀이 플랫폼에서 무엇을 받고 게이트웨이와 토큰 예산을 어떻게 소비하는지([05](05-platform-consumption.md)), 사내 시스템 연동과 쓰기의 승인과 정합성([07](07-integration-write-design.md)). 데이터 소스 온보딩과 보호 문서는 설계 편에 순차로 더합니다
+- **설계** — 언제 에이전트로 풀지, 단일과 멀티, 도구와 지식 연결, 세션, 배치 파이프라인([03](03-design-patterns.md)), 사용자 신원이 어디까지 따라가는지([04](04-identity-propagation.md)), 앱 팀이 플랫폼에서 무엇을 받고 게이트웨이와 토큰 예산을 어떻게 소비하는지([05](05-platform-consumption.md)), 어떤 문서를 어떤 승인으로 들이고 보호 문서는 어떻게 다루는지([06](06-data-onboarding.md)), 사내 시스템 연동과 쓰기의 승인과 정합성([07](07-integration-write-design.md))
 - **구축** — PAIS 3.0 Agent Builder로 에이전트를 구성하는 절차([08](08-agent-builder.md)), MCP로 사내와 외부 시스템 도구를 연결하고 승인하고 관리하는 방법([09](09-mcp-tools.md)), 에이전트가 쓰는 모델을 Model Runtime으로 서빙하고 Model Gallery로 관리하는 방법([10](10-models-serving.md)), 그리고 앱 통합과 신뢰 UX(구축 편에 순차로 더함)
 - **검증과 출시** — 평가와 가드레일 한계와 휴먼인더루프([13](13-evaluation-guardrails.md)), 서비스 단위 보안 준비(검증 편에 순차로 더함)
 - **운영과 종료** — 배포 토폴로지, 관측, 업그레이드, 비용, 서비스 퇴역([14](14-operations.md))
@@ -95,7 +95,7 @@ PAIS 3.0은 여섯 모듈로 이뤄집니다(모듈 구성은 2.1과 같고, 3.0
 |------|------|-----------|
 | Model Gallery | 모델 아티팩트 저장소(Harbor 기반 OCI 레지스트리) | [10](10-models-serving.md) |
 | Model Runtime | 추론과 임베딩 모델 서빙(OpenAI 호환 엔드포인트). 3.0부터 로컬 서빙에 더해 다른 인스턴스의 공유 모델과 원격 클라우드 모델을 같은 엔드포인트 형태로 연결 | [10](10-models-serving.md) |
-| Data Indexing and Retrieval | 지식베이스 인덱싱과 검색(pgvector) | [08](08-agent-builder.md) 연결, 데이터 소스 온보딩은 설계 편, 파이프라인 상세는 ④ 위임 |
+| Data Indexing and Retrieval | 지식베이스 인덱싱과 검색(pgvector) | [08](08-agent-builder.md) 연결, 데이터 소스 온보딩은 [06](06-data-onboarding.md), 파이프라인 상세는 ④ 위임 |
 | MCP Servers and Tool Gallery | 외부 도구를 MCP로 연결과 중앙 관리(2.1 신규) | [09](09-mcp-tools.md) |
 | Agent Builder | 모델, 지식, 도구, 세션을 묶어 에이전트 구성 | [08](08-agent-builder.md) |
 | Observability | 추론, GPU, 에이전트 상호작용 추적, 관측(2.1 확장) | [14](14-operations.md) |
