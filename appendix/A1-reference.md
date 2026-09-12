@@ -22,6 +22,7 @@
 - **비인간 신원(NHI, Non-Human Identity)** — 에이전트, 서비스, 도구 서버처럼 사람이 아닌 행위자에 부여하는 고유 신원. 사람이나 다른 에이전트와 자격증명을 공유하지 않는 것이 원칙([⑤ 08 8.2절](https://github.com/JaeHoYun/vcf-private-ai/blob/main/05-security/docs/08-agent-governance.md)).
 - **도구 오염(Tool poisoning)** — MCP 도구의 설명문에 숨긴 지시로 에이전트를 조종하는 공격. 승인 뒤 설명이 바뀌는 rug pull, 다른 서버의 도구를 가로채는 shadowing을 포함한다. 승인 시점의 설명 해시를 고정해 막는다([09 9.7절](../docs/09-mcp-tools.md)).
 - **킬스위치(Kill switch)** — 서비스 단위로 에이전트 비활성화, 토큰 폐기, 도구 승인 해제, 네트워크 차단을 한 번에 일으키는 조치. 사고 대응의 첫 조치([07 7.3절](../docs/07-integration-write-design.md)).
+- **섀도 AI(Shadow AI)** — IT와 거버넌스가 존재를 모르는 채 임직원과 부서가 업무에 쓰는 AI 도구와 서비스. 이 가이드의 관점에서는 종료하지 못한 파일럿과 미등록 에이전트가 주된 출처이며, 금지가 아니라 레지스트리 등록과 등급 판정으로 양성화한다([14 14.12절](../docs/14-operations.md), [⑤ 07 7.2.3절](https://github.com/JaeHoYun/vcf-private-ai/blob/main/05-security/docs/07-audit-compliance.md)).
 - **ASI01–ASI10** — OWASP Top 10 for Agentic Applications 2026의 에이전트 위협 코드. 목표 탈취, 도구 오남용, 신원과 권한 남용, 에이전트 공급망, 예기치 않은 코드 실행, 메모리와 컨텍스트 오염, 안전하지 않은 에이전트 간 통신, 연쇄 실패, 사람과 에이전트 간 신뢰 악용, 이탈 에이전트([12 12.4절](../docs/12-service-security.md)).
 
 ### A1.1.2 모델과 서빙
