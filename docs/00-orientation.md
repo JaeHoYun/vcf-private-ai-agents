@@ -56,7 +56,7 @@
 - **기획과 선정** — 어떤 일에 써야 성과가 나는지, 파일럿이 어디서 멈추는지, 위험 등급과 자율성 상한을 어떻게 정하는지([02](02-use-cases.md))
 - **설계** — 언제 에이전트로 풀지, 단일과 멀티, 도구와 지식 연결, 세션, 배치 파이프라인([03](03-design-patterns.md)), 사용자 신원이 어디까지 따라가는지([04](04-identity-propagation.md)), 앱 팀이 플랫폼에서 무엇을 받고 게이트웨이와 토큰 예산을 어떻게 소비하는지([05](05-platform-consumption.md)), 어떤 문서를 어떤 승인으로 들이고 보호 문서는 어떻게 다루는지([06](06-data-onboarding.md)), 사내 시스템 연동과 쓰기의 승인과 정합성([07](07-integration-write-design.md))
 - **구축** — PAIS 3.0 Agent Builder로 에이전트를 구성하는 절차([08](08-agent-builder.md)), MCP로 사내와 외부 시스템 도구를 연결하고 승인하고 관리하는 방법([09](09-mcp-tools.md)), 에이전트가 쓰는 모델을 Model Runtime으로 서빙하고 Model Gallery로 관리하는 방법([10](10-models-serving.md)), 앱으로 감싸고 사용자가 답을 믿게 만드는 화면과 고지와 대화 데이터([11](11-app-integration-ux.md))
-- **검증과 출시** — 평가와 가드레일 한계와 휴먼인더루프([13](13-evaluation-guardrails.md)), 서비스 단위 보안 준비(검증 편에 순차로 더함)
+- **검증과 출시** — 서비스 하나를 출시하기까지 앱 팀이 준비하고 증명할 보안, 곧 가드레일 선택과 배치, 에이전트 위협 점검, 자율성 상한, 레드팀, 게이트별 체크리스트([12](12-service-security.md)), 평가와 가드레일 한계와 휴먼인더루프([13](13-evaluation-guardrails.md))
 - **운영과 종료** — 배포 토폴로지, 관측, 업그레이드, 비용, 서비스 퇴역([14](14-operations.md))
 
 **다루지 않는 것 (위임)**
@@ -78,7 +78,7 @@ PAIS가 제공하는 모듈과 시리즈가 떠받치는 인프라 위에는, �
 |-----------|----------------|---------------|
 | 최종 사용자 신원과 인가(사용자별 접근 권한과 테넌트 격리) | 에이전트 엔드포인트는 호출하는 서비스만 알 뿐, 최종 사용자가 누구인지 모른다 | [04 사용자 신원과 권한 전파](04-identity-propagation.md)가 정본, [08 8.9절](08-agent-builder.md)의 두 층위 원칙, [⑤ ID, 인증, 접근통제](https://github.com/JaeHoYun/vcf-private-ai/blob/main/05-security/docs/03-identity-access.md) |
 | 평가 방법 설계(골든셋, 채점, 회귀, A/B) | PAIS에 이름 붙은 전용 평가 프레임워크는 확인되지 않음 | 앱과 CI 계층에서 설계 [13](13-evaluation-guardrails.md) |
-| 콘텐츠 가드레일(입출력 필터, PII, 프롬프트 인젝션) | PAIS 내장 콘텐츠 가드레일은 확인되지 않음 | 앱 계층 필터 [13](13-evaluation-guardrails.md), 검증 편의 서비스 보안 준비에서 선택과 배치, [⑤ 앱 계층 가드레일](https://github.com/JaeHoYun/vcf-private-ai/blob/main/05-security/docs/06-app-guardrails.md) |
+| 콘텐츠 가드레일(입출력 필터, PII, 프롬프트 인젝션) | PAIS 내장 콘텐츠 가드레일은 확인되지 않음 | [12 12.3절](12-service-security.md)의 선택과 배치가 정본, 경계는 [13 13.5절](13-evaluation-guardrails.md), 플랫폼 정책은 [⑤ 앱 계층 가드레일](https://github.com/JaeHoYun/vcf-private-ai/blob/main/05-security/docs/06-app-guardrails.md) |
 | 휴먼인더루프(되돌리기 어려운 행동 승인) | PAIS 내장 휴먼인더루프 기능은 확인되지 않음 | [07 7.3절](07-integration-write-design.md)의 승인 게이트와 승인 큐가 정본, [03 3.5절](03-design-patterns.md), [13 13.6절](13-evaluation-guardrails.md) 검증 점검 |
 | 사내 MCP 서버 구현과 호스팅 | PAIS는 도구의 등록, 승인, 소비만 담당하며, 서버 자체는 사용자 자산이다 | 앱, 플랫폼 계층에서 구현, 운영 [09](09-mcp-tools.md) |
 | 모델 파인튜닝과 도메인 적응 학습 | Model Gallery는 모델 보관과 반입만 담당하며, 학습 파이프라인은 범위 밖이다 | 외부와 DLVM에서 학습 후 Gallery로 반입 [10](10-models-serving.md) |
@@ -108,7 +108,7 @@ PAIS 3.0은 여섯 모듈로 이뤄집니다(모듈 구성은 2.1과 같고, 3.0
 - **무엇에 적용할지, 도입할 가치가 있는지부터 판단해야 한다면** [02 어디에 쓰나](02-use-cases.md)를 먼저 읽으십시오. 위험 등급과 자율성 상한을 정하는 절도 거기 있습니다. 뒤의 설계와 구축 문서를 몰라도 읽을 수 있습니다.
 - **개념부터 잡으려면** 00 → [01](01-foundations.md) → [03](03-design-patterns.md)을 차례로 읽으십시오.
 - **손으로 먼저 만들어 보려면** [08 Agent Builder](08-agent-builder.md)로 건너뛰고, 도구 연결이 필요할 때 [09 MCP](09-mcp-tools.md), 모델 선택이 필요할 때 [10 모델과 서빙](10-models-serving.md)으로 돌아오십시오.
-- **출시를 심사하거나 준비하는 단계라면** [13 평가와 가드레일](13-evaluation-guardrails.md) → [14 운영과 Day-2](14-operations.md)가 핵심입니다. 플랫폼 전체의 보안 착수 순서는 [⑤ 보안과 거버넌스](https://github.com/JaeHoYun/vcf-private-ai/tree/main/05-security)가 맡습니다.
+- **출시를 심사하거나 준비하는 단계라면** [12 서비스 보안 준비와 가드레일](12-service-security.md) → [13 평가와 가드레일](13-evaluation-guardrails.md) → [14 운영과 Day-2](14-operations.md)가 핵심입니다. 플랫폼 전체의 보안 착수 순서는 [⑤ 00 어디서부터 시작하나](https://github.com/JaeHoYun/vcf-private-ai/blob/main/05-security/docs/00-where-to-start.md)가 맡습니다.
 
 ## 0.6 앞으로의 지형 — 2026-08 Explore 발표와 9.1.1 GA 이후 (참고)
 
