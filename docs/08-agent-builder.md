@@ -99,18 +99,9 @@ curl 'https://<PAIS FQDN>/api/v1/compatibility/openai/v1/agents/<agent-id>/chat/
 
 ## 8.9 신원의 두 층위 — 서비스 인증과 최종 사용자
 
-에이전트 엔드포인트를 앱에서 소비할 때(8.8절), 신원은 두 층위로 나뉩니다. 이 둘을 섞으면 권한이 필요 이상으로 넓어집니다.
+에이전트 엔드포인트를 앱에서 소비할 때(8.8절), 신원은 두 층위로 나뉩니다. **서비스 인증(앱 → PAIS)** 은 앱이 엔드포인트를 호출할 때 쓰는 서비스 신원(OIDC 액세스 토큰, 3.0부터는 인스턴스 간 연결과 자동화용 API 토큰)이고, **최종 사용자 신원**은 그 뒤에 있는 사람입니다. 엔드포인트는 호출하는 서비스만 알 뿐 사용자가 누구인지 모르므로, 사용자 로그인과 사용자별 접근 권한과 테넌트 격리는 앱이 책임집니다.
 
-- **서비스 인증(앱 → PAIS)** — 앱이 에이전트와 모델 엔드포인트를 호출할 때 쓰는 서비스 신원(토큰과 키)입니다. 토큰 발급, 보관, 로테이션은 앱과 플랫폼의 책임이며, 자격증명은 비밀로 관리합니다([⑤ ID, 인증, 접근통제](https://github.com/JaeHoYun/vcf-private-ai/blob/main/05-security/docs/03-identity-access.md)). PAIS 3.0부터는 OIDC 액세스 토큰 외에 계정이 직접 발급하는 **API 토큰**(`vcfa-<org>-...` 또는 `pais-<인증공급자>-...`)이 생겼습니다. 용도는 다른 인스턴스의 공유 모델 접근, VCF Consumption CLI 실행, PAIS API 인증이며, 같은 `Authorization: Bearer` 헤더로 보냅니다. 사용자 신원을 담지 않는 장기 토큰이므로 일반 앱의 사용자 요청 경로에는 쓰지 않고 인스턴스 간 연결과 자동화에만 씁니다. UI로 PAIS를 활성화하면 API 토큰 발급이 기본으로 꺼져 있는 알려진 이슈가 있으니 첫 배포 때 확인하십시오([③ 05 5.6절](https://github.com/JaeHoYun/vcf-private-ai/blob/main/03-serving-api/docs/05-auth-and-gateway.md)).
-- **최종 사용자 신원(사람 사용자)** — 엔드포인트는 호출하는 서비스만 알 뿐, 그 뒤에 있는 실제 사용자가 누구인지 모릅니다. 따라서 사용자 로그인, 사용자별 접근 권한, 테넌트 격리는 PAIS가 아니라 앱이 책임집니다([00 0.3절](00-orientation.md) 책임 경계).
-
-이 구분에서 다음 설계 원칙이 따라 나옵니다.
-
-- **사용자 신원은 앱이 강제한다** — 앱 앞단(또는 API 게이트웨이)에서 사용자를 인증하고 권한을 검사한 뒤에만 에이전트를 호출합니다. 엔드포인트가 사용자 신원까지 처리해 줄 것으로 가정하지 마십시오.
-- **권한 전파** — 에이전트가 도구로 사내 시스템을 건드릴 때, 넓은 서비스 자격증명이 아니라 요청한 사용자의 권한 범위 안에서만 동작하도록 앱이 컨텍스트를 좁혀 전달해야 합니다. 그러지 않으면 한 사용자가 도구를 통해 다른 사용자의 데이터에 접근할 수 있습니다([03 3.3절](03-design-patterns.md), [09 9.7절](09-mcp-tools.md) 권한 최소화).
-- **테넌트 격리** — 팀, 고객별로 지식베이스, 도구, 세션이 섞이면 안 된다면, 테넌트별로 에이전트(또는 지식베이스와 도구 집합)를 분리하거나 vSphere Namespace 단위로 격리합니다(상세 [⑤ 네트워크, 테넌트, GPU 격리](https://github.com/JaeHoYun/vcf-private-ai/blob/main/05-security/docs/02-network-tenant-isolation.md)).
-
-> **경계** — PAIS가 호출 시 받은 사용자 컨텍스트를 도구와 검색까지 전파하는지는 공식 문서로 확인하십시오. 확인 전에는 앱이 사용자 신원과 권한을 직접 들고 강제한다고 가정하는 편이 안전합니다.
+이 구분에서 따라 나오는 설계 원칙(사용자 신원은 앱이 입구에서 강제한다, 도구와 지식베이스는 사용자 권한을 넘지 않게 한다, 사용자 집단이 다르면 에이전트와 네임스페이스를 나눈다)과, 신원이 어느 경계에서 끊기고 앱이 무엇으로 대신하는지의 규약(토큰 교환, 서명된 컨텍스트, 지식베이스 권한 일치, 감사 필드)은 설계 편 [04 사용자 신원과 권한 전파](04-identity-propagation.md)가 정본입니다. 구축 단계에서 기억할 것은 두 가지입니다. 관리형 에이전트에 연결하는 도구와 지식베이스는 그 에이전트의 사용자 전원에게 안전해야 하고, PAIS가 사용자 컨텍스트를 도구와 검색까지 전파하는지는 공식 문서로 확인되기 전까지 전파되지 않는다고 가정합니다.
 
 **실구성 사례(공개)** — PAIS 배포에는 Authorization Code + PKCE 흐름을 지원하는 OIDC 공급자가 필요합니다. 따라 할 수 있는 공개 구성 가이드 글이 두 건 있습니다 — 클라이언트 생성(PKCE S256), 리다이렉트 URL, 그룹/오디언스 매퍼 설정과 액세스 토큰 발급 스크립트까지 다룹니다: [Keycloak(VCF Infrastructure Services Appliance 내장) 구성, williamlam.com 2026-08](https://williamlam.com/2026/08/configuring-oidc-with-pkce-in-keycloak-for-vcf-private-ai-services.html), [Authentik 구성, williamlam.com 2025-09](https://williamlam.com/2025/09/ms-a2-vcf-9-0-lab-configuring-authentik-identity-provider-vmware-for-private-ai-services-pais.html).
 
@@ -145,4 +136,4 @@ response = client.chat.completions.create(
 다음 문서에서는 에이전트의 능력을 넓히는 **MCP 도구 통합**을 자세히 다룹니다.
 
 ---
-[← 이전: 03 에이전트 설계 패턴](03-design-patterns.md) | [목차](../README.md) | [다음: 09 MCP 도구 통합 →](09-mcp-tools.md)
+[← 이전: 07 사내 시스템 연동과 쓰기 설계](07-integration-write-design.md) | [목차](../README.md) | [다음: 09 MCP 도구 통합 →](09-mcp-tools.md)

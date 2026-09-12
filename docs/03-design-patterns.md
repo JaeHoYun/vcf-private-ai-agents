@@ -124,4 +124,4 @@ PAIS의 에이전트는 각각 독립된 챗 컴플리션 엔드포인트로 노
 유형이 무엇이든 서비스의 골격은 같습니다. 클라이언트(웹, 메신저, 업무 화면) → BFF(Backend For Frontend, 사용자 인증과 세션과 요청 속도 제한) → 오케스트레이션(RAG 조립이나 에이전트 호출) → PAIS(모델과 에이전트 엔드포인트)의 네 층이며, 클라이언트가 PAIS를 직접 호출하지 않는 것이 규칙입니다. 토큰이 클라이언트에 노출되고 사용자 신원이 끊기기 때문입니다. 층별 책임과 멀티턴 세션 보관은 [④ 05 앱 통합](https://github.com/JaeHoYun/vcf-private-ai/blob/main/04-rag/docs/05-app-integration.md)에 있고, 이 골격 위에서 사용자 신원이 어디까지 따라가는지와 신뢰 UX는 설계 편과 구축 편에서 이어 다룹니다.
 
 ---
-[← 이전: 02 어디에 쓰나: 성과가 나는 일, 실패하는 일](02-use-cases.md) | [목차](../README.md) | [다음: 08 Agent Builder로 구축 →](08-agent-builder.md)
+[← 이전: 02 어디에 쓰나: 성과가 나는 일, 실패하는 일](02-use-cases.md) | [목차](../README.md) | [다음: 04 사용자 신원과 권한 전파 →](04-identity-propagation.md)
