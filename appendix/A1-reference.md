@@ -17,6 +17,12 @@
 - **가드레일(Guardrail)** — 에이전트의 입출력과 행동을 제한하는 안전 통제. PAIS 맥락에서는 리소스 쿼터와 거버넌스 의미로 주로 쓰이며, 콘텐츠 가드레일은 애플리케이션 계층 설계가 필요하다.
 - **골든셋(Golden set)** — 대표 입력과 기대 동작을 묶은 평가용 데이터셋. 회귀와 A/B 비교의 기준이 된다.
 - **LLM 채점(LLM-as-judge)** — 별도 모델에 채점 기준을 주어 자유 서술 답의 품질을 점수화하는 평가 방법. 편향이 있어 사람 표본 검수로 보정한다.
+- **자율성 수준(L0~L5)** — 에이전트에 판단과 실행을 얼마나 맡겼는가의 여섯 단계. L0 자율성 없음, L1 행동마다 승인, L2 계획 단위 승인, L3 경계 안 자율, L4 고자율, L5 완전 자율. 첫 배치는 L1 이하([02 2.10절](../docs/02-use-cases.md)).
+- **위험 등급** — 유스케이스가 다루는 일과 데이터의 민감도를 낮음, 중간, 높음으로 판정한 값. 고영향 AI 해당 여부, 금융 위험 등급, 개인정보와 기밀, 대외 노출과 쓰기 권한의 네 질문으로 정한다([02 2.9절](../docs/02-use-cases.md)).
+- **비인간 신원(NHI, Non-Human Identity)** — 에이전트, 서비스, 도구 서버처럼 사람이 아닌 행위자에 부여하는 고유 신원. 사람이나 다른 에이전트와 자격증명을 공유하지 않는 것이 원칙([⑤ 08 8.2절](https://github.com/JaeHoYun/vcf-private-ai/blob/main/05-security/docs/08-agent-governance.md)).
+- **도구 오염(Tool poisoning)** — MCP 도구의 설명문에 숨긴 지시로 에이전트를 조종하는 공격. 승인 뒤 설명이 바뀌는 rug pull, 다른 서버의 도구를 가로채는 shadowing을 포함한다. 승인 시점의 설명 해시를 고정해 막는다([09 9.7절](../docs/09-mcp-tools.md)).
+- **킬스위치(Kill switch)** — 서비스 단위로 에이전트 비활성화, 토큰 폐기, 도구 승인 해제, 네트워크 차단을 한 번에 일으키는 조치. 사고 대응의 첫 조치([07 7.3절](../docs/07-integration-write-design.md)).
+- **ASI01~ASI10** — OWASP Top 10 for Agentic Applications 2026의 에이전트 위협 코드. 목표 탈취, 도구 오남용, 신원과 권한 남용, 에이전트 공급망, 예기치 않은 코드 실행, 메모리와 컨텍스트 오염, 안전하지 않은 에이전트 간 통신, 연쇄 실패, 사람과 에이전트 간 신뢰 악용, 이탈 에이전트([12 12.4절](../docs/12-service-security.md)).
 
 ### A1.1.2 모델과 서빙
 
@@ -40,6 +46,10 @@
 - **Top-K** — 검색에서 가져올 상위 문서 수. 유사도 컷오프와 함께 검색 정밀도와 잡음을 조절한다.
 - **RAG(검색 증강 생성)** — 답하기 전 지식베이스를 검색해 컨텍스트로 넣는 고정 흐름. 상세는 시리즈 ④.
 - **환각(Hallucination)** — 검색과 도구 근거 없이 그럴듯하게 지어낸 답.
+- **파생 사본** — 원문 문서에서 만들어지는 청크, 임베딩, 캐시, 로그, 추적 데이터. 보호 문서를 인입할 때 원문의 등급을 그대로 상속시켜 통제하는 대상([06 6.1절](../docs/06-data-onboarding.md)).
+- **복호화 전처리 존** — 보호 문서를 서버 측에서 복호화해 청킹과 임베딩까지 마치는 격리 구역. 평문은 이 존 밖으로 나가지 않는다([06 6.4절](../docs/06-data-onboarding.md)).
+- **검색단 권한 필터** — 사용자의 권한(부서, 그룹, 등급)을 검색 단계의 필터로 걸어 권한 밖 문서가 프롬프트에 들어가지 않게 하는 통제. 관리형 지식베이스는 지식베이스 단위 분리로, 커스텀 검색은 청크 ACL로 구현([04 4.5절](../docs/04-identity-propagation.md)).
+- **토큰 팽창 계수** — 같은 내용을 한국어로 썼을 때 영어보다 토큰이 늘어나는 비율. 토크나이저마다 달라 자사 문서로 실측하며, 컨텍스트 예산과 사이징과 비용의 입력이 된다([10 10.7절](../docs/10-models-serving.md)).
 
 ### A1.1.4 실행과 운영
 
@@ -54,6 +64,18 @@
 - **종단 지연(End-to-end latency)** — 요청부터 최종 응답까지 걸린 전체 시간.
 - **SLO(Service Level Objective)** — 서비스가 지켜야 할 목표 수준(가용성, 지연, 오류율 등). 관측 기준선 위에 정해 이탈을 감시한다.
 - **NVAIE(NVIDIA AI Enterprise)** — NVIDIA의 엔터프라이즈 AI 소프트웨어 라이선스. vGPU 사용 시 필요하며 패스스루 모드에서는 불필요하다.
+
+### A1.1.5 신원, 통합, 출시
+
+- **BFF(Backend For Frontend)** — 클라이언트와 오케스트레이션 사이에서 사용자 인증, 세션, 요청 정형, 입력 가드를 맡는 프런트엔드 전용 백엔드. 4-Tier 골격의 두 번째 층([11 11.1절](../docs/11-app-integration-ux.md)).
+- **토큰 교환(OAuth 2.0 Token Exchange, RFC 8693)** — 사용자 토큰과 서비스 자격증명을 인가 서버에 제시해 대상 시스템용 audience와 scope를 가진 새 토큰을 받는 표준. 위임(delegation)은 `act` 클레임에 행위자를 남기고, 가장(impersonation)은 사용자와 구별되지 않는다([04 4.3절](../docs/04-identity-propagation.md)).
+- **AI 게이트웨이(1계층)** — 앱과 PAIS 서빙 게이트웨이 사이에 두는 선택 계층. 키와 팀 예산, 레이트리밋, 모델 별칭 라우팅, 캐시를 맡는다. 0계층은 경계(로드밸런서와 WAF), 2계층은 PAIS 내장 게이트웨이([05 5.2절](../docs/05-platform-consumption.md)).
+- **쇼백(showback)과 차지백(chargeback)** — 팀별 자원과 토큰 사용량을 보여 주는 것(쇼백)과 실제로 비용을 부과하는 것(차지백). 쇼백을 먼저 하고 미터링이 검증된 뒤 차지백으로 간다([05 5.4절](../docs/05-platform-consumption.md)).
+- **멱등 키(Idempotency key)** — 같은 쓰기 요청이 재시도돼도 한 번만 반영되게 하는 요청 식별자. 생성 주체, 저장 위치, 유효 기간을 정해 쓴다([07 7.4절](../docs/07-integration-write-design.md)).
+- **보상(compensation)** — 다단계 쓰기의 일부가 실패했을 때 이미 반영된 단계를 되돌리는 절차. 트랜잭션 경계를 넘는 연동에서 롤백을 대신한다([07 7.4절](../docs/07-integration-write-design.md)).
+- **릴리스 매니페스트** — 한 릴리스를 이루는 모델 리비전, 엔진 버전, 프롬프트 해시, 도구 설명 해시, 지식베이스와 임베딩, 가드레일 정책, 평가셋 버전을 한 장에 적은 기록. CI가 생성한다([13 13.9절](../docs/13-evaluation-guardrails.md)).
+- **출시 심사 패키지** — 위험 등급, 신원 계약, 데이터 소스 승인, 쓰기 분류, 매니페스트, 평가와 레드팀 결과, 고지와 운영 준비, 법무 확인을 묶어 심사 주체에게 제출하는 묶음([13 13.10절](../docs/13-evaluation-guardrails.md)).
+- **게이트(PoC, 파일럿, 프로덕션)** — 서비스가 통과하는 세 단계. PoC는 합성이나 공개 데이터로 소수가 써 보는 단계, 파일럿은 실제 데이터를 한정된 사용자가 읽기 전용으로 쓰는 단계, 프로덕션은 그 제한을 푸는 단계. 단계마다 필수 통제가 늘어난다([12 12.7절](../docs/12-service-security.md)).
 
 ## A1.2 참조 링크
 
@@ -72,6 +94,17 @@
 - [Connect to a Remote Model Running in the Cloud (Broadcom TechDocs, 3.0)](https://techdocs.broadcom.com/us/en/vmware-cis/private-ai/foundation-with-nvidia/9-1/what-is-private-ai-services/connect-to-a-remote-model-running-in-the-cloud.html)
 - [Generate API Tokens for VCF Automation or Local Private AI Services Accounts (Broadcom TechDocs, 3.0)](https://techdocs.broadcom.com/us/en/vmware-cis/private-ai/foundation-with-nvidia/9-1/what-is-private-ai-services/generate-api-tokens-for-local-accounts.html)
 - [Connect an MCP Server to Private AI Services (Broadcom TechDocs)](https://techdocs.broadcom.com/us/en/vmware-cis/private-ai/foundation-with-nvidia/9-0/private-ai-foundation-9-x/what-is-private-ai-services/adding-mcp-servers-for-real-time-data-access-and-specialized-ai-capabilities/connect-to-an-mcp-server.html)
+
+**표준, 프레임워크, 규제** — 설계와 검증 편이 근거로 삼은 공개 문서입니다. 국내 규제의 시행 일정은 [AX 방법론 부록 A2](https://github.com/JaeHoYun/enterprise-ax-methodology/blob/main/appendix/A2-kr-regulatory-timeline.md)가 단일 출처입니다.
+
+- [OWASP Top 10 for Agentic Applications 2026](https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/), [OWASP GenAI LLM Top 10 2026](https://genai.owasp.org/resource/owasp-genai-llm-top-10-2026/)
+- [OWASP, A Practical Guide for Securely Using Third-Party MCP Servers 1.0](https://genai.owasp.org/resource/cheatsheet-a-practical-guide-for-securely-using-third-party-mcp-servers-1-0/)
+- [MCP 사양 2026-07-28 변경 사항](https://modelcontextprotocol.io/specification/2026-07-28/changelog)
+- [RFC 8693 OAuth 2.0 Token Exchange](https://datatracker.ietf.org/doc/html/rfc8693)
+- [CSA, Levels of Autonomy for Agentic AI (2026-01-28)](https://cloudsecurityalliance.org/blog/2026/01/28/levels-of-autonomy)
+- [CISA 외 공동, Careful Adoption of Agentic AI Services (2026-05-01)](https://www.cisa.gov/resources-tools/resources/careful-adoption-agentic-ai-services)
+- [금융위원회, 금융분야 인공지능 가이드라인 통합 개정 (2026-06-18)](https://fsc.go.kr/no010101/87142)
+- [개인정보보호위원회, 생성형 인공지능 개발, 활용을 위한 개인정보 처리 안내서 (2025-08-06)](https://www.pipc.go.kr/np/cop/bbs/selectBoardArticle.do?bbsId=BS074&mCode=C020010000&nttId=11410)
 
 **실습과 구성 사례(공개 자료)** — 본문에서 인용한 따라 하기용 자료입니다.
 
