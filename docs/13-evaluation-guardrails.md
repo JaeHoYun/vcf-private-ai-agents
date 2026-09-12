@@ -82,4 +82,4 @@
 다음 문서에서는 이렇게 만든 에이전트를 실제 운영에 올리는 Day-2를 다룹니다.
 
 ---
-[← 이전: 10 모델과 서빙](10-models-serving.md) | [목차](../README.md) | [다음: 14 운영과 Day-2 →](14-operations.md)
+[← 이전: 11 앱 통합과 신뢰 UX](11-app-integration-ux.md) | [목차](../README.md) | [다음: 14 운영과 Day-2 →](14-operations.md)

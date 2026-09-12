@@ -82,4 +82,4 @@ CLI의 형태에 대해 한 가지 정리해 둡니다. 단독 실행 파일 형
 다음 문서에서는 만든 에이전트를 운영에 올리기 전 **평가하고 가드레일을 설계**하는 방법을 다룹니다.
 
 ---
-[← 이전: 09 MCP 도구 통합](09-mcp-tools.md) | [목차](../README.md) | [다음: 13 평가와 가드레일 →](13-evaluation-guardrails.md)
+[← 이전: 09 MCP 도구 통합](09-mcp-tools.md) | [목차](../README.md) | [다음: 11 앱 통합과 신뢰 UX →](11-app-integration-ux.md)
