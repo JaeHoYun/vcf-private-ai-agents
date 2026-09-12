@@ -8,7 +8,7 @@
 
 플랫폼(시리즈 ①~⑦)이 인프라팀과 플랫폼팀의 관점이라면, 이 가이드는 그 플랫폼을 **소비하는 쪽** — 서비스를 기획하는 담당자, 설계하는 아키텍트, 만드는 앱 팀, 출시를 심사하는 보안과 법무, 운영하는 팀 — 의 관점입니다. 에이전트는 이 가이드가 다루는 네 가지 서비스 유형(챗과 Q&A RAG, 문서 처리 배치, 기존 시스템에 심는 코파일럿, 에이전트) 중 하나이며, PAIS 3.0의 Agent Builder, MCP, Model Runtime으로 구현하는 방법은 구축 편(08~10)에서 그대로 다룹니다.
 
-> **VCF Private AI 가이드 시리즈 위에 올리는 실행 계층 가이드**입니다. 시리즈 본편(①~⑦)은 [시리즈 허브](https://github.com/JaeHoYun/vcf-private-ai)에서, 상위 전략은 [AX 방법론](https://github.com/JaeHoYun/enterprise-ax-methodology)에서 다룹니다. 프로필의 **AX(전략) → Private AI(인프라) → 앱과 에이전트(실행)** 3단계 중 실행 편입니다. 에이전트 전용 9편 체제였던 이전 구조는 태그 [`baseline-agents-v1`](https://github.com/JaeHoYun/vcf-private-ai-apps/tree/baseline-agents-v1)에서 그대로 읽을 수 있습니다.
+> **VCF Private AI 가이드 시리즈 위에 올리는 실행 계층 가이드**입니다. 시리즈 본편(①~⑦)은 [시리즈 허브](https://github.com/JaeHoYun/vcf-private-ai)에서, 상위 전략은 [AX 방법론](https://github.com/JaeHoYun/enterprise-ax-methodology)에서 다룹니다. 프로필의 **AX(전략) → Private AI(플랫폼) → 앱과 에이전트 서비스(실행)** 3단계 중 실행 편입니다. 에이전트 전용 9편 체제였던 이전 구조는 태그 [`baseline-agents-v1`](https://github.com/JaeHoYun/vcf-private-ai-apps/tree/baseline-agents-v1)에서 그대로 읽을 수 있습니다.
 
 ---
 
