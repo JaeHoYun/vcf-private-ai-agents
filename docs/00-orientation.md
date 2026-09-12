@@ -54,7 +54,7 @@
 **다루는 것** — 서비스 수명주기 다섯 부입니다.
 
 - **기획과 선정** — 어떤 일에 써야 성과가 나는지, 파일럿이 어디서 멈추는지, 위험 등급과 자율성 상한을 어떻게 정하는지([02](02-use-cases.md))
-- **설계** — 언제 에이전트로 풀지, 단일과 멀티, 도구와 지식 연결, 세션, 배치 파이프라인([03](03-design-patterns.md)). 이어서 사용자 신원과 권한 전파, 플랫폼 소비(게이트웨이, 온보딩, 토큰 예산), 데이터 소스 온보딩과 보호 문서, 사내 시스템 연동과 쓰기 설계를 설계 편에 순차로 더합니다
+- **설계** — 언제 에이전트로 풀지, 단일과 멀티, 도구와 지식 연결, 세션, 배치 파이프라인([03](03-design-patterns.md)), 사용자 신원이 어디까지 따라가는지([04](04-identity-propagation.md)), 사내 시스템 연동과 쓰기의 승인과 정합성([07](07-integration-write-design.md)). 플랫폼 소비(게이트웨이, 온보딩, 토큰 예산)와 데이터 소스 온보딩과 보호 문서는 설계 편에 순차로 더합니다
 - **구축** — PAIS 3.0 Agent Builder로 에이전트를 구성하는 절차([08](08-agent-builder.md)), MCP로 사내와 외부 시스템 도구를 연결하고 승인하고 관리하는 방법([09](09-mcp-tools.md)), 에이전트가 쓰는 모델을 Model Runtime으로 서빙하고 Model Gallery로 관리하는 방법([10](10-models-serving.md)), 그리고 앱 통합과 신뢰 UX(구축 편에 순차로 더함)
 - **검증과 출시** — 평가와 가드레일 한계와 휴먼인더루프([13](13-evaluation-guardrails.md)), 서비스 단위 보안 준비(검증 편에 순차로 더함)
 - **운영과 종료** — 배포 토폴로지, 관측, 업그레이드, 비용, 서비스 퇴역([14](14-operations.md))
@@ -76,10 +76,10 @@ PAIS가 제공하는 모듈과 시리즈가 떠받치는 인프라 위에는, �
 
 | 책임 영역 | 왜 PAIS 밖인가 | 이 가이드에서 |
 |-----------|----------------|---------------|
-| 최종 사용자 신원과 인가(사용자별 접근 권한과 테넌트 격리) | 에이전트 엔드포인트는 호출하는 서비스만 알 뿐, 최종 사용자가 누구인지 모른다 | [08 8.9절](08-agent-builder.md)의 두 층위 원칙, 설계 편의 신원과 권한 전파에서 규약으로 확장, [⑤ ID, 인증, 접근통제](https://github.com/JaeHoYun/vcf-private-ai/blob/main/05-security/docs/03-identity-access.md) |
+| 최종 사용자 신원과 인가(사용자별 접근 권한과 테넌트 격리) | 에이전트 엔드포인트는 호출하는 서비스만 알 뿐, 최종 사용자가 누구인지 모른다 | [04 사용자 신원과 권한 전파](04-identity-propagation.md)가 정본, [08 8.9절](08-agent-builder.md)의 두 층위 원칙, [⑤ ID, 인증, 접근통제](https://github.com/JaeHoYun/vcf-private-ai/blob/main/05-security/docs/03-identity-access.md) |
 | 평가 방법 설계(골든셋, 채점, 회귀, A/B) | PAIS에 이름 붙은 전용 평가 프레임워크는 확인되지 않음 | 앱과 CI 계층에서 설계 [13](13-evaluation-guardrails.md) |
 | 콘텐츠 가드레일(입출력 필터, PII, 프롬프트 인젝션) | PAIS 내장 콘텐츠 가드레일은 확인되지 않음 | 앱 계층 필터 [13](13-evaluation-guardrails.md), 검증 편의 서비스 보안 준비에서 선택과 배치, [⑤ 앱 계층 가드레일](https://github.com/JaeHoYun/vcf-private-ai/blob/main/05-security/docs/06-app-guardrails.md) |
-| 휴먼인더루프(되돌리기 어려운 행동 승인) | PAIS 내장 휴먼인더루프 기능은 확인되지 않음 | 앱 계층 승인 게이트 [03 3.5절](03-design-patterns.md), [13](13-evaluation-guardrails.md), 설계 편의 사내 시스템 연동과 쓰기 설계에서 승인 큐로 확장 |
+| 휴먼인더루프(되돌리기 어려운 행동 승인) | PAIS 내장 휴먼인더루프 기능은 확인되지 않음 | [07 7.3절](07-integration-write-design.md)의 승인 게이트와 승인 큐가 정본, [03 3.5절](03-design-patterns.md), [13 13.6절](13-evaluation-guardrails.md) 검증 점검 |
 | 사내 MCP 서버 구현과 호스팅 | PAIS는 도구의 등록, 승인, 소비만 담당하며, 서버 자체는 사용자 자산이다 | 앱, 플랫폼 계층에서 구현, 운영 [09](09-mcp-tools.md) |
 | 모델 파인튜닝과 도메인 적응 학습 | Model Gallery는 모델 보관과 반입만 담당하며, 학습 파이프라인은 범위 밖이다 | 외부와 DLVM에서 학습 후 Gallery로 반입 [10](10-models-serving.md) |
 | 애플리케이션 자체(런타임, UI, 세션 저장, CI/CD, 호출 견고성) | 서비스를 소비하고 노출하는 앱은 PAIS가 아니다 | 자체 구현, 엔드포인트 소비는 [08 8.8절](08-agent-builder.md), 구축 편의 앱 통합과 신뢰 UX로 확장 |
