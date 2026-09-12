@@ -42,9 +42,9 @@
 | 부 | 순서 | 문서 | 내용 |
 |----|------|------|------|
 | 기획과 선정 | 00 | [개관](docs/00-orientation.md) | 이 가이드의 역할, 독자, 선행지식, 다루는 것과 다루지 않는 것, PAIS 6개 모듈 지도 |
-| | 01 | [에이전트 기초와 PAIS 3.0 지형](docs/01-foundations.md) | 에이전트 vs RAG vs 워크플로우 경계, 6개 모듈, 에이전트의 구성요소 |
-| | 02 | [어디에 쓰나](docs/02-use-cases.md) | 성과가 나는 일과 실패하는 일 — 파일럿이 멈추는 다섯 실패 유형, 유스케이스 선별 기준, 사례 2종 |
-| 설계 | 03 | [에이전트 설계 패턴](docs/03-design-patterns.md) | 단일, 멀티 에이전트, 도구와 지식 연결, 세션 관리, 언제 에이전트로 푸나 |
+| | 01 | [서비스 유형과 PAIS 3.0 지형](docs/01-foundations.md) | 단일 호출, RAG, 워크플로우, 에이전트의 경계, 네 가지 서비스 유형, 6개 모듈, 에이전트의 구성요소 |
+| | 02 | [어디에 쓰나](docs/02-use-cases.md) | 성과가 나는 일과 실패하는 일 — 파일럿이 멈추는 다섯 실패 유형, 유스케이스 선별 기준, 사례 2종, 위험 등급 판정, 자율성 상한 |
+| 설계 | 03 | [에이전트 설계 패턴](docs/03-design-patterns.md) | 언제 에이전트로 푸나, 단일과 멀티, 도구와 지식 연결, 세션, 배치 파이프라인, 롱컨텍스트 대 RAG, 4-Tier 골격 |
 | 구축 | 08 | [Agent Builder로 구축](docs/08-agent-builder.md) | 에이전트 생성, 모델 엔드포인트, 지시문, 지식베이스, 도구, 세션, Playground, REST API |
 | | 09 | [MCP 도구 통합](docs/09-mcp-tools.md) | MCP 3방향(호출, 호스팅, 등록), Tool Gallery, 전송과 인증, 보안 경계 |
 | | 10 | [모델과 서빙](docs/10-models-serving.md) | Model Runtime, OpenAI 호환 API, 서빙 엔진, Model Gallery, 에어갭(Artifact Mirroring Tool), CLI |
@@ -57,7 +57,7 @@
 
 ## 빠른 시작
 
-- **"처음 본다"** → [00 개관](docs/00-orientation.md) → [01 에이전트 기초](docs/01-foundations.md)
+- **"처음 본다"** → [00 개관](docs/00-orientation.md) → [01 서비스 유형과 PAIS 3.0 지형](docs/01-foundations.md)
 - **"이걸로 무슨 가치를 내나, 어디서 실패하나"** → [02 어디에 쓰나](docs/02-use-cases.md)
 - **"바로 하나 만들어 본다"** → [08 Agent Builder로 구축](docs/08-agent-builder.md)
 - **"사내 시스템을 도구로 붙인다"** → [09 MCP 도구 통합](docs/09-mcp-tools.md)
