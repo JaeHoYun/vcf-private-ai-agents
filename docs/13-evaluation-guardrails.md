@@ -49,11 +49,11 @@
 - **리소스 가드레일** — 격리된 vSphere Namespace의 CPU, 메모리, GPU 쿼터. 한 워크로드가 자원을 독식하지 못하게 막는 운영 통제입니다.
 - **거버넌스 포지셔닝** — 에이전트 루프와 도구 사용에 대한 상위 플랫폼 차원의 거버넌스 방향.
 
-> **분명히 해 둘 경계** — 콘텐츠 모더레이션과 프롬프트 인젝션 방어 같은 **PAIS 내장 콘텐츠 가드레일** 기능은 공식 근거가 확인되지 않습니다. 따라서 출력 안전, 입력 검증, 민감정보 차단 같은 가드레일은 **애플리케이션 계층에서 설계**해야 합니다 — 입력과 출력 필터, 도구 권한 최소화, 승인 통제([09](09-mcp-tools.md)), 지시문의 거절 규칙을 조합하십시오. 통제와 정책의 상세는 [⑤ 앱 계층 가드레일](https://github.com/JaeHoYun/vcf-private-ai/blob/main/05-security/docs/06-app-guardrails.md)에 위임합니다.
+> **분명히 해 둘 경계** — 콘텐츠 모더레이션과 프롬프트 인젝션 방어 같은 **PAIS 내장 콘텐츠 가드레일** 기능은 공식 근거가 확인되지 않습니다. 따라서 출력 안전, 입력 검증, 민감정보 차단 같은 가드레일은 **애플리케이션 계층에서 설계**해야 합니다 — 입력과 출력 필터, 도구 권한 최소화, 승인 통제([09](09-mcp-tools.md)), 지시문의 거절 규칙을 조합하십시오. 어떤 가드를 어디에 두고 무엇으로 만드는지의 선택과 배치는 [12 12.3절](12-service-security.md)이, 플랫폼 정책과 통제 상세는 [⑤ 앱 계층 가드레일](https://github.com/JaeHoYun/vcf-private-ai/blob/main/05-security/docs/06-app-guardrails.md)이 다룹니다.
 
 **원격 클라우드 모델을 쓰는 에이전트의 추가 가드레일(PAIS 3.0부터)** — 에이전트의 completion 엔드포인트가 원격 클라우드 모델이면([10 10.1절](10-models-serving.md)), 위에서 앱 계층이 맡는 입출력 필터에 한 층이 더 필요합니다. 프롬프트에 실리는 검색 청크와 도구 결과가 사외로 나가기 때문입니다. 그래서 원격 모델 에이전트에는 연결할 수 있는 지식베이스와 도구를 반출 정책이 허용한 것으로 제한하고, 도구 결과가 프롬프트에 들어가기 전에 PII 마스킹을 거치게 하며, 평가 골든셋에 "기밀 등급 문서를 근거로 답해야 하는 질문"을 넣어 그런 질문이 원격 모델 에이전트로 흘러가지 않는지를 회귀로 확인합니다. 어떤 데이터가 나가도 되는지의 기준은 [⑤ 데이터 거버넌스 5.6절](https://github.com/JaeHoYun/vcf-private-ai/blob/main/05-security/docs/05-data-governance.md)이 정합니다.
 
-**플랫폼이 이 영역을 흡수할 가능성** — 2026-09 Explore에서 에이전트 코드 샌드박스와 도구 접근을 통제하는 Agent Harness로 이뤄진 Secure Agent Framework가 발표됐습니다. PAIS 3.0 릴리스 노트에는 없는 향후 기능이므로 이 절의 앱 계층 책임 구분은 그대로이고, 상태는 [00 0.6절](00-orientation.md)에서 추적합니다.
+**플랫폼이 이 영역을 흡수할 가능성** — 2026-08 Explore에서 에이전트 코드 샌드박스와 도구 접근을 통제하는 Agent Harness로 이뤄진 Secure Agent Framework가 발표됐습니다. PAIS 3.0 릴리스 노트에는 없는 향후 기능이므로 이 절의 앱 계층 책임 구분은 그대로이고, 상태는 [00 0.6절](00-orientation.md)에서 추적합니다. 이미 GA된 것으로는 에이전트 신원과 도구 호출 게이트웨이를 제공하는 별도 제품 AgentMinder(2026-08-31)가 있으며, PAIS 구성요소가 아니므로 에이전트에서 도구로 가는 경로에 정책 집행 계층을 둘지의 결정([⑤ 08 8.8절](https://github.com/JaeHoYun/vcf-private-ai/blob/main/05-security/docs/08-agent-governance.md))에서 선택지의 하나로 다룹니다. 에이전트를 행위자로 보는 위협 목록과 자율성 상한, 레지스트리, 도구 오염 통제의 정본은 [⑤ 08](https://github.com/JaeHoYun/vcf-private-ai/blob/main/05-security/docs/08-agent-governance.md)이고, 이 서비스에 대입하는 점검표는 [12 12.4절](12-service-security.md)입니다.
 
 ## 13.6 휴먼인더루프 — 검증 관점의 점검
 
@@ -82,4 +82,4 @@
 다음 문서에서는 이렇게 만든 에이전트를 실제 운영에 올리는 Day-2를 다룹니다.
 
 ---
-[← 이전: 11 앱 통합과 신뢰 UX](11-app-integration-ux.md) | [목차](../README.md) | [다음: 14 운영과 Day-2 →](14-operations.md)
+[← 이전: 12 서비스 보안 준비와 가드레일](12-service-security.md) | [목차](../README.md) | [다음: 14 운영과 Day-2 →](14-operations.md)

@@ -124,4 +124,4 @@ AI 기본법은 고영향 또는 생성형 AI 제품과 서비스에 AI 이용 �
 
 [^ai-act]: 인공지능 발전과 신뢰 기반 조성 등에 관한 기본법 제31조(투명성). 시행 일정과 하위 법령은 [AX 방법론 부록 A2](https://github.com/JaeHoYun/enterprise-ax-methodology/blob/main/appendix/A2-kr-regulatory-timeline.md)를 단일 출처로 삼고, 조문은 [법제처](https://www.law.go.kr/lsSc.do?query=인공지능+발전과+신뢰+기반+조성)로 확인하십시오. 적용 범위는 법무 검토로 확정합니다.
 
-[← 이전: 10 모델과 서빙](10-models-serving.md) | [목차](../README.md) | [다음: 13 평가와 가드레일 →](13-evaluation-guardrails.md)
+[← 이전: 10 모델과 서빙](10-models-serving.md) | [목차](../README.md) | [다음: 12 서비스 보안 준비와 가드레일 →](12-service-security.md)
